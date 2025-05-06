@@ -22,6 +22,7 @@ import Link from "next/link";
 import ImportantInfo from "../../../components/activity-single/ImportantInfo";
 import SlideGallery from "../../../components/activity-single/SlideGallery";
 import MapPropertyFinder from "../../../components/activity-single/MapPropertyFinder";
+import TravelItinerary from "../../../components/itinerary/itinerary1";
 
 const TourSingleV1Dynamic = () => {
   const [isOpen, setOpen] = useState(false);
@@ -168,7 +169,24 @@ const TourSingleV1Dynamic = () => {
         </div>
         {/* End .container */}
       </section>
-      {/* End important info */}
+      {/* End important info */ }
+
+      <section className="pt-40">
+        <div className="container">
+          <div className="pt-40 border-top-light">
+            <div className="row x-gap-40 y-gap-40">
+              <div className="col-auto">
+                <h3 className="text-22 fw-500">Itinerary</h3>
+              </div>
+            </div>
+            {/* End row */}
+            <TravelItinerary />
+          </div>
+          {/* End pt-40 */}
+        </div>
+        {/* End .container */}
+      </section>
+      
 
       <section className="border-top-light  mt-40 pt-40">
         <div className="container">
