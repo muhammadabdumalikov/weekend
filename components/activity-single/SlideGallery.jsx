@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { Gallery, Item } from "react-photoswipe-gallery";
+import "../../styles/tailwind.scss";
 
 const SlideGallery = () => {
   const sliderImg = [
@@ -42,8 +43,8 @@ const SlideGallery = () => {
         >
           {sliderImg.map((img, i) => (
             <SwiperSlide key={i}>
-              <div className="ratio ratio-64:45">
-                <img src={img} alt="image" className="rounded-4 img-ratio" />
+              <div className="relative w-full" style={{ paddingBottom: '70.31%' }}>
+                <img src={img} alt="image" className="rounded-lg absolute inset-0 w-full h-full object-cover" />
               </div>
             </SwiperSlide>
           ))}
@@ -52,13 +53,13 @@ const SlideGallery = () => {
         <Gallery>
           {sliderImg?.map((slide, i) => (
             <div
-              className="absolute px-10 py-10 col-12  d-flex justify-end items-end z-2 bottom-0 end-0"
+              className="absolute px-10 py-10 w-full flex justify-end items-end z-10 bottom-0 right-0"
               key={i}
             >
               <Item width={451} height={450} original={slide} thumbnail={slide}>
                 {({ ref, open }) => (
                   <div
-                    className="button -blue-1 px-24 py-15 bg-white text-dark-1 js-gallery"
+                    className="bg-white text-gray-900 px-6 py-4 rounded cursor-pointer hover:bg-blue-50 transition-colors duration-300"
                     ref={ref}
                     onClick={open}
                     role="button"
@@ -71,16 +72,13 @@ const SlideGallery = () => {
           ))}
         </Gallery>
 
-        <button className="section-slider-nav -prev flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full sm:d-none js-activity-prev-active">
-          <i className="icon icon-chevron-left text-12" />
+        <button className="absolute top-1/2 -translate-y-1/2 left-[-20px] z-10 flex items-center justify-center bg-white text-blue-600 shadow-lg w-10 h-10 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-300 sm:hidden js-activity-prev-active">
+          <i className="icon icon-chevron-left text-xs" />
         </button>
-        <button className="section-slider-nav -next flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full sm:d-none js-activity-next-active">
-          <i className="icon icon-chevron-right text-12" />
+        <button className="absolute top-1/2 -translate-y-1/2 right-[-20px] z-10 flex items-center justify-center bg-white text-blue-600 shadow-lg w-10 h-10 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-300 sm:hidden js-activity-next-active">
+          <i className="icon icon-chevron-right text-xs" />
         </button>
-
-        {/* End prev nav button wrapper */}
       </div>
-      {/* slider relative */}
     </>
   );
 };

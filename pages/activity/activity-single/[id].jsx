@@ -198,36 +198,6 @@ const TourSingleV1Dynamic = () => {
       </section>
       {/* End Itinerary */}
 
-      <section className="mt-40">
-        <div className="container ">
-          <div className="pt-40 border-top-light">
-            <div className="row y-gap-20">
-              <div className="col-lg-4">
-                <h2 className="text-22 fw-500">
-                  FAQs about
-                  <br /> The Crown Hotel
-                </h2>
-              </div>
-              {/* End .row */}
-
-              <div className="col-lg-8">
-                <div
-                  className="accordion -simple row y-gap-20 js-accordion"
-                  id="Faq1"
-                >
-                  <Faq />
-                </div>
-              </div>
-              {/* End .col */}
-            </div>
-            {/* End .row */}
-          </div>
-          {/* End .pt-40 */}
-        </div>
-        {/* End .container */}
-      </section>
-      {/* End Faq about sections */}
-
       <section className="mt-40 border-top-light pt-40">
         <div className="container">
           <div className="row y-gap-40 justify-between">
