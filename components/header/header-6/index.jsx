@@ -2,6 +2,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MainMenu from "../MainMenu";
 import MobileMenu from "../MobileMenu";
+import CurrenctyMegaMenu from "../CurrenctyMegaMenu";
+import LanguageMegaMenu from "../LanguageMegaMenu";
 
 const Header1 = () => {
   const [navbar, setNavbar] = useState(false);
@@ -38,6 +40,19 @@ const Header1 = () => {
 
             <div className="col-auto">
               <div className="d-flex items-center">
+                <div className="row x-gap-20 items-center xxl:d-none">
+                  {/* <CurrenctyMegaMenu textClass="text-light" /> */}
+                  {/* End Megamenu for Currencty */}
+
+                  {/* Start vertical devider*/}
+                  <div className="col-auto">
+                    <div className="w-1 h-20 bg-white-120" />
+                  </div>
+                  {/* End vertical devider*/}
+
+                  <LanguageMegaMenu textClass="text-light" />
+                  {/* End Megamenu for Language */}
+                </div>
                 <div className="header-menu">
                   <div className="header-menu__content">
                     <MainMenu style="text-white" />

@@ -6,25 +6,8 @@ const CurrenctyMegaMenu = ({ textClass }) => {
 
   const currencyContent = [
     { id: 1, name: "United States dollar", currency: "USD", symbol: "$" },
-    { id: 2, name: "Australian dollar", currency: "AUD", symbol: "$" },
-    { id: 3, name: "Brazilian real", currency: "BRL", symbol: "R$" },
-    { id: 4, name: "Bulgarian lev", currency: "BGN", symbol: "лв." },
-    { id: 5, name: "Canadian dollar", currency: "CAD", symbol: "$" },
-    { id: 6, name: "Bangladeshi Taka", currency: "BDT", symbol: "৳" },
-    { id: 7, name: "Azerbaijan Manat", currency: "AZN", symbol: "₼" },
-    { id: 8, name: "Colombia Peso", currency: "COP", symbol: "$" },
-    { id: 9, name: "Oman Rial", currency: "OMR", symbol: "﷼" },
-    { id: 10, name: "India Rupee", currency: "INR", symbol: "₹" },
-    { id: 11, name: "Iran Rial", currency: "IRR", symbol: "﷼" },
-    { id: 12, name: "Japan Yen", currency: "JPY", symbol: "£" },
-    { id: 13, name: "Jersey Pound", currency: "JEP", symbol: "£" },
-    { id: 14, name: "Korea (South) Won", currency: "KRW", symbol: "	₩" },
-    { id: 15, name: "Lebanon Pound", currency: "LBP", symbol: "$" },
-    { id: 16, name: "Liberia Dollar", currency: "LRD", symbol: "$" },
-    { id: 17, name: "Malaysia Ringgit", currency: "MYR", symbol: "$" },
-    { id: 18, name: "Mexico Peso", currency: "MXN", symbol: "$" },
-    { id: 19, name: "Namibia Dollar", currency: "NAD", symbol: "R$" },
-    { id: 20, name: "Nepal Rupee", currency: "NPR", symbol: "Nepal Rupee" },
+    { id: 2, name: "Uzbekistan sum", currency: "SUM", symbol: "S" },
+    { id: 2, name: "Russian rubl", currency: "Rubl", symbol: "₽" },
   ];
 
   const [selectedCurrency, setSelectedCurrency] = useState(currencyContent[0]);
