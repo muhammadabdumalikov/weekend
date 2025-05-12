@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import '../../styles/tailwind.scss';
 
 export default function TravelItinerary() {
   const [activeDay, setActiveDay] = useState(1);
