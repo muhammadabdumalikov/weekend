@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { Gallery, Item } from "react-photoswipe-gallery";
+import "../../styles/tailwind.scss";
 
 const SlideGallery = () => {
   const sliderImg = [
@@ -42,8 +43,15 @@ const SlideGallery = () => {
         >
           {sliderImg.map((img, i) => (
             <SwiperSlide key={i}>
-              <div className="ratio ratio-64:45">
-                <img src={img} alt="image" className="rounded-4 img-ratio" />
+              <div
+                className="relative w-full"
+                style={{ paddingBottom: "70.31%" }}
+              >
+                <img
+                  src={img}
+                  alt="image"
+                  className="rounded-lg absolute inset-0 w-full h-full object-cover"
+                />
               </div>
             </SwiperSlide>
           ))}
