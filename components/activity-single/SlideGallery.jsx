@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { Gallery, Item } from "react-photoswipe-gallery";
-import "../../styles/tailwind.scss";
+// import "../../styles/tailwind.scss";
 
 const SlideGallery = () => {
   const sliderImg = [
