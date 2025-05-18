@@ -1,16 +1,13 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { Gallery, Item } from "react-photoswipe-gallery";
+import { useSelector } from "react-redux";
 // import "../../styles/tailwind.scss";
 
 const SlideGallery = () => {
-  const sliderImg = [
-    "/img/activities/10.png",
-    "/img/activities/11.png",
-    "/img/activities/12.png",
-    "/img/activities/13.png",
-    "/img/activities/11.png",
-  ];
+  const sliderImg = useSelector((state) => state.gallery.images);
+  // const sliderImg = data;
+  if (!sliderImg || sliderImg.length === 0) return <p>No images found.</p>;
 
   return (
     <>
@@ -48,7 +45,7 @@ const SlideGallery = () => {
                 style={{ paddingBottom: "70.31%" }}
               >
                 <img
-                  src={img}
+                  src={img?.url}
                   alt="image"
                   className="rounded-lg absolute inset-0 w-full h-full object-cover"
                 />
@@ -63,7 +60,12 @@ const SlideGallery = () => {
               className="absolute px-10 py-10 col-12  d-flex justify-end items-end z-2 bottom-0 end-0"
               key={i}
             >
-              <Item width={451} height={450} original={slide} thumbnail={slide}>
+              <Item
+                width={451}
+                height={450}
+                original={slide?.url}
+                thumbnail={slide?.url}
+              >
                 {({ ref, open }) => (
                   <div
                     className="button -blue-1 px-24 py-15 bg-white text-dark-1 js-gallery"

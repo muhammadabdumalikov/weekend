@@ -1,17 +1,17 @@
-import Link from "next/link";
+// import Link from "next/link";
 
-import {
-  // homeItems,
-  // blogItems,
-  // pageItems,
-  dashboardItems,
-} from "../../data/mainMenuData";
+// import {
+//   // homeItems,
+//   // blogItems,
+//   // pageItems,
+//   dashboardItems,
+// } from "../../data/mainMenuData";
 // import CategoriesMegaMenu from "./CategoriesMegaMenu";
-import {
-  // isActiveParent,
-  isActiveLink,
-  isActiveParentChaild,
-} from "../../utils/linkActiveChecker";
+// import {
+//   // isActiveParent,
+//   isActiveLink,
+//   isActiveParentChaild,
+// } from "../../utils/linkActiveChecker";
 import { useRouter } from "next/router";
 
 const MainMenu = ({ style = "" }) => {

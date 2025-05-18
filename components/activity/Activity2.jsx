@@ -1,13 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
 import Slider from "react-slick";
-import activityData from "../../data/activity";
+// import activityData from "../../data/activity";
 import isTextMatched from "../../utils/isTextMatched";
+import { useEffect, useState } from "react";
 
 const Activity2 = () => {
+  const [activityData, setActivityData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("http://api.trippo.live/api/tour/list", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      });
+      const data = await response.json();
+      console.log("data", data.data);
+      setActivityData(data.data);
+    };
+    fetchData();
+  }, []);
+
   var settings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
@@ -69,7 +87,7 @@ const Activity2 = () => {
   return (
     <>
       <Slider {...settings}>
-        {activityData.slice(0, 5).map((item) => (
+        {activityData.slice(0, 4).map((item) => (
           <div
             key={item?.id}
             data-aos="fade"
@@ -87,7 +105,19 @@ const Activity2 = () => {
                     nextArrow={<Arrow type="next" />}
                     prevArrow={<Arrow type="prev" />}
                   >
-                    {item?.slideImg?.map((slide, i) => (
+                    <div className="cardImage ratio ratio-1:1">
+                      <div className="cardImage__content ">
+                        <Image
+                          width={300}
+                          height={300}
+                          className="col-12 js-lazy"
+                          src={item?.files[0]?.url}
+                          // src={`https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`}
+                          alt={"image"}
+                        />
+                      </div>
+                    </div>
+                    {/* {item?.files[0].url?.map((slide, i) => (
                       <div className="cardImage ratio ratio-1:1" key={i}>
                         <div className="cardImage__content ">
                           <Image
@@ -99,7 +129,7 @@ const Activity2 = () => {
                           />
                         </div>
                       </div>
-                    ))}
+                    ))} */}
                   </Slider>
 
                   <div className="cardImage__wishlist">
@@ -161,7 +191,7 @@ const Activity2 = () => {
                     <div className="text-14 text-light-1">
                       From{" "}
                       <span className="text-16 fw-500 text-dark-1">
-                        US${item.price}
+                        UZS {item.price}
                       </span>
                     </div>
                   </div>

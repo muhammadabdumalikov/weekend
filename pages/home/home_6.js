@@ -194,7 +194,7 @@ const home_6 = () => {
       </section>
       {/* Trending Activity Sections */}
 
-      <AppBanner />
+      {/* <AppBanner /> */}
       {/* End DownloadAppBanner section */}
 
       <section className="layout-pt-md layout-pb-lg">

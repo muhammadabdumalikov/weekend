@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MainMenu from "../MainMenu";
 import MobileMenu from "../MobileMenu";
-import CurrenctyMegaMenu from "../CurrenctyMegaMenu";
+// import CurrenctyMegaMenu from "../CurrenctyMegaMenu";
 import LanguageMegaMenu from "../LanguageMegaMenu";
 
 const Header1 = () => {
@@ -22,7 +22,6 @@ const Header1 = () => {
 
   return (
     <>
-      {" "}
       <header className={`header ${navbar ? "bg-dark-1 is-sticky" : ""}`}>
         <div className="header__container container">
           <div className="row justify-between items-center">

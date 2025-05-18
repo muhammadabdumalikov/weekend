@@ -9,7 +9,8 @@ import "swiper/css/effect-cards";
 import "aos/dist/aos.css";
 import "../styles/index.scss";
 import { Provider } from "react-redux";
-import { store } from "../app/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "../app/store";
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
@@ -26,8 +27,10 @@ export default function App({ Component, pageProps }) {
   return (
     <main>
       <Provider store={store}>
-        <Component {...pageProps} />
-        <SrollTop />
+        <PersistGate loading={null} persistor={persistor}>
+          <Component {...pageProps} />
+          <SrollTop />
+        </PersistGate>
       </Provider>
     </main>
   );

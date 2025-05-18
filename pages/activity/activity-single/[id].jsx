@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ModalVideo from "react-modal-video";
 import "photoswipe/dist/photoswipe.css";
-import activityData from "../../../data/activity";
+// import activityData from "../../../data/activity";
 import Seo from "../../../components/common/Seo";
-import Header11 from "../../../components/header/header-11";
+import Header6 from "../../../components/header/header-6";
 import Overview from "../../../components/activity-single/Overview";
 import TourSnapShot from "../../../components/activity-single/TourSnapShot";
 import TopBreadCrumb from "../../../components/activity-single/TopBreadCrumb";
-import SidebarRight from "../../../components/activity-single/SidebarRight";
+// import SidebarRight from "../../../components/activity-single/SidebarRight";
 import ReviewProgress2 from "../../../components/activity-single/guest-reviews/ReviewProgress2";
 import DetailsReview2 from "../../../components/activity-single/guest-reviews/DetailsReview2";
 import ReplyForm from "../../../components/activity-single/ReplyForm";
@@ -17,26 +17,48 @@ import ReplyFormReview2 from "../../../components/activity-single/ReplyFormRevie
 import CallToActions from "../../../components/common/CallToActions";
 import DefaultFooter from "../../../components/footer/default";
 import Tours from "../../../components/tours/Tours";
-import Faq from "../../../components/faq/Faq";
+// import Faq from "../../../components/faq/Faq";
 import Link from "next/link";
 import ImportantInfo from "../../../components/activity-single/ImportantInfo";
 import SlideGallery from "../../../components/activity-single/SlideGallery";
-import MapPropertyFinder from "../../../components/activity-single/MapPropertyFinder";
+// import MapPropertyFinder from "../../../components/activity-single/MapPropertyFinder";
 import TravelItinerary from "../../../components/itinerary/itinerary1";
+import { useDispatch } from "react-redux";
+import { setImages } from "../../../app/gallerySlice";
 
 const TourSingleV1Dynamic = () => {
   const [isOpen, setOpen] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
   const [activity, setActivity] = useState({});
   const id = router.query.id;
 
   useEffect(() => {
-    if (!id) <h1>Loading...</h1>;
-    else setActivity(activityData.find((item) => item.id == id));
+    if (!id) {
+      <h1>Loading...</h1>;
+    } else {
+      const fetchData = async () => {
+        const response = await fetch(
+          "http://api.trippo.live/api/tour/get-by-id",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: id }),
+          }
+        );
+        const data = await response.json();
+        dispatch(setImages(data.files));
+        setActivity(data);
+      };
+      fetchData();
+    }
 
     return () => {};
-  }, [id]);
+  }, [id, dispatch]);
 
+  console.log("activity", activity);
   return (
     <>
       <ModalVideo
@@ -53,15 +75,15 @@ const TourSingleV1Dynamic = () => {
       <div className="header-margin"></div>
       {/* header top margin */}
 
-      <Header11 />
+      <Header6 />
       {/* End Header 1 */}
 
-      <TopBreadCrumb />
+      <TopBreadCrumb data={activity} />
       {/* End top breadcrumb */}
 
       <section className="pt-40">
         <div className="container">
-          <SlideGallery />
+          <SlideGallery data={activity?.files} />
         </div>
       </section>
       {/* End gallery grid wrapper */}
@@ -72,7 +94,7 @@ const TourSingleV1Dynamic = () => {
             <div className="col-xl-8">
               <div className="row y-gap-20 justify-between items-end">
                 <div className="col-auto">
-                  <h1 className="text-26 fw-600">{activity?.title}</h1>
+                  <h1 className="text-26 fw-600">{activity?.title?.en}</h1>
                   <div className="row x-gap-10 y-gap-20 items-center pt-10">
                     <div className="col-auto">
                       <div className="d-flex items-center">
@@ -134,17 +156,17 @@ const TourSingleV1Dynamic = () => {
               {/* End .row */}
 
               <h3 className="text-22 fw-500 mt-40">Tour snapshot</h3>
-              <TourSnapShot />
+              <TourSnapShot data={activity} />
               {/* End toursnapshot */}
               <div className="border-top-light mt-40 mb-40"></div>
 
-              <Overview />
+              <Overview data={activity} />
               {/* End  Overview */}
             </div>
             {/* End .col-xl-8 */}
 
             <div className="col-xl-4">
-              <SidebarRight activity={activity} />
+              {/* <SidebarRight activity={activity} /> */}
             </div>
             {/* End .col-xl-4 */}
           </div>
@@ -169,7 +191,7 @@ const TourSingleV1Dynamic = () => {
         </div>
         {/* End .container */}
       </section>
-      {/* End important info */ }
+      {/* End important info */}
 
       <section className="pt-40">
         <div className="container">
@@ -186,16 +208,15 @@ const TourSingleV1Dynamic = () => {
         </div>
         {/* End .container */}
       </section>
-      
 
-      <section className="border-top-light  mt-40 pt-40">
+      {/* <section className="border-top-light  mt-40 pt-40">
         <div className="container">
           <h3 className="text-22 fw-500 mb-20">Activity&apos;s Location</h3>
           <div className=" rounded-4 overflow-hidden map-500">
             <MapPropertyFinder />
           </div>
         </div>
-      </section>
+      </section> */}
       {/* End Itinerary */}
 
       <section className="mt-40 border-top-light pt-40">

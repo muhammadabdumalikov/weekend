@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { MdStar, MdFavoriteBorder } from "react-icons/md";
@@ -7,16 +7,19 @@ import { useQuery } from "@tanstack/react-query";
 async function fetchTours() {
   const API_URL = "/api/tour/list"; // Calls the Next.js proxy instead
 
-  const res = await fetch(API_URL, { method: 'post', body: JSON.stringify({}), headers: {'X-Lang': 'uz'}}); // Replace with your API endpoint
+  const res = await fetch(API_URL, {
+    method: "post",
+    body: JSON.stringify({}),
+    headers: { "X-Lang": "uz" },
+  }); // Replace with your API endpoint
   if (!res.ok) throw new Error("Failed to fetch");
   return res.json();
 }
 
-
 const Tour = () => {
   const router = useRouter();
 
-   const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["tours"],
     queryFn: fetchTours,
   });
@@ -39,9 +42,12 @@ const Tour = () => {
           {/* Image Section */}
           <div className="relative w-full h-56 flex-shrink-0 rounded-t-3xl overflow-hidden">
             <Image
-              src={item.files?.find((f) => f.type === "extra")?.url || "/placeholder.jpg"}
+              src={
+                item.files?.find((f) => f.type === "extra")?.url ||
+                "/placeholder.jpg"
+              }
               alt={item.title}
-              width={400}  // Set appropriate width
+              width={400} // Set appropriate width
               height={224} // Should match h-56 (14rem)
               className="object-cover h-full"
             />
@@ -73,7 +79,9 @@ const Tour = () => {
             <div className="items-center mt-1">
               <p className="text-sm text-gray-500">Cultural • Coffee</p>
 
-              <h3 className="text-lg font-semibold text-[#050544] break-words line-clamp-2">{item.title}</h3>
+              <h3 className="text-lg font-semibold text-[#050544] break-words line-clamp-2">
+                {item.title}
+              </h3>
             </div>
 
             {/* Price Section */}
@@ -84,7 +92,7 @@ const Tour = () => {
                 </span>
                 /person
               </span>
-              
+
               {/* Rating */}
               <div className="flex items-center bg-green-500 text-white text-sm px-2 py-1 rounded-md">
                 <span className="pr-1">{item.rating || 0}</span>

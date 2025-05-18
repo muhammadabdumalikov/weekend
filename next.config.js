@@ -7,7 +7,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "37.60.231.13",
+        hostname: "116.202.26.85",
         port: "9000", // Add port if required
         pathname: "/travelapp/**", // Adjust the path to match your files
       },
@@ -17,7 +17,7 @@ const nextConfig = {
     return [
       {
         source: "/api/tour/list",
-        destination: "http://37.60.231.13:3001/api/tour/list", // Proxies API requests
+        destination: "http://116.202.26.85:9000/api/tour/list", // Proxies API requests
       },
     ];
   },
