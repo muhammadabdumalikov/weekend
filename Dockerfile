@@ -24,11 +24,10 @@ COPY package.json package-lock.json ./
 # Install production dependencies only
 RUN npm install --only=production --legacy-peer-deps
 
-# Copy built application from build stage
+# Copy all necessary files from build stage
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
-COPY --from=build /app/next.config.js* ./
-COPY --from=build /app/next.config.mjs* ./
+COPY --from=build /app/*.config.* ./
 
 # Set environment variable for production
 ENV NODE_ENV=production
