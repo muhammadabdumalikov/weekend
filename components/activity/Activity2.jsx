@@ -114,6 +114,7 @@ const Activity2 = () => {
                           src={item?.files[0]?.url}
                           // src={`https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`}
                           alt={"image"}
+                          unoptimized
                         />
                       </div>
                     </div>
