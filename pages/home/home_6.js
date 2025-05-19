@@ -142,7 +142,7 @@ const home_6 = () => {
       </section>
       {/* End Popular Destinations */}
 
-      {/* <section className="section-bg layout-pt-lg layout-pb-lg bg-light-2">
+      <section className="section-bg layout-pt-lg layout-pb-lg bg-light-2">
         <div className="container">
           <div className="row justify-center text-center">
             <div className="col-auto">
@@ -153,21 +153,21 @@ const home_6 = () => {
                 </p>
               </div>
             </div>
-          </div> */}
+          </div>
       {/* End .row */}
 
-      {/* <div className="row justify-center pt-50 md:pt-30">
+      <div className="row justify-center pt-50 md:pt-30">
             <div className="col-xl-7 col-lg-10">
               <div className="overflow-hidden">
                 <Testimonials />
               </div>
-            </div> */}
+            </div>
       {/* End .col */}
-      {/* </div> */}
+      </div>
       {/* End .row */}
-      {/* </div> */}
+      </div>
       {/* End .container */}
-      {/* </section> */}
+      </section>
       {/* End Testimonials Section */}
 
       <section className="layout-pt-lg layout-pb-md">

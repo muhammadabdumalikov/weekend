@@ -52,27 +52,25 @@ const Overview = ({ data }) => {
             <div className="row x-gap-40 y-gap-40 pt-20">
               <div className="col-md-6">
                 {data?.includes?.map((item, index) => (
-                  <div key={index} className="text-dark-1 text-15">
-                    <i className="icon-check text-10 mr-10"></i> {item?.title}
-                  </div>
+                  item?.included && (
+                    <div key={index} className="text-dark-1 text-15">
+                      <i className="icon-check text-green-2 text-10 mr-10"></i>
+                      {item?.title}
+                    </div>
+                  )
                 ))}
               </div>
 
-              {/* <div className="col-md-6">
-                <div className="text-dark-1 text-15">
-                  <i className="icon-close text-green-2 text-10 mr-10"></i> Food
-                  and drinks
-                </div>
-                <div className="text-dark-1 text-15">
-                  <i className="icon-close text-green-2 text-10 mr-10"></i>{" "}
-                  Gratuities
-                </div>
-                <div className="text-dark-1 text-15">
-                  <i className="icon-close text-green-2 text-10 mr-10"></i>{" "}
-                  Digital guide available in 10 different languages at
-                  additional cost
-                </div>
-              </div> */}
+              <div className="col-md-6">
+                {data?.includes?.map((item, index) => (
+                  !item?.included && (
+                    <div key={index} className="text-dark-1 text-15">
+                      <i className="icon-close text-red-2 text-10 mr-10"></i>
+                      {item?.title}
+                    </div>
+                  )
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ import Header6 from "../../../components/header/header-6";
 import Overview from "../../../components/activity-single/Overview";
 import TourSnapShot from "../../../components/activity-single/TourSnapShot";
 import TopBreadCrumb from "../../../components/activity-single/TopBreadCrumb";
-// import SidebarRight from "../../../components/activity-single/SidebarRight";
+import SidebarRight from "../../../components/activity-single/SidebarRight";
 import ReviewProgress2 from "../../../components/activity-single/guest-reviews/ReviewProgress2";
 import DetailsReview2 from "../../../components/activity-single/guest-reviews/DetailsReview2";
 import ReplyForm from "../../../components/activity-single/ReplyForm";
@@ -166,7 +166,7 @@ const TourSingleV1Dynamic = () => {
             {/* End .col-xl-8 */}
 
             <div className="col-xl-4">
-              {/* <SidebarRight activity={activity} /> */}
+              <SidebarRight activity={activity} />
             </div>
             {/* End .col-xl-4 */}
           </div>
