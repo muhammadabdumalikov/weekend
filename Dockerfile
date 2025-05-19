@@ -21,6 +21,9 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json ./
 
+# Install production dependencies only
+RUN npm install --legacy-peer-deps
+
 # Copy all necessary files from build stage
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
