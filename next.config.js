@@ -7,8 +7,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "116.202.26.85",
-        port: "9000", // Add port if required
+        hostname: "minio-z4488o8g0g4s4wcssww8g8s0.116.202.26.85.sslip.io",
+        port: "443", // Add port if required
         pathname: "/travelapp/**", // Adjust the path to match your files
       },
     ],
