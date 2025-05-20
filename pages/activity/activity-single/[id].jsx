@@ -39,7 +39,7 @@ const TourSingleV1Dynamic = () => {
     } else {
       const fetchData = async () => {
         const response = await fetch(
-          "http://api.trippo.live/api/tour/get-by-id",
+          "https://api.trippo.live/api/tour/get-by-id",
           {
             method: "POST",
             headers: {

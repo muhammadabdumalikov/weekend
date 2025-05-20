@@ -11,7 +11,7 @@ const Activity = () => {
   const [activityData, setActivityData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://api.trippo.live/api/tour/list", {
+      const response = await fetch("https://api.trippo.live/api/tour/list", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
