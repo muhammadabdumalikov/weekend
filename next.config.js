@@ -6,7 +6,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
+        protocol: "https",
         hostname: "116.202.26.85",
         port: "9000", // Add port if required
         pathname: "/travelapp/**", // Adjust the path to match your files
@@ -17,7 +17,7 @@ const nextConfig = {
     return [
       {
         source: "/api/tour/list",
-        destination: "http://116.202.26.85:9000/api/tour/list", // Proxies API requests
+        destination: "https://api.trippo.live/api/tour/list", // Proxies API requests
       },
     ];
   },
