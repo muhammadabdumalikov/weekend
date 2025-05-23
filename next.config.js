@@ -17,7 +17,7 @@ const nextConfig = {
     return [
       {
         source: "/api/tour/list",
-        destination: "https://api.trippo.live/api/tour/list", // Proxies API requests
+        destination: "https://api.wetrippo.com/api/tour/list", // Proxies API requests
       },
     ];
   },
