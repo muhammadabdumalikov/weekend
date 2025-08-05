@@ -19,7 +19,6 @@ const Activity = () => {
         body: JSON.stringify({}),
       });
       const data = await response.json();
-      console.log("data", data.data);
       setActivityData(data.data);
     };
     fetchData();
@@ -84,8 +83,6 @@ const Activity = () => {
       </button>
     );
   }
-
-  console.log("activityData", activityData);
 
   return (
     <>

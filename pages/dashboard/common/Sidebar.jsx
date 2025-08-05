@@ -10,8 +10,14 @@ const Sidebar = () => {
     {
       id: 1,
       icon: "/img/dashboard/sidebar/compass.svg",
-      name: "Organizer",
-      routePath: "/vendor-dashboard/add-hotel",
+      name: "Create Tour",
+      routePath: "/vendor-dashboard/create-tour",
+    },
+    {
+      id: 2,
+      icon: "/img/dashboard/sidebar/compass.svg",
+      name: "My Tours List",
+      routePath: "/vendor-dashboard/my-tours",
     },
     // {
     //   id: 2,

@@ -11,6 +11,7 @@ import "../styles/index.scss";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "../app/store";
+import ReactQueryProvider from "../providers/ReactQueryProvider";
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
@@ -28,8 +29,10 @@ export default function App({ Component, pageProps }) {
     <main>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <Component {...pageProps} />
-          <SrollTop />
+          <ReactQueryProvider>
+            <Component {...pageProps} />
+            <SrollTop />
+          </ReactQueryProvider>
         </PersistGate>
       </Provider>
     </main>

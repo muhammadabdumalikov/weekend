@@ -2,8 +2,15 @@
 // @tailwind components;
 // @tailwind utilities;
 
+// External library imports
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 @import "../node_modules/react-modal-video/scss/modal-video.scss";
 @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+
+// Main application styles
 @import "public/sass/main.scss";
+
+// Component styles
+@import "components/index";
+@import "components/image-upload";

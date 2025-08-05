@@ -58,7 +58,6 @@ const TourSingleV1Dynamic = () => {
     return () => {};
   }, [id, dispatch]);
 
-  console.log("activity", activity);
   return (
     <>
       <ModalVideo

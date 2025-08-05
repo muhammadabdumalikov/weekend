@@ -94,13 +94,15 @@ export const pageItems = [
 ];
 export const dashboardItems = [
   {
-    name: "Organizer",
-    // routePath: "/dashboard/db-dashboard",
-    routePath: "/vendor-dashboard/organizer",
+    name: "Create Tour",
+    routePath: "/vendor-dashboard/create-tour",
+  },
+  {
+    name: "My Tours List",
+    routePath: "/vendor-dashboard/my-tours",
   },
   {
     name: "Tour",
-    // routePath: "/dashboard/db-dashboard",
     routePath: "/#",
   },
   // {

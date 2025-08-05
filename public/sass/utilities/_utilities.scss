@@ -1175,7 +1175,8 @@ $_displays: none, inline-block, block, flex;
   textarea:focus ~ label,
   textarea:valid ~ label,
   input:focus ~ label,
-  input:valid ~ label {
+  input:valid ~ label,
+  &.has-value label {
     transform: translateY(-10px);
   }
 }

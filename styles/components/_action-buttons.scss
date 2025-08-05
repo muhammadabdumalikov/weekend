@@ -1,0 +1,203 @@
+// Action Buttons Component Styles
+.action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  
+  // Add button styles
+  &.-add {
+    background: linear-gradient(135deg, #3554d1 0%, #4a6cf7 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(53, 84, 209, 0.3);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(53, 84, 209, 0.4);
+      background: linear-gradient(135deg, #4a6cf7 0%, #3554d1 100%);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(53, 84, 209, 0.3);
+    }
+    
+    &::before {
+      content: "+";
+      font-size: 18px;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+  }
+  
+  // Remove button styles
+  &.-remove {
+    background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 71, 87, 0.4);
+      background: linear-gradient(135deg, #ff3742 0%, #ff4757 100%);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(255, 71, 87, 0.3);
+    }
+    
+    &::before {
+      content: "×";
+      font-size: 18px;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+  }
+  
+  // Ghost remove button (for inline items)
+  &.-remove-ghost {
+    background: transparent;
+    color: #ff4757;
+    border: 1px solid #ff4757;
+    
+    &:hover {
+      background: #ff4757;
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+    }
+    
+    &::before {
+      content: "×";
+      font-size: 16px;
+      font-weight: bold;
+      margin-right: 4px;
+    }
+  }
+  
+  // Disabled state
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  // Loading state
+  &.-loading {
+    position: relative;
+    color: transparent;
+    
+    &::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+// Spinner animation
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Enhanced form section styles
+.form-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  border: 1px solid #e9ecef;
+  
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    
+    h4 {
+      margin: 0;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+  }
+  
+  .form-item {
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      border-color: #3554d1;
+      box-shadow: 0 2px 8px rgba(53, 84, 209, 0.1);
+    }
+    
+    .item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      
+      .item-number {
+        background: #3554d1;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+// Floating action button for add
+.floating-add-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3554d1 0%, #4a6cf7 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 8px 25px rgba(53, 84, 209, 0.4);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 35px rgba(53, 84, 209, 0.5);
+  }
+  
+  &::before {
+    content: "+";
+    font-size: 24px;
+    font-weight: bold;
+  }
+} 

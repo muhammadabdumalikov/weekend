@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import CallToActions from "../../../components/common/CallToActions";
 import Seo from "../../../components/common/Seo";
