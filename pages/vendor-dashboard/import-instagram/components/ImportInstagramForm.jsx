@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getProxiedImageUrl } from "../../../../providers/helpers";
 import ToggleSwitch from "../../../../components/common/ToggleSwitch";
@@ -12,9 +12,68 @@ const ImportInstagramForm = () => {
   const [isProcessingAI, setIsProcessingAI] = useState(false);
   const [instagramData, setInstagramData] = useState(null);
   const [extractedTourData, setExtractedTourData] = useState(null);
+  const [editableData, setEditableData] = useState(null);
+  const [isCreating, setIsCreating] = useState(false);
+
+  // Update editableData when extractedTourData changes
+  useEffect(() => {
+    if (extractedTourData) {
+      setEditableData(extractedTourData);
+    }
+  }, [extractedTourData]);
 
   const validateInstagramUrl = (value) => {
+    // Basic check for Instagram post URL
     return /^https?:\/\/(www\.)?instagram\.com\/p\/[A-Za-z0-9_\-]+/.test(value);
+  };
+
+  const handleInputChange = (field, value, language = null) => {
+    if (language) {
+      setExtractedTourData(prev => ({
+        ...prev,
+        [field]: {
+          ...prev[field],
+          [language]: (field === "price" || field === "sale_price") ? String(value) : value
+        }
+      }));
+    } else {
+        setExtractedTourData(prev => ({
+        ...prev,
+        [field]: (field === "price" || field === "sale_price") ? String(value) : value
+      }));
+    }
+  };
+
+  const handleCreateTour = async () => {
+    setIsCreating(true);
+    try {
+      const response = await fetch('https://api.wetrippo.com/api/admin/tour/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify(editableData),
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        setSuccess("Tour created successfully!");
+        // Clear the form after successful creation
+        setTimeout(() => {
+          setInstagramData(null);
+          setExtractedTourData(null);
+          setEditableData(null);
+          setUrl("");
+        }, 2000);
+      } else {
+        setError("Failed to create tour. Please try again.");
+      }
+    } catch (error) {
+      setError("An error occurred while creating the tour.");
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -136,7 +195,7 @@ const ImportInstagramForm = () => {
       </div>
     );
   };
-
+    
   // Extracted tour component - improved with template's custom components and toggle switches
   const renderExtractedTour = () => {
     if (!extractedTourData) return null;
@@ -151,30 +210,35 @@ const ImportInstagramForm = () => {
                 <i className="icon-tour text-18 text-white"></i>
               </div>
               <div>
-                <h4 className="text-18 fw-600 text-dark-1">Extracted Tour</h4>
-                <div className="text-14 text-light-1">AI Generated Content</div>
+                <h4 className="text-18 fw-600">Extracted Tour</h4>
+                <p className="text-14 text-light-1">Review and edit tour details</p>
               </div>
             </div>
-            <div className="text-12 text-light-1">
-              <i className="icon-ai mr-5"></i>
-              AI Generated
+            <div className="d-flex items-center">
+              <button 
+                className="button -md -dark-1 bg-blue-1 text-white"
+                onClick={handleCreateTour}
+                disabled={isCreating}
+              >
+                {isCreating ? "Creating..." : "Create Tour"}
+              </button>
             </div>
           </div>
         </div>
 
         {/* Content */}
         <div className="extractedTourCard__content p-20">
-          
           {/* Title Section */}
           <div className="mb-20">
-            <h5 className="text-16 fw-500 mb-15">Tour Title</h5>
-            <div className="row y-gap-15">
+            <h5 className="text-16 fw-500 mb-15">Title</h5>
+            <div className="row y-gap-10">
               <div className="col-12">
                 <div className="form-input">
                   <input 
                     type="text" 
-                    value={extractedTourData.title?.en || ''} 
-                    readOnly 
+                    value={extractedTourData.title?.en || ""}
+                    onChange={(e) => handleInputChange('title', e.target.value, 'en')}
+                    required
                   />
                   <label className="lh-1 text-14 text-light-1">English</label>
                 </div>
@@ -183,8 +247,9 @@ const ImportInstagramForm = () => {
                 <div className="form-input">
                   <input 
                     type="text" 
-                    value={extractedTourData.title?.ru || ''} 
-                    readOnly 
+                    value={extractedTourData.title?.ru || ""}
+                    onChange={(e) => handleInputChange('title', e.target.value, 'ru')}
+                    required
                   />
                   <label className="lh-1 text-14 text-light-1">Russian</label>
                 </div>
@@ -193,8 +258,9 @@ const ImportInstagramForm = () => {
                 <div className="form-input">
                   <input 
                     type="text" 
-                    value={extractedTourData.title?.uz || ''} 
-                    readOnly 
+                    value={extractedTourData.title?.uz || ""}
+                    onChange={(e) => handleInputChange('title', e.target.value, 'uz')}
+                    required
                   />
                   <label className="lh-1 text-14 text-light-1">Uzbek</label>
                 </div>
@@ -205,13 +271,14 @@ const ImportInstagramForm = () => {
           {/* Description Section */}
           <div className="mb-20">
             <h5 className="text-16 fw-500 mb-15">Description</h5>
-            <div className="row y-gap-15">
+            <div className="row y-gap-10">
               <div className="col-12">
                 <div className="form-input">
                   <textarea 
-                    rows={3}
-                    value={extractedTourData.description?.en || ''} 
-                    readOnly 
+                    value={extractedTourData.description?.en || ""}
+                    onChange={(e) => handleInputChange('description', e.target.value, 'en')}
+                    rows="4"
+                    required
                   />
                   <label className="lh-1 text-14 text-light-1">English</label>
                 </div>
@@ -219,9 +286,10 @@ const ImportInstagramForm = () => {
               <div className="col-12">
                 <div className="form-input">
                   <textarea 
-                    rows={3}
-                    value={extractedTourData.description?.ru || ''} 
-                    readOnly 
+                    value={extractedTourData.description?.ru || ""}
+                    onChange={(e) => handleInputChange('description', e.target.value, 'ru')}
+                    rows="4"
+                    required
                   />
                   <label className="lh-1 text-14 text-light-1">Russian</label>
                 </div>
@@ -229,9 +297,10 @@ const ImportInstagramForm = () => {
               <div className="col-12">
                 <div className="form-input">
                   <textarea 
-                    rows={3}
-                    value={extractedTourData.description?.uz || ''} 
-                    readOnly 
+                    value={extractedTourData.description?.uz || ""}
+                    onChange={(e) => handleInputChange('description', e.target.value, 'uz')}
+                    rows="4"
+                    required
                   />
                   <label className="lh-1 text-14 text-light-1">Uzbek</label>
                 </div>
@@ -240,116 +309,80 @@ const ImportInstagramForm = () => {
           </div>
 
           {/* Tour Details */}
-          <div className="mb-20">
-            <h5 className="text-16 fw-500 mb-15">Tour Details</h5>
-            <div className="row y-gap-15">
-              <div className="col-md-6">
-                <div className="form-input">
-                  <input 
-                    type="text" 
-                    value={extractedTourData.duration || ''} 
-                    readOnly 
-                  />
-                  <label className="lh-1 text-14 text-light-1">Duration</label>
-                </div>
+          <div className="row y-gap-20">
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input 
+                  type="number" 
+                  value={extractedTourData.price || ""}
+                  onChange={(e) => handleInputChange('price', String(e.target.value))}
+                  required
+                  min={1}
+                />
+                <label className="lh-1 text-14 text-light-1">Price ($)</label>
               </div>
-              <div className="col-md-6">
-                <div className="form-input">
-                  <input 
-                    type="text" 
-                    value={`$${extractedTourData.price || 0}`} 
-                    readOnly 
-                  />
-                  <label className="lh-1 text-14 text-light-1">Price</label>
-                </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input 
+                  type="number" 
+                  value={extractedTourData.sale_price || ""}
+                  onChange={(e) => handleInputChange('sale_price', e.target.value === 0 ? null : String(e.target.value))}
+                  min={0}
+                />
+                <label className="lh-1 text-14 text-light-1">Sale Price ($)</label>
               </div>
-              <div className="col-md-6">
-                <div className="form-input">
-                  <input 
-                    type="text" 
-                    value={`$${extractedTourData.sale_price || 0}`} 
-                    readOnly 
-                  />
-                  <label className="lh-1 text-14 text-light-1">Sale Price</label>
-                </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input 
+                  type="text" 
+                  value={extractedTourData.duration || ""}
+                  onChange={(e) => handleInputChange('duration', e.target.value)}
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Duration</label>
               </div>
-              <div className="col-md-6">
-                <div className="form-input">
-                  <input 
-                    type="text" 
-                    value={extractedTourData.seats || 'Unlimited'} 
-                    readOnly 
-                  />
-                  <label className="lh-1 text-14 text-light-1">Seats</label>
-                </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input 
+                  type="date" 
+                  value={extractedTourData.start_date || ""}
+                  onChange={(e) => handleInputChange('start_date', e.target.value)}
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Start Date</label>
               </div>
-              <div className="col-12">
-                <div className="form-input">
-                  <input 
-                    type="text" 
-                    value={extractedTourData.start_date || ''} 
-                    readOnly 
-                  />
-                  <label className="lh-1 text-14 text-light-1">Start Date</label>
-                </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input 
+                  type="number" 
+                  value={extractedTourData.seats || ""}
+                  onChange={(e) => handleInputChange('seats', parseInt(e.target.value))}
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Available Seats</label>
               </div>
             </div>
           </div>
 
-          {/* Images Section */}
+          {/* Files Section */}
           {extractedTourData.files && extractedTourData.files.length > 0 && (
-            <div className="mb-20">
-              <h5 className="text-16 fw-500 mb-15">
-                Images ({extractedTourData.files.length})
-              </h5>
-              <div className="d-flex x-gap-10 y-gap-10 flex-wrap">
+            <div className="mt-20">
+              <h5 className="text-16 fw-500 mb-15">Tour Images</h5>
+              <div className="row x-gap-10 y-gap-10">
                 {extractedTourData.files.map((file, i) => (
-                  <div key={i} className="position-relative">
-                    <div className="cardImage ratio ratio-1:1" style={{ width: 100, height: 100 }}>
-                      <div className="cardImage__content rounded-4 overflow-hidden">
-                        <img
-                          src={getProxiedImageUrl(file.url)}
+                  <div key={i} className="col-lg-4 col-md-6">
+                    <div className="cardImage ratio ratio-1:1">
+                      <div className="cardImage__content">
+                        <img 
+                          src={getProxiedImageUrl(file.url)} 
                           alt={`Tour image ${i + 1}`}
-                          className="w-100 h-100 object-fit-cover"
+                          className="rounded-4"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
-                      </div>
-                    </div>
-                    {file.type === 'main' && (
-                      <div className="position-absolute top-5 right-5">
-                        <div className="size-16 rounded-full bg-blue-1 d-flex items-center justify-center">
-                          <i className="icon-star text-8 text-white"></i>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Includes Section - Improved with ToggleSwitch */}
-          {extractedTourData.includes && extractedTourData.includes.length > 0 && (
-            <div className="mb-20">
-              <h5 className="text-16 fw-500 mb-15">What's Included</h5>
-              <div className="row y-gap-15">
-                {extractedTourData.includes.map((item, i) => (
-                  <div key={i} className="col-12">
-                    <div className="d-flex items-center justify-between p-15 rounded-4 border-light">
-                      <div className="d-flex items-center">
-                        <div className="size-40 rounded-full bg-light-2 d-flex items-center justify-center mr-15">
-                          <i className="icon-check text-16 text-green-1"></i>
-                        </div>
-                        <span className="text-14 fw-500 text-dark-1">{item.title}</span>
-                      </div>
-                      <div className="d-flex items-center">
-                        <ToggleSwitch
-                          checked={item.included}
-                          onChange={() => {}} // Read-only, no onChange needed
-                          id={`extracted-include-toggle-${i}`}
-                        />
-                        <span className="ml-10 text-12 text-light-1">
-                          {item.included ? "Included" : "Not included"}
-                        </span>
                       </div>
                     </div>
                   </div>
@@ -357,30 +390,6 @@ const ImportInstagramForm = () => {
               </div>
             </div>
           )}
-
-          {/* Action Buttons */}
-          <div className="d-flex x-gap-10 pt-20 border-top-light">
-            <button
-              className="button -md -outline-blue-1 text-blue-1"
-              onClick={() => {
-                localStorage.setItem('instagramTourData', JSON.stringify(extractedTourData));
-                router.push('/vendor-dashboard/create-tour');
-              }}
-            >
-              <i className="icon-edit mr-10"></i>
-              Use This Tour
-            </button>
-            <button
-              className="button -md -outline-green-1 text-green-1"
-              onClick={() => {
-                navigator.clipboard.writeText(JSON.stringify(extractedTourData, null, 2));
-                setSuccess("Tour data copied to clipboard!");
-              }}
-            >
-              <i className="icon-copy mr-10"></i>
-              Copy Data
-            </button>
-          </div>
         </div>
       </div>
     );
@@ -567,13 +576,6 @@ const ImportInstagramForm = () => {
                 >
                   <i className="icon-ai mr-10"></i>
                   {isProcessingAI ? "Extracting..." : "Extract Tour"}
-                </button>
-                <button
-                  className="button -md -outline-green-1 text-green-1"
-                  onClick={handleUseAsTemplate}
-                >
-                  <i className="icon-edit mr-10"></i>
-                  Use as Template
                 </button>
               </div>
             </div>
