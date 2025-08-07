@@ -59,7 +59,7 @@ const index = () => {
                       Import from Instagram
                     </button>
                     <button 
-                      className="button -md -outline-blue-1 text-blue-1"
+                      className="button -md -outline-gray-1 text-gray-1"
                       disabled
                     >
                       <i className="icon-telegram mr-10"></i>

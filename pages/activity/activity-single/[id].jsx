@@ -49,7 +49,7 @@ const TourSingleV1Dynamic = () => {
           }
         );
         const data = await response.json();
-        dispatch(setImages(data.files));
+        dispatch(setImages(data.files.sort((a, b) => a.type === "main" ? -1 : 1)));
         setActivity(data);
       };
       fetchData();
@@ -57,7 +57,7 @@ const TourSingleV1Dynamic = () => {
 
     return () => {};
   }, [id, dispatch]);
-
+  console.log(activity.files);
   return (
     <>
       <ModalVideo

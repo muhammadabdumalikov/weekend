@@ -164,7 +164,7 @@ const Index = () => {
               type="button" 
               className="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button"
             >
-              3. File Upload
+              3. Media Files
             </button>
           </Tab>
         </TabList>

@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
-import { Gallery, Item } from "react-photoswipe-gallery";
+// import { Gallery, Item } from "react-photoswipe-gallery";
 import { useSelector } from "react-redux";
 // import "../../styles/tailwind.scss";
 
@@ -42,7 +42,7 @@ const SlideGallery = () => {
             <SwiperSlide key={i}>
               <div
                 className="relative w-full"
-                style={{ paddingBottom: "70.31%" }}
+                style={{ paddingBottom: "100%" }}
               >
                 <img
                   src={img?.url}
@@ -54,7 +54,7 @@ const SlideGallery = () => {
           ))}
         </Swiper>
 
-        <Gallery>
+        {/* <Gallery>
           {sliderImg?.map((slide, i) => (
             <div
               className="absolute px-10 py-10 col-12  d-flex justify-end items-end z-2 bottom-0 end-0"
@@ -79,7 +79,7 @@ const SlideGallery = () => {
               </Item>
             </div>
           ))}
-        </Gallery>
+        </Gallery> */}
 
         <button className="section-slider-nav -prev flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full sm:d-none js-activity-prev-active">
           <i className="icon icon-chevron-left text-12" />

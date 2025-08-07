@@ -16,6 +16,7 @@ const ImportInstagramForm = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUploadingImages, setIsUploadingImages] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [selectedMainImage, setSelectedMainImage] = useState(0);
 
   // Update editableData when extractedTourData changes
   useEffect(() => {
@@ -97,14 +98,16 @@ const ImportInstagramForm = () => {
     setUploadProgress(0);
     
     try {
-      const uploadedUrls = [];
-      const totalImages = imageUrls.length;
-      const failedUploads = [];
-      
-      for (let i = 0; i < totalImages; i++) {
-        try {
-          const uploadedUrl = await uploadImage(imageUrls[i]);
-          uploadedUrls.push({...uploadedUrl, type: 'extra'});
+                const uploadedUrls = [];
+          const totalImages = imageUrls.length;
+          const failedUploads = [];
+          
+          for (let i = 0; i < totalImages; i++) {
+            try {
+              const uploadedUrl = await uploadImage(imageUrls[i]);
+              // Set the first image as main, or the selected main image
+              const imageType = i === selectedMainImage ? 'main' : 'extra';
+              uploadedUrls.push({...uploadedUrl, type: imageType});
           
           // Update progress
           const progress = ((i + 1) / totalImages) * 100;
@@ -357,7 +360,7 @@ const ImportInstagramForm = () => {
     return (
       <div className="extractedTourCard d-block w-100 rounded-4 bg-white shadow-3">
         {/* Header */}
-        <div className="extractedTourCard__header p-20 border-bottom-light">
+        <div className="extractedTourCard__header p-20 mb-20">
           <div className="d-flex items-center justify-between">
             <div className="d-flex items-center">
               <div className="size-40 rounded-full bg-blue-1 d-flex items-center justify-center mr-15">
@@ -525,7 +528,7 @@ const ImportInstagramForm = () => {
           {/* Files Section */}
           {extractedTourData.files && extractedTourData.files.length > 0 && (
             <div className="mt-20">
-              <h5 className="text-16 fw-500 mb-15">Tour Images</h5>
+
               
               {/* Upload Progress */}
               {isUploadingImages && (
@@ -550,7 +553,7 @@ const ImportInstagramForm = () => {
               <div className="row x-gap-10 y-gap-10">
                 {extractedTourData.files.map((file, i) => (
                   <div key={i} className="col-lg-4 col-md-6">
-                    <div className="cardImage ratio ratio-1:1">
+                    <div className="cardImage ratio ratio-1:1 relative">
                       <div className="cardImage__content">
                         <img 
                           src={getProxiedImageUrl(file.url)} 
@@ -558,6 +561,20 @@ const ImportInstagramForm = () => {
                           className="rounded-4"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
+                      </div>
+                      
+                      {/* Set Main Button */}
+                      <div className="absolute ml-10 mt-10">
+                        <button
+                          onClick={() => setSelectedMainImage(i)}
+                          className={`button -sm p-10 rounded-4 ${
+                            selectedMainImage === i 
+                              ? 'bg-blue-1 text-white' 
+                              : 'bg-white text-dark-1 hover:bg-light-2 border-light-1'
+                          }`}
+                        >
+                          {selectedMainImage === i ? 'Main' : 'Set Main'}
+                        </button>
                       </div>
                     </div>
                   </div>
