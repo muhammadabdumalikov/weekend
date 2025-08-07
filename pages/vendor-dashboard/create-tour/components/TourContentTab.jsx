@@ -26,7 +26,7 @@ const TourContentTab = ({ formData, setFormData }) => {
         <h4 className="text-18 fw-500 mb-20">Tour Title</h4>
         <div className="row y-gap-20">
           <div className="col-md-4">
-            <div className={`form-input ${formData.title.en ? 'has-value' : ''}`}>
+            <div className={`form-input bg-white ${formData.title.en ? 'has-value' : ''}`}>
               <input
                 type="text"
                 value={formData.title.en}
@@ -37,7 +37,7 @@ const TourContentTab = ({ formData, setFormData }) => {
             </div>
           </div>
           <div className="col-md-4">
-            <div className={`form-input ${formData.title.uz ? 'has-value' : ''}`}>
+            <div className={`form-input bg-white ${formData.title.uz ? 'has-value' : ''}`}>
               <input
                 type="text"
                 value={formData.title.uz}
@@ -48,7 +48,7 @@ const TourContentTab = ({ formData, setFormData }) => {
             </div>
           </div>
           <div className="col-md-4">
-            <div className={`form-input ${formData.title.ru ? 'has-value' : ''}`}>
+            <div className={`form-input bg-white ${formData.title.ru ? 'has-value' : ''}`}>
               <input
                 type="text"
                 value={formData.title.ru}
@@ -66,7 +66,7 @@ const TourContentTab = ({ formData, setFormData }) => {
         <h4 className="text-18 fw-500 mb-20">Tour Description</h4>
         <div className="row y-gap-20">
           <div className="col-md-4">
-            <div className={`form-input ${formData.description.en ? 'has-value' : ''}`}>
+            <div className={`form-input bg-white ${formData.description.en ? 'has-value' : ''}`}>
               <textarea
                 value={formData.description.en}
                 onChange={(e) => handleInputChange("description", e.target.value, "en")}
@@ -77,7 +77,7 @@ const TourContentTab = ({ formData, setFormData }) => {
             </div>
           </div>
           <div className="col-md-4">
-            <div className={`form-input ${formData.description.uz ? 'has-value' : ''}`}>
+            <div className={`form-input bg-white ${formData.description.uz ? 'has-value' : ''}`}>
               <textarea
                 value={formData.description.uz}
                 onChange={(e) => handleInputChange("description", e.target.value, "uz")}
@@ -88,7 +88,7 @@ const TourContentTab = ({ formData, setFormData }) => {
             </div>
           </div>
           <div className="col-md-4">
-            <div className={`form-input ${formData.description.ru ? 'has-value' : ''}`}>
+            <div className={`form-input bg-white ${formData.description.ru ? 'has-value' : ''}`}>
               <textarea
                 value={formData.description.ru}
                 onChange={(e) => handleInputChange("description", e.target.value, "ru")}
@@ -139,7 +139,7 @@ const TourContentTab = ({ formData, setFormData }) => {
               
               <div className="row y-gap-20">
                 <div className="col-md-6">
-                  <div className="form-input">
+                  <div className="form-input bg-white">
                     <input
                       type="text"
                       value={route.title}
@@ -154,7 +154,7 @@ const TourContentTab = ({ formData, setFormData }) => {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <div className="form-input">
+                  <div className="form-input bg-white">
                     <input
                       type="text"
                       value={route.description}
@@ -212,7 +212,7 @@ const TourContentTab = ({ formData, setFormData }) => {
               
               <div className="row y-gap-20">
                 <div className="col-md-6">
-                  <div className="form-input">
+                  <div className="form-input bg-white">
                     <input
                       type="text"
                       value={include.title}

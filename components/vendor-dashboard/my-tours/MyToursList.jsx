@@ -9,6 +9,12 @@ const MyToursList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [location, setLocation] = useState("");
+  const [fromPrice, setFromPrice] = useState("");
+  const [toPrice, setToPrice] = useState("");
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   // Debounce search term
   useEffect(() => {
@@ -21,17 +27,32 @@ const MyToursList = () => {
 
   // Fetch tours data
   const fetchTours = async () => {
+    const requestBody = {
+      limit: 10, // You can adjust this
+      offset: (currentPage - 1) * 10,
+      search: debouncedSearchTerm,
+      status: statusFilter === "all" ? [] : [statusFilter],
+      from_date: fromDate || null,
+      to_date: toDate || null,
+      location: location ? parseInt(location) : null,
+      from_price: fromPrice ? parseFloat(fromPrice) : null,
+      to_price: toPrice ? parseFloat(toPrice) : null
+    };
+
+    // Remove null values
+    Object.keys(requestBody).forEach(key => {
+      if (requestBody[key] === null || requestBody[key] === "") {
+        delete requestBody[key];
+      }
+    });
+
     const response = await fetch("https://api.wetrippo.com/api/admin/tour/list", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${localStorage.getItem("authToken")}`
       },
-      body: JSON.stringify({
-        page: currentPage,
-        search: debouncedSearchTerm,
-        status: statusFilter
-      })
+      body: JSON.stringify(requestBody)
     });
 
     if (!response.ok) {
@@ -42,7 +63,7 @@ const MyToursList = () => {
   };
 
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["myTours", currentPage, debouncedSearchTerm, statusFilter],
+    queryKey: ["myTours", currentPage, debouncedSearchTerm, statusFilter, fromDate, toDate, location, fromPrice, toPrice],
     queryFn: fetchTours,
     refetchOnWindowFocus: false,
   });
@@ -62,12 +83,21 @@ const MyToursList = () => {
     setSearchTerm(e.target.value);
   }, []);
 
-  const filteredTours = data?.data?.filter(tour => {
-    const matchesSearch = tour.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-                         tour.description?.en?.toLowerCase().includes(debouncedSearchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || tour.status.toString() === statusFilter;
-    return matchesSearch && matchesStatus;
-  }) || [];
+  const handleClearFilters = useCallback(() => {
+    setSearchTerm("");
+    setDebouncedSearchTerm("");
+    setStatusFilter("all");
+    setFromDate("");
+    setToDate("");
+    setLocation("");
+    setFromPrice("");
+    setToPrice("");
+    setCurrentPage(1);
+  }, []);
+
+  const hasActiveFilters = searchTerm || statusFilter !== "all" || fromDate || toDate || location || fromPrice || toPrice;
+
+  const filteredTours = data?.data || [];
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -171,19 +201,132 @@ const MyToursList = () => {
             >
               Inactive
             </button>
+            <button
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              className={`button -md -outline-blue-1 ml-10 ${showAdvancedFilters ? 'bg-blue-1 text-white' : ''}`}
+            >
+              Filters
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Advanced Filters */}
+      {showAdvancedFilters && (
+        <div className="row y-gap-20 mb-30 p-20 bg-light-2 rounded-8">
+          <div className="col-lg-3 col-md-6">
+            <label className="text-14 fw-500 text-dark-1 mb-10">From Date</label>
+            <input
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+              className="form-control border-light-1 rounded-4"
+              style={{
+                border: "1px solid #e8e8e8",
+                borderRadius: "8px",
+                padding: "12px 16px",
+                fontSize: "15px"
+              }}
+            />
+          </div>
+          <div className="col-lg-3 col-md-6">
+            <label className="text-14 fw-500 text-dark-1 mb-10">To Date</label>
+            <input
+              type="date"
+              value={toDate}
+              onChange={(e) => setToDate(e.target.value)}
+              className="form-control border-light-1 rounded-4"
+              style={{
+                border: "1px solid #e8e8e8",
+                borderRadius: "8px",
+                padding: "12px 16px",
+                fontSize: "15px"
+              }}
+            />
+          </div>
+          <div className="col-lg-3 col-md-6">
+            <label className="text-14 fw-500 text-dark-1 mb-10">Location ID</label>
+            <input
+              type="number"
+              placeholder="Location ID"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="form-control border-light-1 rounded-4"
+              style={{
+                border: "1px solid #e8e8e8",
+                borderRadius: "8px",
+                padding: "12px 16px",
+                fontSize: "15px"
+              }}
+            />
+          </div>
+          <div className="col-lg-3 col-md-6">
+            <label className="text-14 fw-500 text-dark-1 mb-10">Price Range</label>
+            <div className="d-flex x-gap-10">
+              <input
+                type="number"
+                placeholder="From"
+                value={fromPrice}
+                onChange={(e) => setFromPrice(e.target.value)}
+                className="form-control border-light-1 rounded-4"
+                style={{
+                  border: "1px solid #e8e8e8",
+                  borderRadius: "8px",
+                  padding: "12px 16px",
+                  fontSize: "15px",
+                  flex: 1
+                }}
+              />
+              <input
+                type="number"
+                placeholder="To"
+                value={toPrice}
+                onChange={(e) => setToPrice(e.target.value)}
+                className="form-control border-light-1 rounded-4"
+                style={{
+                  border: "1px solid #e8e8e8",
+                  borderRadius: "8px",
+                  padding: "12px 16px",
+                  fontSize: "15px",
+                  flex: 1
+                }}
+              />
+            </div>
+          </div>
+          <div className="col-12">
+            <div className="d-flex x-gap-10">
+              <button
+                onClick={() => {
+                  setCurrentPage(1);
+                  refetch();
+                }}
+                className="button -md -dark-1 bg-blue-1 text-white"
+              >
+                Apply Filters
+              </button>
+              {hasActiveFilters && (
+                <button
+                  onClick={handleClearFilters}
+                  className="ml-5 button -md -outline-blue-1"
+                >
+                  Clear All
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Results Summary */}
       {filteredTours.length > 0 && (
         <div className="d-flex justify-between items-center mb-20">
           <div className="text-14 text-light-1">
-            Showing {filteredTours.length} of {data?.data?.length || 0} tours
+            Showing {filteredTours.length} tours
           </div>
-          {debouncedSearchTerm && (
+          {hasActiveFilters && (
             <div className="text-14 text-light-1">
-              Search results for: "<span className="fw-500">{debouncedSearchTerm}</span>"
+              <i className="icon-filter text-12 mr-5"></i>
+              Filters applied
             </div>
           )}
         </div>
@@ -194,17 +337,13 @@ const MyToursList = () => {
         <div className="text-center py-40">
           <div className="text-20 text-light-1 fw-500 mb-10">No tours found</div>
           <div className="text-14 text-light-1">
-            {debouncedSearchTerm || statusFilter !== "all" 
+            {hasActiveFilters 
               ? "Try adjusting your search or filter criteria" 
               : "You haven't created any tours yet"}
           </div>
-          {(debouncedSearchTerm || statusFilter !== "all") && (
+          {hasActiveFilters && (
             <button 
-              onClick={() => {
-                setSearchTerm("");
-                setDebouncedSearchTerm("");
-                setStatusFilter("all");
-              }}
+              onClick={handleClearFilters}
               className="button -md -outline-blue-1 mt-15"
             >
               Clear Filters
@@ -222,8 +361,12 @@ const MyToursList = () => {
       )}
 
       {/* Pagination */}
-      {filteredTours.length > 0 && (
-        <Pagination />
+      {filteredTours.length > 0 && data?.total && (
+        <Pagination 
+          currentPage={currentPage}
+          totalPages={Math.ceil(data.total / 10)}
+          onPageChange={setCurrentPage}
+        />
       )}
     </div>
   );

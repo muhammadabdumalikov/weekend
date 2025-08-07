@@ -1,4 +1,5 @@
 import React from "react";
+import ToggleSwitch from "../../../../components/common/ToggleSwitch";
 
 const TourDetailsTab = ({ formData, setFormData }) => {
   const handleInputChange = (field, value) => {
@@ -15,7 +16,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
         <h4 className="text-18 fw-500 mb-20">Tour Details</h4>
         <div className="row y-gap-20">
           <div className="col-md-3">
-            <div className="form-input">
+            <div className="form-input bg-white">
               <input
                 type="number"
                 value={formData.price}
@@ -26,7 +27,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
             </div>
           </div>
           <div className="col-md-3">
-            <div className="form-input">
+            <div className="form-input bg-white">
               <input
                 type="number"
                 value={formData.sale_price}
@@ -36,7 +37,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
             </div>
           </div>
           <div className="col-md-3">
-            <div className="form-input">
+            <div className="form-input bg-white">
               <input
                 type="text"
                 value={formData.duration}
@@ -47,7 +48,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
             </div>
           </div>
           <div className="col-md-3">
-            <div className="form-input">
+            <div className="form-input bg-white">
               <input
                 type="number"
                 value={formData.seats}
@@ -64,7 +65,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
       <div className="col-12">
         <div className="row y-gap-20">
           <div className="col-md-6">
-            <div className="form-input">
+            <div className="form-input bg-white">
               <input
                 type="date"
                 value={formData.start_date}
@@ -75,16 +76,16 @@ const TourDetailsTab = ({ formData, setFormData }) => {
             </div>
           </div>
           <div className="col-md-6">
-            <div className="form-input">
-              <select
-                value={formData.status}
-                onChange={(e) => handleInputChange("status", parseInt(e.target.value))}
-                required
-              >
-                <option value={1}>Active</option>
-                <option value={0}>Inactive</option>
-              </select>
-              <label className="lh-1 text-14 text-light-1">Status</label>
+            <label className="lh-1 text-14 text-light-1">Status</label>
+            <div className="d-flex items-center">
+              <ToggleSwitch
+                checked={formData.status}
+                onChange={() => handleInputChange("status", !formData.status)}
+                id="status-toggle"
+              />
+              <span className="ml-10 text-14 text-light-1">
+                {formData.status ? "Active" : "Inactive"}
+              </span>
             </div>
           </div>
         </div>
@@ -94,7 +95,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
       <div className="col-12">
         <div className="row y-gap-20">
           <div className="col-md-6">
-            <div className="form-input">
+            <div className="form-input bg-white">
               <input
                 type="number"
                 value={formData.location}

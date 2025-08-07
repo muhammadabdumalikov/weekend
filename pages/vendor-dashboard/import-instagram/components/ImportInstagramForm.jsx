@@ -331,10 +331,31 @@ const ImportInstagramForm = () => {
 
   // Extracted tour component - improved with template's custom components and toggle switches
   const renderExtractedTour = () => {
-    if (!extractedTourData) return null;
+    if (!extractedTourData) {
+      return (
+        <div className="extractedTourCard d-block w-100 rounded-4 bg-white shadow-3">
+          <div className="extractedTourCard__content p-40">
+            <div className="text-center">
+              <div className="size-80 rounded-full bg-light-2 d-flex items-center justify-center mx-auto mb-20">
+                <i className="icon-location-2 text-light-1" style={{ fontSize: '24px' }}></i>
+              </div>
+              <h4 className="text-18 fw-500 text-dark-1 mb-10">No Tour Data</h4>
+              <p className="text-14 text-light-1 mb-20">
+                Extract tour information from an Instagram post to see the details here
+              </p>
+              <div className="d-flex items-center justify-center">
+                <div className="size-6 rounded-full bg-light-1 mr-10"></div>
+                <div className="size-6 rounded-full bg-light-1 mr-10"></div>
+                <div className="size-6 rounded-full bg-light-1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
     
     return (
-      <div className="extractedTourCard d-block rounded-4 bg-white shadow-3">
+      <div className="extractedTourCard d-block w-100 rounded-4 bg-white shadow-3">
         {/* Header */}
         <div className="extractedTourCard__header p-20 border-bottom-light">
           <div className="d-flex items-center justify-between">
@@ -587,33 +608,9 @@ const ImportInstagramForm = () => {
     }
   };
 
-  // Use as template (uses all images)
-  const handleUseAsTemplate = () => {
-    if (!instagramData) return;
-    const captionText =
-      instagramData.edge_media_to_caption.edges.length > 0
-        ? instagramData.edge_media_to_caption.edges[0].node.text
-        : "";
-    const title =
-      captionText.split("\n")[0] || `Tour from ${instagramData.owner.username}`;
-    const images = getMediaUrls();
-    const tourData = {
-      title: title,
-      description: captionText,
-      images: images,
-      location: "Location from Instagram",
-      duration: "1 day",
-      price: "0",
-      max_people: "10",
-      category: "Instagram Import",
-    };
-    localStorage.setItem("instagramTourData", JSON.stringify(tourData));
-    router.push("/vendor-dashboard/create-tour");
-  };
-
   return (
-    <div className="row y-gap-20" style={{ maxWidth: 1100 }}>
-      <div className="col-12 col-lg-6">
+    <div className="row y-gap-20">
+      <div className="col-12 col-lg-4">
         <form onSubmit={handleSubmit}>
           <label className="text-16 fw-500 mb-10">Instagram Post URL</label>
           <div className="input-group mb-20">
@@ -749,7 +746,7 @@ const ImportInstagramForm = () => {
           </div>
         )}
       </div>
-      <div className="col-12 col-lg-6">{renderExtractedTour()}</div>
+      <div className="col-12 col-lg-8">{renderExtractedTour()}</div>
     </div>
   );
 };

@@ -73,7 +73,7 @@ const TourFileUploadTab = ({ files, setFiles }) => {
     <div className="col-12">
       <h4 className="text-18 fw-500 mb-20">Tour Images</h4>
       
-      <div className="row x-gap-20 y-gap-20 pt-15">
+      <div className="row x-gap-20 y-gap-20 pt-15 bg-white">
         {/* Show uploaded images first */}
         {files.map((file, index) => (
           <div className="col-auto image-preview-container" key={index}>
