@@ -23,7 +23,6 @@ const ImportInstagramForm = () => {
   }, [extractedTourData]);
 
   const validateInstagramUrl = (value) => {
-    // Basic check for Instagram post URL
     return /^https?:\/\/(www\.)?instagram\.com\/p\/[A-Za-z0-9_\-]+/.test(value);
   };
 
@@ -195,7 +194,7 @@ const ImportInstagramForm = () => {
       </div>
     );
   };
-    
+
   // Extracted tour component - improved with template's custom components and toggle switches
   const renderExtractedTour = () => {
     if (!extractedTourData) return null;
@@ -208,7 +207,7 @@ const ImportInstagramForm = () => {
             <div className="d-flex items-center">
               <div className="size-40 rounded-full bg-blue-1 d-flex items-center justify-center mr-15">
                 <i className="icon-tour text-18 text-white"></i>
-              </div>
+        </div>
               <div>
                 <h4 className="text-18 fw-600">Extracted Tour</h4>
                 <p className="text-14 text-light-1">Review and edit tour details</p>
@@ -379,17 +378,17 @@ const ImportInstagramForm = () => {
                       <div className="cardImage__content">
                         <img 
                           src={getProxiedImageUrl(file.url)} 
-                          alt={`Tour image ${i + 1}`}
+                alt={`Tour image ${i + 1}`}
                           className="rounded-4"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
+              />
                       </div>
                     </div>
                   </div>
-                ))}
+            ))}
               </div>
-            </div>
-          )}
+          </div>
+        )}
         </div>
       </div>
     );
