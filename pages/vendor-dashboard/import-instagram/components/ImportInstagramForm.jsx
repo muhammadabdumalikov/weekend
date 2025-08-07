@@ -14,6 +14,8 @@ const ImportInstagramForm = () => {
   const [extractedTourData, setExtractedTourData] = useState(null);
   const [editableData, setEditableData] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [isUploadingImages, setIsUploadingImages] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Update editableData when extractedTourData changes
   useEffect(() => {
@@ -43,32 +45,164 @@ const ImportInstagramForm = () => {
     }
   };
 
-  const handleCreateTour = async () => {
-    setIsCreating(true);
+  // Function to upload a single image with retry
+  const uploadImage = async (imageUrl, retryCount = 0) => {
+    const maxRetries = 2;
+    
     try {
-      const response = await fetch('https://api.wetrippo.com/api/admin/tour/create', {
+      // Use the proxied URL to avoid CORS issues
+      const proxiedUrl = getProxiedImageUrl(imageUrl);
+      
+      // Fetch the image from proxied URL
+      const response = await fetch(proxiedUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image: ${response.status}`);
+      }
+      
+      const blob = await response.blob();
+      
+      // Create FormData for upload
+      const formData = new FormData();
+      formData.append('file', blob, 'instagram-image.jpg');
+      
+      // Upload to server
+      const uploadResponse = await fetch('https://api.wetrippo.com/api/file-router/simple-upload', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        },
-        body: JSON.stringify(editableData),
+        body: formData,
       });
       
-      if (response.ok) {
-        const result = await response.json();
-        setSuccess("Tour created successfully!");
-        // Clear the form after successful creation
-        setTimeout(() => {
-          setInstagramData(null);
-          setExtractedTourData(null);
-          setEditableData(null);
-          setUrl("");
-        }, 2000);
+      if (!uploadResponse.ok) {
+        throw new Error(`Upload failed: ${uploadResponse.status}`);
+      }
+      
+      const uploadResult = await uploadResponse.json();
+      return uploadResult
+    } catch (error) {
+      console.error(`Error uploading image (attempt ${retryCount + 1}):`, error);
+      
+      // Retry logic
+      if (retryCount < maxRetries) {
+        console.log(`Retrying upload (attempt ${retryCount + 2}/${maxRetries + 1})...`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1))); // Exponential backoff
+        return uploadImage(imageUrl, retryCount + 1);
+      }
+      
+      throw error;
+    }
+  };
+
+  // Function to upload all images
+  const uploadAllImages = async (imageUrls) => {
+    setIsUploadingImages(true);
+    setUploadProgress(0);
+    
+    try {
+      const uploadedUrls = [];
+      const totalImages = imageUrls.length;
+      const failedUploads = [];
+      
+      for (let i = 0; i < totalImages; i++) {
+        try {
+          const uploadedUrl = await uploadImage(imageUrls[i]);
+          uploadedUrls.push({...uploadedUrl, type: 'extra'});
+          
+          // Update progress
+          const progress = ((i + 1) / totalImages) * 100;
+          setUploadProgress(progress);
+        } catch (error) {
+          console.error(`Failed to upload image ${i + 1}:`, error);
+          failedUploads.push(i + 1);
+          // Continue with other images even if one fails
+        }
+      }
+      
+      // Show warning if some uploads failed
+      if (failedUploads.length > 0) {
+        setError(`Warning: Failed to upload ${failedUploads.length} images. Tour will be created with available images.`);
+      }
+      
+      return uploadedUrls;
+    } finally {
+      setIsUploadingImages(false);
+      setUploadProgress(0);
+    }
+  };
+
+  const handleCreateTour = async () => {
+    setIsCreating(true);
+    setError("");
+    setSuccess("");
+    
+    try {
+      // Get image URLs from extracted tour data
+      const imageUrls = extractedTourData.files?.map(file => file.url) || [];
+      
+      if (imageUrls.length > 0) {
+        setSuccess("Uploading images to server...");
+        
+        // Upload all images
+        const uploadedUrls = await uploadAllImages(imageUrls);
+        
+        // Update the tour data with uploaded URLs
+        const updatedTourData = {
+          ...editableData,
+          price: editableData.price > 0 ? String(editableData.price) : null,
+          sale_price: editableData.sale_price > 0 ? String(editableData.sale_price) : null,
+          files: uploadedUrls
+        };
+        
+        setSuccess("Images uploaded successfully! Creating tour...");
+        
+        // Create tour with uploaded image URLs
+        const response = await fetch('https://api.wetrippo.com/api/admin/tour/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify(updatedTourData),
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          setSuccess("Tour created successfully!");
+          // Clear the form after successful creation
+          setTimeout(() => {
+            setInstagramData(null);
+            setExtractedTourData(null);
+            setEditableData(null);
+            setUrl("");
+          }, 2000);
+        } else {
+          setError("Failed to create tour. Please try again.");
+        }
       } else {
-        setError("Failed to create tour. Please try again.");
+        // No images to upload, create tour directly
+        const response = await fetch('https://api.wetrippo.com/api/admin/tour/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify(editableData),
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          setSuccess("Tour created successfully!");
+          // Clear the form after successful creation
+          setTimeout(() => {
+            setInstagramData(null);
+            setExtractedTourData(null);
+            setEditableData(null);
+            setUrl("");
+          }, 2000);
+        } else {
+          setError("Failed to create tour. Please try again.");
+        }
       }
     } catch (error) {
+      console.error("Error creating tour:", error);
       setError("An error occurred while creating the tour.");
     } finally {
       setIsCreating(false);
@@ -217,9 +351,9 @@ const ImportInstagramForm = () => {
               <button 
                 className="button -md -dark-1 bg-blue-1 text-white"
                 onClick={handleCreateTour}
-                disabled={isCreating}
+                disabled={isCreating || isUploadingImages}
               >
-                {isCreating ? "Creating..." : "Create Tour"}
+                {isUploadingImages ? "Uploading Images..." : isCreating ? "Creating..." : "Create Tour"}
               </button>
             </div>
           </div>
@@ -371,6 +505,27 @@ const ImportInstagramForm = () => {
           {extractedTourData.files && extractedTourData.files.length > 0 && (
             <div className="mt-20">
               <h5 className="text-16 fw-500 mb-15">Tour Images</h5>
+              
+              {/* Upload Progress */}
+              {isUploadingImages && (
+                <div className="mb-15">
+                  <div className="d-flex items-center justify-between mb-10">
+                    <span className="text-14 text-dark-1">Uploading images to server...</span>
+                    <span className="text-14 text-blue-1 fw-500">{Math.round(uploadProgress)}%</span>
+                  </div>
+                  <div className="progress-bar bg-light-2 rounded-4" style={{ height: '8px' }}>
+                    <div 
+                      className="progress-bar-fill bg-blue-1 rounded-4" 
+                      style={{ 
+                        width: `${uploadProgress}%`, 
+                        height: '100%',
+                        transition: 'width 0.3s ease'
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              )}
+              
               <div className="row x-gap-10 y-gap-10">
                 {extractedTourData.files.map((file, i) => (
                   <div key={i} className="col-lg-4 col-md-6">
@@ -378,17 +533,17 @@ const ImportInstagramForm = () => {
                       <div className="cardImage__content">
                         <img 
                           src={getProxiedImageUrl(file.url)} 
-                alt={`Tour image ${i + 1}`}
+                          alt={`Tour image ${i + 1}`}
                           className="rounded-4"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
+                        />
                       </div>
                     </div>
                   </div>
-            ))}
+                ))}
               </div>
-          </div>
-        )}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -509,6 +664,19 @@ const ImportInstagramForm = () => {
                 <i className="icon-check text-18 text-white"></i>
               </div>
               <div className="text-14 text-dark-1">{success}</div>
+            </div>
+          </div>
+        )}
+
+        {isUploadingImages && (
+          <div className="col-12">
+            <div className="d-flex items-center p-15 rounded-8 bg-blue-1-light">
+              <div className="size-40 rounded-full bg-blue-1 d-flex items-center justify-center mr-15">
+                <i className="icon-upload text-18 text-white"></i>
+              </div>
+              <div className="text-14 text-dark-1">
+                Uploading {Math.round(uploadProgress)}% complete...
+              </div>
             </div>
           </div>
         )}
