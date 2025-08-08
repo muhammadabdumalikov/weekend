@@ -194,7 +194,11 @@ const Activity = () => {
                     <div className="text-14 text-light-1">
                       From{" "}
                       <span className="text-16 fw-500 text-dark-1">
-                        UZS {item.price}
+                        {item.price
+                        ? item.price.slice(0, -3)
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                        : ""} {item.currency} 
                       </span>
                     </div>
                   </div>

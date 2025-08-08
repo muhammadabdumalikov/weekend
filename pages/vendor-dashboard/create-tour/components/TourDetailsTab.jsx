@@ -1,6 +1,12 @@
 import React from "react";
 import ToggleSwitch from "../../../../components/common/ToggleSwitch";
 
+const CurrencyType = {
+  UZS: 'UZS',
+  USD: 'USD',
+  EUR: 'EUR',
+};
+
 const TourDetailsTab = ({ formData, setFormData }) => {
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -23,7 +29,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("price", e.target.value)}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Price ($)</label>
+              <label className="lh-1 text-14 text-light-1">Price</label>
             </div>
           </div>
           <div className="col-md-3">
@@ -33,7 +39,40 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 value={formData.sale_price}
                 onChange={(e) => handleInputChange("sale_price", e.target.value)}
               />
-              <label className="lh-1 text-14 text-light-1">Sale Price ($)</label>
+              <label className="lh-1 text-14 text-light-1">Sale Price</label>
+            </div>
+          </div>
+          <div className="col-md-1">
+            <div className="dropdown js-dropdown js-amenities-active h-full">
+              <div
+                className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
+                data-bs-toggle="dropdown"
+                data-bs-auto-close="true"
+                aria-expanded="false"
+                data-bs-offset="0,10"
+              >
+                <span className="js-dropdown-title fw-500">{formData.currency || CurrencyType.USD}</span>
+                <i className="icon icon-chevron-sm-down text-7 ml-10" />
+              </div>
+              {/* End dropdown__button */}
+
+              <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+                <div className="text-15 y-gap-15 js-dropdown-list">
+                  {Object.values(CurrencyType).map((currency) => (
+                    <div key={currency}>
+                      <button
+                        className={`${
+                          currency === (formData.currency || CurrencyType.USD) ? "text-blue-1 " : ""
+                        }d-block js-dropdown-link`}
+                        onClick={() => handleInputChange("currency", currency)}
+                      >
+                        {currency}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* End dropdown-menu */}
             </div>
           </div>
           <div className="col-md-3">

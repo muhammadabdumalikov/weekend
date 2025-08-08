@@ -3,6 +3,12 @@ import { useRouter } from "next/router";
 import { getProxiedImageUrl } from "../../../../providers/helpers";
 import ToggleSwitch from "../../../../components/common/ToggleSwitch";
 
+const CurrencyType = {
+  UZS: 'UZS',
+  USD: 'USD',
+  EUR: 'EUR',
+};
+
 const ImportInstagramForm = () => {
   const router = useRouter();
   const [url, setUrl] = useState("");
@@ -476,7 +482,7 @@ const ImportInstagramForm = () => {
                   required
                   min={1}
                 />
-                <label className="lh-1 text-14 text-light-1">Price ($)</label>
+                <label className="lh-1 text-14 text-light-1">Price</label>
               </div>
             </div>
             <div className="col-lg-6">
@@ -487,7 +493,40 @@ const ImportInstagramForm = () => {
                   onChange={(e) => handleInputChange('sale_price', e.target.value === 0 ? null : String(e.target.value))}
                   min={0}
                 />
-                <label className="lh-1 text-14 text-light-1">Sale Price ($)</label>
+                <label className="lh-1 text-14 text-light-1">Sale Price</label>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="dropdown js-dropdown js-amenities-active h-full">
+                <div
+                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="true"
+                  aria-expanded="false"
+                  data-bs-offset="0,10"
+                >
+                  <span className="js-dropdown-title fw-500">{extractedTourData.currency || CurrencyType.USD}</span>
+                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
+                </div>
+                {/* End dropdown__button */}
+
+                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+                  <div className="text-15 y-gap-15 js-dropdown-list">
+                    {Object.values(CurrencyType).map((currency) => (
+                      <div key={currency}>
+                        <button
+                          className={`${
+                            currency === (extractedTourData.currency || CurrencyType.USD) ? "text-blue-1 " : ""
+                          }d-block js-dropdown-link`}
+                          onClick={() => handleInputChange("currency", currency)}
+                        >
+                          {currency}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* End dropdown-menu */}
               </div>
             </div>
             <div className="col-lg-6">
