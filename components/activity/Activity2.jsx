@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import Slider from "react-slick";
 // import activityData from "../../data/activity";
 import isTextMatched from "../../utils/isTextMatched";
 import { useEffect, useState } from "react";
@@ -22,140 +21,58 @@ const Activity2 = () => {
     fetchData();
   }, []);
 
-  var settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1199,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 520,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-
-  var itemSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
-  // custom navigation
-  function Arrow(props) {
-    let className =
-      props.type === "next"
-        ? "slick_arrow-between slick_arrow -next arrow-md flex-center button -blue-1 bg-white shadow-1 size-30 rounded-full sm:d-none js-next"
-        : "slick_arrow-between slick_arrow -prev arrow-md flex-center button -blue-1 bg-white shadow-1 size-30 rounded-full sm:d-none js-prev";
-    className += " arrow";
-    const char =
-      props.type === "next" ? (
-        <>
-          <i className="icon icon-chevron-right text-12"></i>
-        </>
-      ) : (
-        <>
-          <span className="icon icon-chevron-left text-12"></span>
-        </>
-      );
-    return (
-      <button className={className} onClick={props.onClick}>
-        {char}
-      </button>
-    );
-  }
-
   return (
     <>
-      <Slider {...settings}>
-        {activityData.slice(0, 4).map((item) => (
+      <div className="activity-grid">
+        {activityData.slice(0, 12).map((item, index) => (
           <div
             key={item?.id}
+            className="activity-card-item"
             data-aos="fade"
-            data-aos-delay={item?.delayAnimation}
+            data-aos-delay={index * 100}
           >
             <Link
               href={`/activity/activity-single/${item.id}`}
               className="activityCard -type-1 rounded-4 hover-inside-slider"
             >
               <div className="activityCard__image position-relative">
-                <div className="inside-slider">
-                  <Slider
-                    {...itemSettings}
-                    arrows={true}
-                    nextArrow={<Arrow type="next" />}
-                    prevArrow={<Arrow type="prev" />}
-                  >
-                    <div className="cardImage ratio ratio-1:1">
-                      <div className="cardImage__content ">
-                        <Image
-                          width={300}
-                          height={300}
-                          className="col-12 js-lazy"
-                          src={item?.files[0]?.url}
-                          // src={`https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`}
-                          alt={"image"}
-                          unoptimized
-                        />
-                      </div>
-                    </div>
-                    {/* {item?.files[0].url?.map((slide, i) => (
-                      <div className="cardImage ratio ratio-1:1" key={i}>
-                        <div className="cardImage__content ">
-                          <Image
-                            width={300}
-                            height={300}
-                            className="col-12 js-lazy"
-                            src={slide}
-                            alt="image"
-                          />
-                        </div>
-                      </div>
-                    ))} */}
-                  </Slider>
-
-                  <div className="cardImage__wishlist">
-                    <button className="button -blue-1 bg-white size-30 rounded-full shadow-2">
-                      <i className="icon-heart text-12" />
-                    </button>
+                <div className="cardImage ratio ratio-1:1">
+                  <div className="cardImage__content ">
+                    <Image
+                      width={300}
+                      height={300}
+                      className="col-12 js-lazy"
+                      src={item?.files[0]?.url}
+                      // src={`https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`}
+                      alt={"image"}
+                      unoptimized
+                    />
                   </div>
+                </div>
 
-                  <div className="cardImage__leftBadge">
-                    <div
-                      className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${
-                        isTextMatched(item?.tag, "likely to sell out*")
-                          ? "bg-dark-1 text-white"
-                          : ""
-                      } ${
-                        isTextMatched(item?.tag, "best seller")
-                          ? "bg-blue-1 text-white"
-                          : ""
-                      }  ${
-                        isTextMatched(item?.tag, "top rated")
-                          ? "bg-yellow-1 text-dark-1"
-                          : ""
-                      }`}
-                    >
-                      {item.tag}
-                    </div>
+                <div className="cardImage__wishlist">
+                  <button className="button -blue-1 bg-white size-30 rounded-full shadow-2">
+                    <i className="icon-heart text-12" />
+                  </button>
+                </div>
+
+                <div className="cardImage__leftBadge">
+                  <div
+                    className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${
+                      isTextMatched(item?.tag, "likely to sell out*")
+                        ? "bg-dark-1 text-white"
+                        : ""
+                    } ${
+                      isTextMatched(item?.tag, "best seller")
+                        ? "bg-blue-1 text-white"
+                        : ""
+                    }  ${
+                      isTextMatched(item?.tag, "top rated")
+                        ? "bg-yellow-1 text-dark-1"
+                        : ""
+                    }`}
+                  >
+                    {item.tag}
                   </div>
                 </div>
               </div>
@@ -204,7 +121,48 @@ const Activity2 = () => {
             </Link>
           </div>
         ))}
-      </Slider>
+      </div>
+
+      <style jsx>{`
+        .activity-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+          width: 100%;
+        }
+        
+        .activity-card-item {
+          width: 100%;
+        }
+        
+        @media (max-width: 1200px) {
+          .activity-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+          }
+        }
+        
+        @media (max-width: 992px) {
+          .activity-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .activity-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .activity-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+        }
+      `}</style>
     </>
   );
 };
