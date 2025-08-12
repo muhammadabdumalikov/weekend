@@ -75,7 +75,9 @@ const home_6 = () => {
           {/* End .row */}
 
           <div className="row y-gap-30 pt-40 sm:pt-20 item_gap-x30">
-            <Activity />
+            <div className="col-12">
+              <Activity />
+            </div>
           </div>
           {/* End .row */}
         </div>
@@ -134,8 +136,10 @@ const home_6 = () => {
           </div>
           {/* End .row */}
 
-          <div className="relative pt-40 sm:pt-20">
-            <PopularDestinations />
+          <div className="relative pt-40 sm:pt-20 item_gap-x30">
+            <div className="col-12">
+              <PopularDestinations />
+            </div>
           </div>
         </div>
         {/* End .container */}
