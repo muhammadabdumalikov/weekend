@@ -11,6 +11,21 @@ const CurrencyType = {
   RUB: 'RUB',
 };
 
+const TourType = {
+  Historical: 'Historical',
+  Camping: 'Camping',
+  Exploring: 'Exploring',
+  Rafting: 'Rafting',
+  Hiking: 'Hiking',
+  Nature: 'Nature',
+};
+
+const TourDifficulty = {
+  Easy: 'Easy',
+  Medium: 'Medium',
+  Hard: 'Hard',
+};
+
 const ImportInstagramForm = () => {
   const router = useRouter();
   const [url, setUrl] = useState("");
@@ -179,13 +194,22 @@ const ImportInstagramForm = () => {
         // Upload only selected images
         const uploadedUrls = await uploadSelectedImages(imageUrls);
 
-        // Update the tour data with uploaded URLs
+        // Create details object with tour-specific fields
+        const details = {};
+        if (extractedTourData.start_location) details.start_location = extractedTourData.start_location;
+
+        // Update the tour data with uploaded URLs and details
         const updatedTourData = {
-          ...editableData,
-          price: editableData.price > 0 ? String(editableData.price) : null,
-          sale_price: editableData.sale_price > 0 ? String(editableData.sale_price) : null,
-          files: uploadedUrls
+          ...extractedTourData,
+          price: extractedTourData.price > 0 ? String(extractedTourData.price) : null,
+          sale_price: extractedTourData.sale_price > 0 ? String(extractedTourData.sale_price) : null,
+          files: uploadedUrls,
         };
+
+        // Remove individual fields from the main object since they're now in details
+        delete updatedTourData.start_location;
+        delete updatedTourData.difficulty;
+        delete updatedTourData.tour_type;
 
         setSuccess("Images uploaded successfully! Creating tour...");
 
@@ -218,13 +242,28 @@ const ImportInstagramForm = () => {
         setError("Please select at least one image to upload.");
       } else {
         // No images to upload, create tour directly
+        // Create details object with tour-specific fields
+        const details = {};
+        if (editableData.start_location) details.start_location = editableData.start_location;
+
+        // Update the tour data with details
+        const updatedTourData = {
+          ...editableData,
+          details: Object.keys(details).length > 0 ? details : undefined
+        };
+
+        // Remove individual fields from the main object since they're now in details
+        delete updatedTourData.start_location;
+        delete updatedTourData.difficulty;
+        delete updatedTourData.tour_type;
+
         const response = await fetch('https://api.wetrippo.com/api/admin/tour/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('authToken')}`
           },
-          body: JSON.stringify(editableData),
+          body: JSON.stringify(updatedTourData),
         });
 
         if (response.ok) {
@@ -626,6 +665,80 @@ const ImportInstagramForm = () => {
                   required
                 />
                 <label className="lh-1 text-14 text-light-1">Available Seats</label>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input
+                  type="text"
+                  value={extractedTourData.start_location || ""}
+                  onChange={(e) => handleInputChange('details', { ...extractedTourData.details, start_location: e.target.value })}
+                />
+                <label className="lh-1 text-14 text-light-1">Start Location (Optional)</label>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="dropdown js-dropdown js-amenities-active h-full">
+                <div
+                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="true"
+                  aria-expanded="false"
+                  data-bs-offset="0,10"
+                >
+                  <span className="js-dropdown-title fw-500">{extractedTourData.tour_type || "Select Tour Type"}</span>
+                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
+                </div>
+                {/* End dropdown__button */}
+
+                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+                  <div className="text-15 y-gap-15 js-dropdown-list">
+                    {Object.entries(TourType).map(([key, value]) => (
+                      <div key={value}>
+                        <button
+                          className={`${value === extractedTourData.tour_type ? "text-blue-1 " : ""
+                            }d-block js-dropdown-link`}
+                          onClick={() => handleInputChange("details", { ...extractedTourData.details, tour_type: value })}
+                        >
+                          {key}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* End dropdown-menu */}
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="dropdown js-dropdown js-amenities-active h-full">
+                <div
+                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="true"
+                  aria-expanded="false"
+                  data-bs-offset="0,10"
+                >
+                  <span className="js-dropdown-title fw-500">{extractedTourData.difficulty || "Select Difficulty"}</span>
+                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
+                </div>
+                {/* End dropdown__button */}
+
+                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+                  <div className="text-15 y-gap-15 js-dropdown-list">
+                    {Object.entries(TourDifficulty).map(([key, value]) => (
+                      <div key={value}>
+                        <button
+                          className={`${value === extractedTourData.difficulty ? "text-blue-1 " : ""
+                            }d-block js-dropdown-link`}
+                          onClick={() => handleInputChange("details", { ...extractedTourData.details, difficulty: value })}
+                        >
+                          {key}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {/* End dropdown-menu */}
               </div>
             </div>
           </div>

@@ -55,9 +55,9 @@ const TourSingleV1Dynamic = () => {
       fetchData();
     }
 
-    return () => {};
+    return () => { };
   }, [id, dispatch]);
-  console.log(activity.files);
+
   return (
     <>
       <ModalVideo
@@ -161,6 +161,30 @@ const TourSingleV1Dynamic = () => {
 
               <Overview data={activity} />
               {/* End  Overview */}
+
+              {/* Tour Details Section */}
+              {(activity?.details?.difficulty || activity?.details?.tour_type || activity?.details?.start_location) && (
+                <div className="border-top-light mt-40 pt-40 mb-40">
+                  <h3 className="text-22 fw-500">Tour Details</h3>
+                  <div className="row y-gap-30 pt-15">
+                    {activity?.details?.tour_type && (
+                      <div className="col-sm-4">
+                        <div className="fw-500">Tour Type</div>
+                        <div className="text-15">
+                          {activity?.details?.tour_type}
+                        </div>
+                      </div>
+                    )}
+                    {activity?.details?.start_location && (
+                      <div className="col-sm-4">
+                        <div className="fw-500">Start Location</div>
+                        <div className="text-15">{activity?.details?.start_location}</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              {/* End tour details */}
             </div>
             {/* End .col-xl-8 */}
 
@@ -174,23 +198,6 @@ const TourSingleV1Dynamic = () => {
         {/* End container */}
       </section>
       {/* End single page content */}
-
-      <section className="pt-40">
-        <div className="container">
-          <div className="pt-40 border-top-light">
-            <div className="row x-gap-40 y-gap-40">
-              <div className="col-auto">
-                <h3 className="text-22 fw-500">Important information</h3>
-              </div>
-            </div>
-            {/* End row */}
-            <ImportantInfo />
-          </div>
-          {/* End pt-40 */}
-        </div>
-        {/* End .container */}
-      </section>
-      {/* End important info */}
 
       <section className="pt-40">
         <div className="container">
@@ -308,6 +315,19 @@ const TourSingleV1Dynamic = () => {
       {/* End Call To Actions Section */}
 
       <DefaultFooter />
+
+      {/* Custom styles for badges */}
+      <style jsx>{`
+        .badge {
+          display: inline-block;
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+      `}</style>
     </>
   );
 };
