@@ -7,6 +7,8 @@ const CurrencyType = {
   UZS: 'UZS',
   USD: 'USD',
   EUR: 'EUR',
+  KGS: 'KGS',
+  RUB: 'RUB',
 };
 
 const ImportInstagramForm = () => {
@@ -23,11 +25,16 @@ const ImportInstagramForm = () => {
   const [isUploadingImages, setIsUploadingImages] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedMainImage, setSelectedMainImage] = useState(0);
+  const [selectedImages, setSelectedImages] = useState([]);
 
   // Update editableData when extractedTourData changes
   useEffect(() => {
     if (extractedTourData) {
       setEditableData(extractedTourData);
+      // Initialize selected images with all images selected
+      if (extractedTourData.files && extractedTourData.files.length > 0) {
+        setSelectedImages(extractedTourData.files.map((_, index) => index));
+      }
     }
   }, [extractedTourData]);
 
@@ -45,7 +52,7 @@ const ImportInstagramForm = () => {
         }
       }));
     } else {
-        setExtractedTourData(prev => ({
+      setExtractedTourData(prev => ({
         ...prev,
         [field]: (field === "price" || field === "sale_price") ? String(value) : value
       }));
@@ -55,66 +62,68 @@ const ImportInstagramForm = () => {
   // Function to upload a single image with retry
   const uploadImage = async (imageUrl, retryCount = 0) => {
     const maxRetries = 2;
-    
+
     try {
       // Use the proxied URL to avoid CORS issues
       const proxiedUrl = getProxiedImageUrl(imageUrl);
-      
+
       // Fetch the image from proxied URL
       const response = await fetch(proxiedUrl);
       if (!response.ok) {
         throw new Error(`Failed to fetch image: ${response.status}`);
       }
-      
+
       const blob = await response.blob();
-      
+
       // Create FormData for upload
       const formData = new FormData();
       formData.append('file', blob, 'instagram-image.jpg');
-      
+
       // Upload to server
       const uploadResponse = await fetch('https://api.wetrippo.com/api/file-router/simple-upload', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (!uploadResponse.ok) {
         throw new Error(`Upload failed: ${uploadResponse.status}`);
       }
-      
+
       const uploadResult = await uploadResponse.json();
       return uploadResult
     } catch (error) {
       console.error(`Error uploading image (attempt ${retryCount + 1}):`, error);
-      
+
       // Retry logic
       if (retryCount < maxRetries) {
         console.log(`Retrying upload (attempt ${retryCount + 2}/${maxRetries + 1})...`);
         await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1))); // Exponential backoff
         return uploadImage(imageUrl, retryCount + 1);
       }
-      
+
       throw error;
     }
   };
 
-  // Function to upload all images
-  const uploadAllImages = async (imageUrls) => {
+  // Function to upload only selected images
+  const uploadSelectedImages = async (imageUrls) => {
     setIsUploadingImages(true);
     setUploadProgress(0);
-    
+
     try {
-                const uploadedUrls = [];
-          const totalImages = imageUrls.length;
-          const failedUploads = [];
-          
-          for (let i = 0; i < totalImages; i++) {
-            try {
-              const uploadedUrl = await uploadImage(imageUrls[i]);
-              // Set the first image as main, or the selected main image
-              const imageType = i === selectedMainImage ? 'main' : 'extra';
-              uploadedUrls.push({...uploadedUrl, type: imageType});
-          
+      const uploadedUrls = [];
+      const selectedImageUrls = selectedImages.map(index => imageUrls[index]);
+      const totalImages = selectedImageUrls.length;
+      const failedUploads = [];
+
+      for (let i = 0; i < totalImages; i++) {
+        try {
+          const uploadedUrl = await uploadImage(selectedImageUrls[i]);
+          // Set the selected main image as main, others as extra
+          const originalIndex = selectedImages[i];
+          const imageType = originalIndex === selectedMainImage ? 'main' : 'extra';
+          uploadedUrls.push({ ...uploadedUrl, type: imageType });
+
           // Update progress
           const progress = ((i + 1) / totalImages) * 100;
           setUploadProgress(progress);
@@ -124,12 +133,12 @@ const ImportInstagramForm = () => {
           // Continue with other images even if one fails
         }
       }
-      
+
       // Show warning if some uploads failed
       if (failedUploads.length > 0) {
         setError(`Warning: Failed to upload ${failedUploads.length} images. Tour will be created with available images.`);
       }
-      
+
       return uploadedUrls;
     } finally {
       setIsUploadingImages(false);
@@ -137,21 +146,39 @@ const ImportInstagramForm = () => {
     }
   };
 
+  // Handle image selection
+  const handleImageSelection = (imageIndex) => {
+    setSelectedImages(prev => {
+      if (prev.includes(imageIndex)) {
+        // Remove image from selection
+        const newSelection = prev.filter(index => index !== imageIndex);
+        // If we're removing the main image, set the first remaining image as main
+        if (imageIndex === selectedMainImage && newSelection.length > 0) {
+          setSelectedMainImage(newSelection[0]);
+        }
+        return newSelection;
+      } else {
+        // Add image to selection
+        return [...prev, imageIndex];
+      }
+    });
+  };
+
   const handleCreateTour = async () => {
     setIsCreating(true);
     setError("");
     setSuccess("");
-    
+
     try {
       // Get image URLs from extracted tour data
       const imageUrls = extractedTourData.files?.map(file => file.url) || [];
-      
-      if (imageUrls.length > 0) {
-        setSuccess("Uploading images to server...");
-        
-        // Upload all images
-        const uploadedUrls = await uploadAllImages(imageUrls);
-        
+
+      if (imageUrls.length > 0 && selectedImages.length > 0) {
+        setSuccess("Uploading selected images to server...");
+
+        // Upload only selected images
+        const uploadedUrls = await uploadSelectedImages(imageUrls);
+
         // Update the tour data with uploaded URLs
         const updatedTourData = {
           ...editableData,
@@ -159,9 +186,9 @@ const ImportInstagramForm = () => {
           sale_price: editableData.sale_price > 0 ? String(editableData.sale_price) : null,
           files: uploadedUrls
         };
-        
+
         setSuccess("Images uploaded successfully! Creating tour...");
-        
+
         // Create tour with uploaded image URLs
         const response = await fetch('https://api.wetrippo.com/api/admin/tour/create', {
           method: 'POST',
@@ -171,7 +198,7 @@ const ImportInstagramForm = () => {
           },
           body: JSON.stringify(updatedTourData),
         });
-        
+
         if (response.ok) {
           const result = await response.json();
           setSuccess("Tour created successfully!");
@@ -181,10 +208,14 @@ const ImportInstagramForm = () => {
             setExtractedTourData(null);
             setEditableData(null);
             setUrl("");
+            setSelectedImages([]);
+            setSelectedMainImage(0);
           }, 2000);
         } else {
           setError("Failed to create tour. Please try again.");
         }
+      } else if (selectedImages.length === 0) {
+        setError("Please select at least one image to upload.");
       } else {
         // No images to upload, create tour directly
         const response = await fetch('https://api.wetrippo.com/api/admin/tour/create', {
@@ -195,7 +226,7 @@ const ImportInstagramForm = () => {
           },
           body: JSON.stringify(editableData),
         });
-        
+
         if (response.ok) {
           const result = await response.json();
           setSuccess("Tour created successfully!");
@@ -205,6 +236,8 @@ const ImportInstagramForm = () => {
             setExtractedTourData(null);
             setEditableData(null);
             setUrl("");
+            setSelectedImages([]);
+            setSelectedMainImage(0);
           }, 2000);
         } else {
           setError("Failed to create tour. Please try again.");
@@ -362,7 +395,7 @@ const ImportInstagramForm = () => {
         </div>
       );
     }
-    
+
     return (
       <div className="extractedTourCard d-block w-100 rounded-4 bg-white shadow-3">
         {/* Header */}
@@ -371,19 +404,19 @@ const ImportInstagramForm = () => {
             <div className="d-flex items-center">
               <div className="size-40 rounded-full bg-blue-1 d-flex items-center justify-center mr-15">
                 <i className="icon-tour text-18 text-white"></i>
-        </div>
+              </div>
               <div>
                 <h4 className="text-18 fw-600">Extracted Tour</h4>
                 <p className="text-14 text-light-1">Review and edit tour details</p>
               </div>
             </div>
             <div className="d-flex items-center">
-              <button 
+              <button
                 className="button -md -dark-1 bg-blue-1 text-white"
                 onClick={handleCreateTour}
-                disabled={isCreating || isUploadingImages}
+                disabled={isCreating || isUploadingImages || selectedImages.length === 0}
               >
-                {isUploadingImages ? "Uploading Images..." : isCreating ? "Creating..." : "Create Tour"}
+                {isUploadingImages ? "Uploading Images..." : isCreating ? "Creating..." : `Create Tour (${selectedImages.length} images)`}
               </button>
             </div>
           </div>
@@ -393,12 +426,46 @@ const ImportInstagramForm = () => {
         <div className="extractedTourCard__content p-20">
           {/* Title Section */}
           <div className="mb-20">
+
+            {isUploadingImages && (
+              <div className="col-12">
+                <div className="d-flex items-center p-15 rounded-8 bg-blue-1-light">
+                  <div className="size-40 rounded-full bg-blue-1 d-flex items-center justify-center mr-15">
+                    <i className="icon-upload text-18 text-white"></i>
+                  </div>
+                  <div className="text-14 text-dark-1">
+                    Uploading {Math.round(uploadProgress)}% complete...
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Upload Progress */}
+            {isUploadingImages && (
+              <div className="mb-15">
+                <div className="d-flex items-center justify-between mb-10">
+                  <span className="text-14 text-dark-1">Uploading images to server...</span>
+                  <span className="text-14 text-blue-1 fw-500">{Math.round(uploadProgress)}%</span>
+                </div>
+                <div className="progress-bar bg-light-2 rounded-4" style={{ height: '8px' }}>
+                  <div
+                    className="progress-bar-fill bg-blue-1 rounded-4"
+                    style={{
+                      width: `${uploadProgress}%`,
+                      height: '100%',
+                      transition: 'width 0.3s ease'
+                    }}
+                  ></div>
+                </div>
+              </div>
+            )}
+
             <h5 className="text-16 fw-500 mb-15">Title</h5>
             <div className="row y-gap-10">
               <div className="col-12">
                 <div className="form-input">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={extractedTourData.title?.en || ""}
                     onChange={(e) => handleInputChange('title', e.target.value, 'en')}
                     required
@@ -408,8 +475,8 @@ const ImportInstagramForm = () => {
               </div>
               <div className="col-12">
                 <div className="form-input">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={extractedTourData.title?.ru || ""}
                     onChange={(e) => handleInputChange('title', e.target.value, 'ru')}
                     required
@@ -419,8 +486,8 @@ const ImportInstagramForm = () => {
               </div>
               <div className="col-12">
                 <div className="form-input">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={extractedTourData.title?.uz || ""}
                     onChange={(e) => handleInputChange('title', e.target.value, 'uz')}
                     required
@@ -437,7 +504,7 @@ const ImportInstagramForm = () => {
             <div className="row y-gap-10">
               <div className="col-12">
                 <div className="form-input">
-                  <textarea 
+                  <textarea
                     value={extractedTourData.description?.en || ""}
                     onChange={(e) => handleInputChange('description', e.target.value, 'en')}
                     rows="4"
@@ -448,7 +515,7 @@ const ImportInstagramForm = () => {
               </div>
               <div className="col-12">
                 <div className="form-input">
-                  <textarea 
+                  <textarea
                     value={extractedTourData.description?.ru || ""}
                     onChange={(e) => handleInputChange('description', e.target.value, 'ru')}
                     rows="4"
@@ -459,7 +526,7 @@ const ImportInstagramForm = () => {
               </div>
               <div className="col-12">
                 <div className="form-input">
-                  <textarea 
+                  <textarea
                     value={extractedTourData.description?.uz || ""}
                     onChange={(e) => handleInputChange('description', e.target.value, 'uz')}
                     rows="4"
@@ -475,8 +542,8 @@ const ImportInstagramForm = () => {
           <div className="row y-gap-20">
             <div className="col-lg-6">
               <div className="form-input">
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   value={extractedTourData.price || ""}
                   onChange={(e) => handleInputChange('price', String(e.target.value))}
                   required
@@ -487,8 +554,8 @@ const ImportInstagramForm = () => {
             </div>
             <div className="col-lg-6">
               <div className="form-input">
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   value={extractedTourData.sale_price || ""}
                   onChange={(e) => handleInputChange('sale_price', e.target.value === 0 ? null : String(e.target.value))}
                   min={0}
@@ -515,9 +582,8 @@ const ImportInstagramForm = () => {
                     {Object.values(CurrencyType).map((currency) => (
                       <div key={currency}>
                         <button
-                          className={`${
-                            currency === (extractedTourData.currency || CurrencyType.USD) ? "text-blue-1 " : ""
-                          }d-block js-dropdown-link`}
+                          className={`${currency === (extractedTourData.currency || CurrencyType.USD) ? "text-blue-1 " : ""
+                            }d-block js-dropdown-link`}
                           onClick={() => handleInputChange("currency", currency)}
                         >
                           {currency}
@@ -531,8 +597,8 @@ const ImportInstagramForm = () => {
             </div>
             <div className="col-lg-6">
               <div className="form-input">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={extractedTourData.duration || ""}
                   onChange={(e) => handleInputChange('duration', e.target.value)}
                   required
@@ -542,8 +608,8 @@ const ImportInstagramForm = () => {
             </div>
             <div className="col-lg-6">
               <div className="form-input">
-                <input 
-                  type="date" 
+                <input
+                  type="date"
                   value={extractedTourData.start_date || ""}
                   onChange={(e) => handleInputChange('start_date', e.target.value)}
                   required
@@ -553,8 +619,8 @@ const ImportInstagramForm = () => {
             </div>
             <div className="col-lg-6">
               <div className="form-input">
-                <input 
-                  type="number" 
+                <input
+                  type="number"
                   value={extractedTourData.seats || ""}
                   onChange={(e) => handleInputChange('seats', parseInt(e.target.value))}
                   required
@@ -567,58 +633,64 @@ const ImportInstagramForm = () => {
           {/* Files Section */}
           {extractedTourData.files && extractedTourData.files.length > 0 && (
             <div className="mt-20">
-
-              
-              {/* Upload Progress */}
-              {isUploadingImages && (
-                <div className="mb-15">
-                  <div className="d-flex items-center justify-between mb-10">
-                    <span className="text-14 text-dark-1">Uploading images to server...</span>
-                    <span className="text-14 text-blue-1 fw-500">{Math.round(uploadProgress)}%</span>
-                  </div>
-                  <div className="progress-bar bg-light-2 rounded-4" style={{ height: '8px' }}>
-                    <div 
-                      className="progress-bar-fill bg-blue-1 rounded-4" 
-                      style={{ 
-                        width: `${uploadProgress}%`, 
-                        height: '100%',
-                        transition: 'width 0.3s ease'
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              )}
-              
               <div className="row x-gap-10 y-gap-10">
                 {extractedTourData.files.map((file, i) => (
                   <div key={i} className="col-lg-4 col-md-6">
                     <div className="cardImage ratio ratio-1:1 relative">
                       <div className="cardImage__content">
-                        <img 
-                          src={getProxiedImageUrl(file.url)} 
+                        <img
+                          src={getProxiedImageUrl(file.url)}
                           alt={`Tour image ${i + 1}`}
                           className="rounded-4"
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
                       </div>
-                      
+
                       {/* Set Main Button */}
-                      <div className="absolute ml-10 mt-10">
+                      <div className="ml-10 mt-10">
                         <button
                           onClick={() => setSelectedMainImage(i)}
-                          className={`button -sm p-10 rounded-4 ${
-                            selectedMainImage === i 
-                              ? 'bg-blue-1 text-white' 
-                              : 'bg-white text-dark-1 hover:bg-light-2 border-light-1'
-                          }`}
+                          className={`button -sm p-10 rounded-4 ${selectedMainImage === i
+                            ? 'bg-blue-1 text-white'
+                            : 'bg-white text-dark-1 hover:bg-light-2 border-light-1'
+                            }`}
                         >
                           {selectedMainImage === i ? 'Main' : 'Set Main'}
+                        </button>
+                      </div>
+
+                      {/* Selection Checkbox */}
+                      <div className="ml-10 mt-40">
+                        <button
+                          onClick={() => handleImageSelection(i)}
+                          className={`button -sm rounded-4 ${selectedImages.includes(i)
+                            ? 'bg-blue-1 text-white'
+                            : 'bg-white text-dark-1 hover:bg-light-2 border-light-1'
+                            }`}
+                        >
+                          <i className={`icon-check text-20 ${selectedImages.includes(i) ? 'text-white' : 'text-blue-1'}`}></i>
                         </button>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+
+              {/* Selection Summary */}
+              {selectedImages.length > 0 && (
+                <div className="mt-15 p-15 rounded-8 bg-light-2">
+                  <div className="d-flex items-center justify-between">
+                    <span className="text-14 text-dark-1">
+                      {selectedImages.length} image{selectedImages.length !== 1 ? 's' : ''} selected for upload
+                    </span>
+                    {selectedMainImage !== null && selectedImages.includes(selectedMainImage) && (
+                      <span className="text-14 text-blue-1 fw-500">
+                        Image {selectedMainImage + 1} set as main
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -717,19 +789,6 @@ const ImportInstagramForm = () => {
                 <i className="icon-check text-18 text-white"></i>
               </div>
               <div className="text-14 text-dark-1">{success}</div>
-            </div>
-          </div>
-        )}
-
-        {isUploadingImages && (
-          <div className="col-12">
-            <div className="d-flex items-center p-15 rounded-8 bg-blue-1-light">
-              <div className="size-40 rounded-full bg-blue-1 d-flex items-center justify-center mr-15">
-                <i className="icon-upload text-18 text-white"></i>
-              </div>
-              <div className="text-14 text-dark-1">
-                Uploading {Math.round(uploadProgress)}% complete...
-              </div>
             </div>
           </div>
         )}
