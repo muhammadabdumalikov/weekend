@@ -64,7 +64,7 @@ const home_6 = () => {
           <div className="row justify-center text-center is-in-view">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Trending Activity</h2>
+                <h2 className="sectionTitle__title">Newest Tours</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
                   Interdum et malesuada fames ac ante ipsum
                 </p>

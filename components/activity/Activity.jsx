@@ -6,28 +6,53 @@ import { useEffect, useState } from "react";
 const Activity = () => {
   const [activityData, setActivityData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(4);
+
+  const fetchData = async (pageNum = 1, append = false) => {
+    try {
+      if (pageNum === 1) {
+        setIsLoading(true);
+      } else {
+        setIsLoadingMore(true);
+      }
+
+      const offset = (pageNum - 1) * limit;
+
+      const response = await fetch("https://api.wetrippo.com/api/tour/list", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          offset: offset,
+          limit: limit,
+        }),
+      });
+      const data = await response.json();
+ 
+      const newData = data.data || [];
+
+      if (append) {
+        setActivityData(prev => [...prev, ...newData]);
+      } else {
+        setActivityData(newData);
+      }
+
+      // Check if there are more items to load
+      setHasMore(newData.length === limit);
+    } catch (error) {
+      console.error("Error fetching activities:", error);
+    } finally {
+      setIsLoading(false);
+      setIsLoadingMore(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch("https://api.wetrippo.com/api/tour/list", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({}),
-        });
-        const data = await response.json();
-        console.log("Activity data:", data);
-        setActivityData(data.data || []);
-      } catch (error) {
-        console.error("Error fetching activities:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
+    fetchData(1, false);
   }, []);
 
   if (isLoading) {
@@ -46,10 +71,16 @@ const Activity = () => {
     );
   }
 
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchData(nextPage, true);
+  };
+
   return (
     <>
       <div className="activity-grid">
-        {activityData.slice(0, 12).map((item, index) => (
+        {activityData.map((item, index) => (
           <div
             key={item?.id}
             className="activity-card-item"
@@ -84,19 +115,16 @@ const Activity = () => {
 
                 <div className="cardImage__leftBadge">
                   <div
-                    className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${
-                      isTextMatched(item?.tag, "likely to sell out*")
+                    className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${isTextMatched(item?.tag, "likely to sell out*")
                         ? "bg-dark-1 text-white"
                         : ""
-                    } ${
-                      isTextMatched(item?.tag, "best seller")
+                      } ${isTextMatched(item?.tag, "best seller")
                         ? "bg-blue-1 text-white"
                         : ""
-                    }  ${
-                      isTextMatched(item?.tag, "top rated")
+                      }  ${isTextMatched(item?.tag, "top rated")
                         ? "bg-yellow-1 text-dark-1"
                         : ""
-                    }`}
+                      }`}
                   >
                     {item.tag}
                   </div>
@@ -136,8 +164,8 @@ const Activity = () => {
                       <span className="text-16 fw-500 text-dark-1">
                         {item.price
                           ? item.price.slice(0, -3)
-                              .toString()
-                              .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
                           : ""} {item.currency || "USD"}
                       </span>
                     </div>
@@ -148,6 +176,42 @@ const Activity = () => {
           </div>
         ))}
       </div>
+
+      {/* Load More Button */}
+      {hasMore && (
+        <div className="d-flex justify-center items-center mt-40">
+          <button
+            onClick={handleLoadMore}
+            disabled={isLoadingMore}
+            className="load-more-btn"
+            style={{
+              minWidth: '200px',
+              padding: '16px 32px',
+              borderRadius: '8px',
+              fontSize: '16px',
+              fontWeight: '500',
+              border: '2px solid #3554d1',
+              backgroundColor: 'white',
+              color: '#3554d1',
+              cursor: isLoadingMore ? 'not-allowed' : 'pointer',
+              opacity: isLoadingMore ? 0.7 : 1,
+              transition: 'all 0.3s ease',
+            }}
+          >
+            {isLoadingMore ? (
+              <div className="d-flex items-center justify-center">
+                <div className="spinner mr-10"></div>
+                Loading...
+              </div>
+            ) : (
+              <div className="d-flex items-center justify-center">
+                <i className="icon-arrow-down text-18 mr-10"></i>
+                Load More Activities
+              </div>
+            )}
+          </button>
+        </div>
+      )}
 
       <style jsx>{`
         .activity-grid {
@@ -187,6 +251,34 @@ const Activity = () => {
             grid-template-columns: 1fr;
             gap: 12px;
           }
+        }
+
+        .load-more-btn {
+          outline: none;
+        }
+
+        .load-more-btn:hover:not(:disabled) {
+          background-color: #3554d1 !important;
+          color: white !important;
+        }
+
+        .load-more-btn:hover:not(:disabled) .spinner {
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top: 2px solid white;
+        }
+
+        .spinner {
+          width: 20px;
+          height: 20px;
+          border: 2px solid rgba(53, 84, 209, 0.3);
+          border-top: 2px solid #3554d1;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
       `}</style>
     </>
