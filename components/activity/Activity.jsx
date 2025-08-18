@@ -4,6 +4,21 @@ import isTextMatched from "../../utils/isTextMatched";
 import { useEffect, useState } from "react";
 import { TourType } from "../../pages/vendor-dashboard/import-instagram/components/ImportInstagramForm";
 
+// Tour Order Types enum
+const TourOrderTypes = {
+  popular: 'popular',
+  newest: 'newest',
+  price_low_to_high: 'price_low_to_high',
+  price_high_to_low: 'price_high_to_low',
+};
+
+const TourOrderTypesNames = {
+  popular: 'Most Popular',
+  newest: 'Newest First',
+  price_low_to_high: 'Price: Low to High',
+  price_high_to_low: 'Price: High to Low',
+};
+
 const Activity = () => {
   const [activityData, setActivityData] = useState({data: [], total: 0});
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +32,9 @@ const Activity = () => {
   const [priceRange, setPriceRange] = useState({from_price: null, to_price: null});
   const [languageValue, setLanguageValue] = useState("Language");
   const [tourTypeValue, setTourTypeValue] = useState("Tour type");
+  
+  // Sort state
+  const [sortValue, setSortValue] = useState(TourOrderTypes.newest);
 
   const fetchData = async (pageNum = 1, append = false) => {
     try {
@@ -39,6 +57,7 @@ const Activity = () => {
           from_price: priceRange.from_price,
           to_price: priceRange.to_price,
           tour_type: tourTypeValue === "Tour type" ? null : tourTypeValue,
+          order_by: sortValue === "Sort" ? null : sortValue,
         }),
       });
       const data = await response.json();
@@ -63,7 +82,7 @@ const Activity = () => {
 
   useEffect(() => {
     fetchData(1, false);
-  }, [priceRange, tourTypeValue]); // Refetch when price range changes
+  }, [priceRange, tourTypeValue, sortValue]); // Refetch when filters or sort changes
 
   if (isLoading) {
     return (
@@ -117,12 +136,18 @@ const Activity = () => {
     setTourTypeValue(value);
   };
 
+  // Sort handler
+  const handleSortValueChange = (value) => {
+    setSortValue(value);
+  };
+
   // Clear all filters
   const clearFilters = () => {
     setPriceValue("Price");
     setPriceRange({from_price: null, to_price: null});
     setLanguageValue("Language");
     setTourTypeValue("Tour type");
+    setSortValue("Sort");
   };
 
   const dropdowns = [
@@ -211,10 +236,38 @@ const Activity = () => {
         </div>
         {/* End .col */}
         <div className="col-auto">
-          <button className="button -blue-1 h-40 px-20 rounded-100 bg-blue-1-05 text-15 text-blue-1">
-            <i className="icon-up-down text-14 mr-10" />
-            Sort
-          </button>
+          <div className="dropdown js-dropdown js-amenities-active">
+            <div
+              className="dropdown__button d-flex items-center text-14 rounded-100 border-light px-15 h-40 bg-blue-1-05 text-blue-1"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="true"
+              aria-expanded="false"
+              data-bs-offset="0,10"
+            >
+              <i className="icon-up-down text-14 mr-10" />
+              <span className="js-dropdown-title">{TourOrderTypesNames[sortValue]}</span>
+              <i className="icon icon-chevron-sm-down text-7 ml-10" />
+            </div>
+            {/* End dropdown__button */}
+
+            <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+              <div className="text-15 y-gap-15 js-dropdown-list">
+                {Object.entries(TourOrderTypes).map(([key, value]) => (
+                  <div key={key}>
+                    <button
+                      className={`${
+                        value === sortValue ? "text-blue-1 " : ""
+                      }d-block js-dropdown-link`}
+                      onClick={() => handleSortValueChange(value)}
+                    >
+                      {TourOrderTypesNames[value]}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* End dropdown-menu */}
+          </div>
         </div>
         {/* End .col */}
       </div>
