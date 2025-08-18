@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import { getProxiedImageUrl } from "../../../../providers/helpers";
-import ToggleSwitch from "../../../../components/common/ToggleSwitch";
 
-const CurrencyType = {
+export const CurrencyType = {
   UZS: 'UZS',
   USD: 'USD',
   EUR: 'EUR',
@@ -11,7 +9,7 @@ const CurrencyType = {
   RUB: 'RUB',
 };
 
-const TourType = {
+export const TourType = {
   Historical: 'Historical',
   Camping: 'Camping',
   Exploring: 'Exploring',
@@ -20,14 +18,13 @@ const TourType = {
   Nature: 'Nature',
 };
 
-const TourDifficulty = {
+export const TourDifficulty = {
   Easy: 'Easy',
   Medium: 'Medium',
   Hard: 'Hard',
 };
 
 const ImportInstagramForm = () => {
-  const router = useRouter();
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");

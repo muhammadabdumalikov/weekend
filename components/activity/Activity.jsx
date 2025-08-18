@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import isTextMatched from "../../utils/isTextMatched";
 import { useEffect, useState } from "react";
+import { TourType } from "../../pages/vendor-dashboard/import-instagram/components/ImportInstagramForm";
 
 const Activity = () => {
   const [activityData, setActivityData] = useState({data: [], total: 0});
@@ -15,7 +16,7 @@ const Activity = () => {
   const [priceValue, setPriceValue] = useState("Price");
   const [priceRange, setPriceRange] = useState({from_price: null, to_price: null});
   const [languageValue, setLanguageValue] = useState("Language");
-  const [attractionsValue, setAttractionsValue] = useState("Attractions");
+  const [tourTypeValue, setTourTypeValue] = useState("Tour type");
 
   const fetchData = async (pageNum = 1, append = false) => {
     try {
@@ -37,6 +38,7 @@ const Activity = () => {
           limit: limit,
           from_price: priceRange.from_price,
           to_price: priceRange.to_price,
+          tour_type: tourTypeValue === "Tour type" ? null : tourTypeValue,
         }),
       });
       const data = await response.json();
@@ -61,7 +63,7 @@ const Activity = () => {
 
   useEffect(() => {
     fetchData(1, false);
-  }, [priceRange]); // Refetch when price range changes
+  }, [priceRange, tourTypeValue]); // Refetch when price range changes
 
   if (isLoading) {
     return (
@@ -111,8 +113,16 @@ const Activity = () => {
     setLanguageValue(value);
   };
 
-  const handleAttractionsValueChange = (value) => {
-    setAttractionsValue(value);
+  const handleTourTypeValueChange = (value) => {
+    setTourTypeValue(value);
+  };
+
+  // Clear all filters
+  const clearFilters = () => {
+    setPriceValue("Price");
+    setPriceRange({from_price: null, to_price: null});
+    setLanguageValue("Language");
+    setTourTypeValue("Tour type");
   };
 
   const dropdowns = [
@@ -129,58 +139,67 @@ const Activity = () => {
       onChange: handleLanguageValueChange,
     },
     {
-      title: "Attractions",
-      value: attractionsValue,
-      options: [
-        "V-Formation",
-        "Events in the Sky",
-        "The Fungroup",
-        "Rongen Aktief",
-      ],
-      onChange: handleAttractionsValueChange,
+      title: "Tour type",
+      value: tourTypeValue,
+      options: Object.values(TourType),
+      onChange: handleTourTypeValueChange,
     },
   ];
 
   return (
     <>
       {/* Filters Section */}
-      <div className="row x-gap-10 y-gap-10 mb-30">
-        {dropdowns.map((dropdown, index) => (
-          <div className="col-auto" key={index}>
-            <div className="dropdown js-dropdown js-amenities-active">
-              <div
-                className="dropdown__button d-flex items-center text-14 rounded-100 border-light px-15 h-34"
-                data-bs-toggle="dropdown"
-                data-bs-auto-close="true"
-                aria-expanded="false"
-                data-bs-offset="0,10"
-              >
-                <span className="js-dropdown-title">{dropdown.value}</span>
-                <i className="icon icon-chevron-sm-down text-7 ml-10" />
-              </div>
-              {/* End dropdown__button */}
+      <div className="row x-gap-10 y-gap-10 mb-30 justify-between items-center">
+        <div className="col-auto">
+          <div className="row x-gap-10 y-gap-10">
+            {dropdowns.map((dropdown, index) => (
+              <div className="col-auto" key={index}>
+                <div className="dropdown js-dropdown js-amenities-active">
+                  <div
+                    className="dropdown__button d-flex items-center text-14 rounded-100 border-light px-15 h-34"
+                    data-bs-toggle="dropdown"
+                    data-bs-auto-close="true"
+                    aria-expanded="false"
+                    data-bs-offset="0,10"
+                  >
+                    <span className="js-dropdown-title">{dropdown.value}</span>
+                    <i className="icon icon-chevron-sm-down text-7 ml-10" />
+                  </div>
+                  {/* End dropdown__button */}
 
-              <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
-                <div className="text-15 y-gap-15 js-dropdown-list">
-                  {dropdown.options.map((item, index) => (
-                    <div key={index}>
-                      <button
-                        className={`${
-                          item === dropdown.value ? "text-blue-1 " : ""
-                        }d-block js-dropdown-link`}
-                        onClick={() => dropdown.onChange(item)}
-                      >
-                        {item}
-                      </button>
+                  <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+                    <div className="text-15 y-gap-15 js-dropdown-list">
+                      {dropdown.options.map((item, index) => (
+                        <div key={index}>
+                          <button
+                            className={`${
+                              item === dropdown.value ? "text-blue-1 " : ""
+                            }d-block js-dropdown-link`}
+                            onClick={() => dropdown.onChange(item)}
+                          >
+                            {item}
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                  {/* End dropdown-menu */}
                 </div>
+                {/* End dropdown */}
               </div>
-              {/* End dropdown-menu */}
-            </div>
-            {/* End dropdown */}
+            ))}
           </div>
-        ))}
+        </div>
+        
+        <div className="col-auto">
+          <button 
+            onClick={clearFilters}
+            className="button -outline-blue-1 h-34 px-15 rounded-100 text-14 text-blue-1"
+          >
+            <i className="icon-refresh text-12 mr-8" />
+            Clear Filters
+          </button>
+        </div>
       </div>
 
       {/* Results Count and Sort */}
