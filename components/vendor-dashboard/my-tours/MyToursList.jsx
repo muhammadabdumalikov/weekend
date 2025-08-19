@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "next-i18next";
 import { useQuery } from "@tanstack/react-query";
 import Pagination from "../../../pages/dashboard/common/Pagination";
 import TourCard from "./TourCard";
 import LoadingSpinner from "./LoadingSpinner";
 
 const MyToursList = () => {
+  const { t } = useTranslation("common");
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
@@ -56,7 +58,7 @@ const MyToursList = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch tours");
+      throw new Error(t("myTours.fetchError"));
     }
 
     return response.json();
@@ -106,13 +108,13 @@ const MyToursList = () => {
   if (error) {
     return (
       <div className="text-center py-40">
-        <div className="text-20 text-red-1 fw-500 mb-10">Error loading tours</div>
+        <div className="text-20 text-red-1 fw-500 mb-10">{t("myTours.errorLoading")}</div>
         <div className="text-14 text-light-1 mb-20">{error.message}</div>
         <button 
           onClick={() => refetch()}
           className="button -md -dark-1 bg-blue-1 text-white"
         >
-          Try Again
+          {t("myTours.tryAgain")}
         </button>
       </div>
     );
@@ -127,7 +129,7 @@ const MyToursList = () => {
             <div className="input-group">
               <input
                 type="text"
-                placeholder="Search tours..."
+                placeholder={t("myTours.searchPlaceholder")}
                 value={searchTerm}
                 onChange={handleSearchInputChange}
                 className="form-control border-light-1 rounded-4"
@@ -176,7 +178,7 @@ const MyToursList = () => {
           {searchTerm !== debouncedSearchTerm && (
             <div className="text-12 text-light-1 mt-5">
               <i className="icon-clock text-10 mr-5"></i>
-              Searching...
+              {t("myTours.searching")}
             </div>
           )}
         </div>
@@ -187,25 +189,25 @@ const MyToursList = () => {
               onClick={() => handleStatusFilter("all")}
               className={`button -md mr-5 ${statusFilter === "all" ? "-dark-1 bg-blue-1 text-white" : "-outline-blue-1"}`}
             >
-              All
+              {t("myTours.all")}
             </button>
             <button
               onClick={() => handleStatusFilter("1")}
               className={`button -md mr-5 ${statusFilter === "1" ? "-dark-1 bg-blue-1 text-white" : "-outline-blue-1"}`}
             >
-              Active
+              {t("myTours.active")}
             </button>
             <button
               onClick={() => handleStatusFilter("0")}
               className={`button -md ${statusFilter === "0" ? "-dark-1 bg-blue-1 text-white" : "-outline-blue-1"}`}
             >
-              Inactive
+              {t("myTours.inactive")}
             </button>
             <button
               onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
               className={`button -md -outline-blue-1 ml-10 ${showAdvancedFilters ? 'bg-blue-1 text-white' : ''}`}
             >
-              Filters
+              {t("myTours.filters")}
             </button>
           </div>
         </div>
@@ -215,7 +217,7 @@ const MyToursList = () => {
       {showAdvancedFilters && (
         <div className="row y-gap-20 mb-30 p-20 bg-light-2 rounded-8">
           <div className="col-lg-3 col-md-6">
-            <label className="text-14 fw-500 text-dark-1 mb-10">From Date</label>
+            <label className="text-14 fw-500 text-dark-1 mb-10">{t("myTours.fromDate")}</label>
             <input
               type="date"
               value={fromDate}
@@ -230,7 +232,7 @@ const MyToursList = () => {
             />
           </div>
           <div className="col-lg-3 col-md-6">
-            <label className="text-14 fw-500 text-dark-1 mb-10">To Date</label>
+            <label className="text-14 fw-500 text-dark-1 mb-10">{t("myTours.toDate")}</label>
             <input
               type="date"
               value={toDate}
@@ -245,10 +247,10 @@ const MyToursList = () => {
             />
           </div>
           <div className="col-lg-3 col-md-6">
-            <label className="text-14 fw-500 text-dark-1 mb-10">Location ID</label>
+            <label className="text-14 fw-500 text-dark-1 mb-10">{t("myTours.locationId")}</label>
             <input
               type="number"
-              placeholder="Location ID"
+              placeholder={t("myTours.locationIdPlaceholder")}
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className="form-control border-light-1 rounded-4"
@@ -261,11 +263,11 @@ const MyToursList = () => {
             />
           </div>
           <div className="col-lg-3 col-md-6">
-            <label className="text-14 fw-500 text-dark-1 mb-10">Price Range</label>
+            <label className="text-14 fw-500 text-dark-1 mb-10">{t("myTours.priceRange")}</label>
             <div className="d-flex x-gap-10">
               <input
                 type="number"
-                placeholder="From"
+                placeholder={t("myTours.from")}
                 value={fromPrice}
                 onChange={(e) => setFromPrice(e.target.value)}
                 className="form-control border-light-1 rounded-4"
@@ -279,7 +281,7 @@ const MyToursList = () => {
               />
               <input
                 type="number"
-                placeholder="To"
+                placeholder={t("myTours.to")}
                 value={toPrice}
                 onChange={(e) => setToPrice(e.target.value)}
                 className="form-control border-light-1 rounded-4"
@@ -302,14 +304,14 @@ const MyToursList = () => {
                 }}
                 className="button -md -dark-1 bg-blue-1 text-white"
               >
-                Apply Filters
+                {t("myTours.applyFilters")}
               </button>
               {hasActiveFilters && (
                 <button
                   onClick={handleClearFilters}
                   className="ml-5 button -md -outline-blue-1"
                 >
-                  Clear All
+                  {t("myTours.clearAll")}
                 </button>
               )}
             </div>
@@ -321,12 +323,12 @@ const MyToursList = () => {
       {filteredTours.length > 0 && (
         <div className="d-flex justify-between items-center mb-20">
           <div className="text-14 text-light-1">
-            Showing {filteredTours.length} tours
+            {t("myTours.showingTours", { count: filteredTours.length })}
           </div>
           {hasActiveFilters && (
             <div className="text-14 text-light-1">
               <i className="icon-filter text-12 mr-5"></i>
-              Filters applied
+              {t("myTours.filtersApplied")}
             </div>
           )}
         </div>
@@ -335,18 +337,18 @@ const MyToursList = () => {
       {/* Tours List */}
       {filteredTours.length === 0 ? (
         <div className="text-center py-40">
-          <div className="text-20 text-light-1 fw-500 mb-10">No tours found</div>
+          <div className="text-20 text-light-1 fw-500 mb-10">{t("myTours.noToursFound")}</div>
           <div className="text-14 text-light-1">
             {hasActiveFilters 
-              ? "Try adjusting your search or filter criteria" 
-              : "You haven't created any tours yet"}
+              ? t("myTours.adjustSearchCriteria") 
+              : t("myTours.noToursCreated")}
           </div>
           {hasActiveFilters && (
             <button 
               onClick={handleClearFilters}
               className="button -md -outline-blue-1 mt-15"
             >
-              Clear Filters
+              {t("myTours.clearFilters")}
             </button>
           )}
         </div>

@@ -1,3 +1,5 @@
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Seo from "../../../components/common/Seo";
 import Sidebar from "../common/Sidebar";
 import Header from "../../../components/header/dashboard-header";
@@ -5,19 +7,21 @@ import MyToursList from "../../../components/vendor-dashboard/my-tours/MyToursLi
 import Footer from "../common/Footer";
 
 const index = () => {
+  const { t, i18n } = useTranslation("common");
+
   return (
     <>
-      <Seo pageTitle="My Tours List" />
+      <Seo pageTitle={t("myTours.title")} />
       {/* End Page Title */}
 
       <div className="header-margin"></div>
 
-      <Header />
+      <Header key={i18n.language} />
       {/* End dashboard-header */}
 
       <div className="dashboard">
         <div className="dashboard__sidebar bg-white scroll-bar-1">
-          <Sidebar />
+          <Sidebar key={i18n.language} />
           {/* End sidebar */}
         </div>
         {/* End dashboard__sidebar */}
@@ -26,9 +30,9 @@ const index = () => {
           <div className="dashboard__content bg-light-2">
             <div className="row y-gap-20 justify-between items-end pb-60 lg:pb-40 md:pb-32">
               <div className="col-12">
-                <h1 className="text-30 lh-14 fw-600">My Tours List</h1>
+                <h1 className="text-30 lh-14 fw-600">{t("myTours.title")}</h1>
                 <div className="text-15 text-light-1">
-                  Manage and view all your created tours
+                  {t("myTours.subtitle")}
                 </div>
               </div>
               {/* End .col-12 */}
@@ -36,7 +40,7 @@ const index = () => {
             {/* End .row */}
 
             <div className="py-30 px-30 rounded-4 bg-white shadow-3">
-              <MyToursList />
+              <MyToursList key={i18n.language} />
             </div>
 
             <Footer />
@@ -49,5 +53,13 @@ const index = () => {
     </>
   );
 };
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
 
 export default index; 

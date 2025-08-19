@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "next-i18next";
 import ToggleSwitch from "../../../../components/common/ToggleSwitch";
 
 const TourContentTab = ({ formData, setFormData }) => {
+  const { t } = useTranslation("common");
+
   const handleInputChange = (field, value, language = null) => {
     if (language) {
       setFormData(prev => ({
@@ -23,7 +26,7 @@ const TourContentTab = ({ formData, setFormData }) => {
     <div className="row y-gap-20">
       {/* Title Section */}
       <div className="col-12">
-        <h4 className="text-18 fw-500 mb-20">Tour Title</h4>
+        <h4 className="text-18 fw-500 mb-20">{t("vendor.tourTitle")}</h4>
         <div className="row y-gap-20">
           <div className="col-md-4">
             <div className={`form-input bg-white ${formData.title.en ? 'has-value' : ''}`}>
@@ -33,7 +36,7 @@ const TourContentTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("title", e.target.value, "en")}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Title (English)</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.titleEnglish")}</label>
             </div>
           </div>
           <div className="col-md-4">
@@ -44,7 +47,7 @@ const TourContentTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("title", e.target.value, "uz")}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Title (Uzbek)</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.titleUzbek")}</label>
             </div>
           </div>
           <div className="col-md-4">
@@ -55,7 +58,7 @@ const TourContentTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("title", e.target.value, "ru")}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Title (Russian)</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.titleRussian")}</label>
             </div>
           </div>
         </div>
@@ -63,7 +66,7 @@ const TourContentTab = ({ formData, setFormData }) => {
 
       {/* Description Section */}
       <div className="col-12">
-        <h4 className="text-18 fw-500 mb-20">Tour Description</h4>
+        <h4 className="text-18 fw-500 mb-20">{t("vendor.tourDescription")}</h4>
         <div className="row y-gap-20">
           <div className="col-md-4">
             <div className={`form-input bg-white ${formData.description.en ? 'has-value' : ''}`}>
@@ -73,7 +76,7 @@ const TourContentTab = ({ formData, setFormData }) => {
                 rows={4}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Description (English)</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.descriptionEnglish")}</label>
             </div>
           </div>
           <div className="col-md-4">
@@ -84,7 +87,7 @@ const TourContentTab = ({ formData, setFormData }) => {
                 rows={4}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Description (Uzbek)</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.descriptionUzbek")}</label>
             </div>
           </div>
           <div className="col-md-4">
@@ -95,7 +98,7 @@ const TourContentTab = ({ formData, setFormData }) => {
                 rows={4}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Description (Russian)</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.descriptionRussian")}</label>
             </div>
           </div>
         </div>
@@ -105,7 +108,7 @@ const TourContentTab = ({ formData, setFormData }) => {
       <div className="col-12">
         <div className="form-section">
           <div className="section-header">
-            <h4 className="text-18 fw-500">Tour Route</h4>
+            <h4 className="text-18 fw-500">{t("vendor.tourRoute")}</h4>
             <button
               type="button"
               onClick={() => {
@@ -116,7 +119,7 @@ const TourContentTab = ({ formData, setFormData }) => {
               }}
               className="action-button -add"
             >
-              Add Route Item
+              {t("vendor.addRouteItem")}
             </button>
           </div>
           
@@ -131,9 +134,9 @@ const TourContentTab = ({ formData, setFormData }) => {
                     setFormData(prev => ({ ...prev, route_json: newRouteJson }));
                   }}
                   className="action-button -remove-ghost"
-                  title="Remove this route item"
+                  title={t("vendor.removeRouteItem")}
                 >
-                  Remove
+                  {t("vendor.remove")}
                 </button>
               </div>
               
@@ -148,9 +151,9 @@ const TourContentTab = ({ formData, setFormData }) => {
                         newRouteJson[index] = { ...newRouteJson[index], title: e.target.value };
                         setFormData(prev => ({ ...prev, route_json: newRouteJson }));
                       }}
-                      placeholder="Route title"
+                      placeholder={t("vendor.routeTitlePlaceholder")}
                     />
-                    <label className="lh-1 text-14 text-light-1">Route Title</label>
+                    <label className="lh-1 text-14 text-light-1">{t("vendor.routeTitle")}</label>
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -163,9 +166,9 @@ const TourContentTab = ({ formData, setFormData }) => {
                         newRouteJson[index] = { ...newRouteJson[index], description: e.target.value };
                         setFormData(prev => ({ ...prev, route_json: newRouteJson }));
                       }}
-                      placeholder="Route description"
+                      placeholder={t("vendor.routeDescriptionPlaceholder")}
                     />
-                    <label className="lh-1 text-14 text-light-1">Route Description</label>
+                    <label className="lh-1 text-14 text-light-1">{t("vendor.routeDescription")}</label>
                   </div>
                 </div>
               </div>
@@ -178,7 +181,7 @@ const TourContentTab = ({ formData, setFormData }) => {
       <div className="col-12">
         <div className="form-section">
           <div className="section-header">
-            <h4 className="text-18 fw-500">What's Included</h4>
+            <h4 className="text-18 fw-500">{t("vendor.whatsIncluded")}</h4>
             <button
               type="button"
               onClick={() => {
@@ -189,7 +192,7 @@ const TourContentTab = ({ formData, setFormData }) => {
               }}
               className="action-button -add"
             >
-              Add Include Item
+              {t("vendor.addIncludeItem")}
             </button>
           </div>
           
@@ -204,9 +207,9 @@ const TourContentTab = ({ formData, setFormData }) => {
                     setFormData(prev => ({ ...prev, includes: newIncludes }));
                   }}
                   className="action-button -remove-ghost"
-                  title="Remove this include item"
+                  title={t("vendor.removeIncludeItem")}
                 >
-                  Remove
+                  {t("vendor.remove")}
                 </button>
               </div>
               
@@ -221,9 +224,9 @@ const TourContentTab = ({ formData, setFormData }) => {
                         newIncludes[index] = { ...newIncludes[index], title: e.target.value };
                         setFormData(prev => ({ ...prev, includes: newIncludes }));
                       }}
-                      placeholder="Include item"
+                      placeholder={t("vendor.includeItemPlaceholder")}
                     />
-                    <label className="lh-1 text-14 text-light-1">Include Item</label>
+                    <label className="lh-1 text-14 text-light-1">{t("vendor.includeItem")}</label>
                   </div>
                 </div>
                 <div className="col-md-4 d-flex align-items-center">
@@ -237,7 +240,7 @@ const TourContentTab = ({ formData, setFormData }) => {
                     id={`include-toggle-${index}`}
                   />
                   <span className="ml-10 text-14 text-light-1">
-                    {include.included ? "Included" : "Not included"}
+                    {include.included ? t("vendor.included") : t("vendor.notIncluded")}
                   </span>
                 </div>
               </div>

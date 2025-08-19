@@ -1,7 +1,9 @@
 import Image from "next/image";
 import React, { useState } from "react";
+import { useTranslation } from "next-i18next";
 
 const AvatarUploader = () => {
+  const { t } = useTranslation("common");
   const [image, setImage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -11,19 +13,19 @@ const AvatarUploader = () => {
     const reader = new FileReader();
 
     if (!file) {
-      setError("Please select an image.");
+      setError(t("vendor.pleaseSelectImage"));
       setSuccess(false);
       return;
     }
 
     if (file.size > 800 * 1024) {
-      setError("Image must be smaller than 800KB.");
+      setError(t("vendor.imageSizeLimit"));
       setSuccess(false);
       return;
     }
 
     if (!file.type.startsWith("image/")) {
-      setError("Only image files are allowed.");
+      setError(t("vendor.onlyImageFilesAllowed"));
       setSuccess(false);
       return;
     }
@@ -77,9 +79,9 @@ const AvatarUploader = () => {
       </div>
 
       <div className="col-auto">
-        <h4 className="text-16 fw-500">Your avatar</h4>
+        <h4 className="text-16 fw-500">{t("vendor.yourAvatar")}</h4>
         <div className="text-14 mt-5">
-          PNG or JPG no bigger than 800px wide and tall.
+          {t("vendor.avatarRequirements")}
         </div>
         <div className="d-inline-block mt-15">
           <label
@@ -88,7 +90,7 @@ const AvatarUploader = () => {
             className="button h-50 px-24 -dark-1 bg-blue-1 text-white"
           >
             <i className="icon-upload-file text-20 mr-10" />
-            Browse
+            {t("vendor.browse")}
           </label>
           <input
             type="file"

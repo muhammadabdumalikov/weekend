@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 import ToggleSwitch from "../../../../components/common/ToggleSwitch";
 
 const CurrencyType = {
@@ -8,6 +9,8 @@ const CurrencyType = {
 };
 
 const TourDetailsTab = ({ formData, setFormData }) => {
+  const { t } = useTranslation("common");
+
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -19,7 +22,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
     <div className="row y-gap-20">
       {/* Basic Details */}
       <div className="col-12">
-        <h4 className="text-18 fw-500 mb-20">Tour Details</h4>
+        <h4 className="text-18 fw-500 mb-20">{t("vendor.tourDetails")}</h4>
         <div className="row y-gap-20">
           <div className="col-md-3">
             <div className="form-input bg-white">
@@ -29,7 +32,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("price", e.target.value)}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Price</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.tourPrice")}</label>
             </div>
           </div>
           <div className="col-md-3">
@@ -39,7 +42,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 value={formData.sale_price}
                 onChange={(e) => handleInputChange("sale_price", e.target.value)}
               />
-              <label className="lh-1 text-14 text-light-1">Sale Price</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.salePrice")}</label>
             </div>
           </div>
           <div className="col-md-1">
@@ -83,7 +86,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("duration", e.target.value)}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Duration</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.tourDuration")}</label>
             </div>
           </div>
           <div className="col-md-3">
@@ -94,7 +97,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("seats", parseInt(e.target.value))}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Available Seats</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.availableSeats")}</label>
             </div>
           </div>
         </div>
@@ -111,11 +114,11 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("start_date", e.target.value)}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Start Date</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.startDate")}</label>
             </div>
           </div>
           <div className="col-md-6">
-            <label className="lh-1 text-14 text-light-1">Status</label>
+            <label className="lh-1 text-14 text-light-1">{t("vendor.status")}</label>
             <div className="d-flex items-center">
               <ToggleSwitch
                 checked={formData.status}
@@ -123,7 +126,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 id="status-toggle"
               />
               <span className="ml-10 text-14 text-light-1">
-                {formData.status ? "Active" : "Inactive"}
+                {formData.status ? t("vendor.active") : t("vendor.inactive")}
               </span>
             </div>
           </div>
@@ -141,7 +144,7 @@ const TourDetailsTab = ({ formData, setFormData }) => {
                 onChange={(e) => handleInputChange("location", parseInt(e.target.value))}
                 required
               />
-              <label className="lh-1 text-14 text-light-1">Location ID</label>
+              <label className="lh-1 text-14 text-light-1">{t("vendor.locationId")}</label>
             </div>
           </div>
         </div>

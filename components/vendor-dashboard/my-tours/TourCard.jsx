@@ -1,7 +1,9 @@
 import React from "react";
+import { useTranslation } from "next-i18next";
 import Image from "next/image";
 
 const TourCard = ({ tour, onUpdate }) => {
+  const { t } = useTranslation("common");
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-US', {
@@ -20,9 +22,9 @@ const TourCard = ({ tour, onUpdate }) => {
 
   const getStatusBadge = (status) => {
     return status === 1 ? (
-      <span className="badge text-14 lh-14 bg-blue-1 text-white">Active</span>
+      <span className="badge text-14 lh-14 bg-blue-1 text-white">{t("myTours.active")}</span>
     ) : (
-      <span className="badge text-14 lh-14 bg-red-1 text-white">Inactive</span>
+      <span className="badge text-14 lh-14 bg-red-1 text-white">{t("myTours.inactive")}</span>
     );
   };
 
@@ -66,7 +68,7 @@ const TourCard = ({ tour, onUpdate }) => {
               <div className="size-3 rounded-full bg-light-1"></div>
             </div>
             <div className="col-auto">
-              <p className="text-14 lh-14">{tour.seats} seats</p>
+              <p className="text-14 lh-14">{t("myTours.seats", { count: tour.seats })}</p>
             </div>
           </div>
 
@@ -81,30 +83,30 @@ const TourCard = ({ tour, onUpdate }) => {
           <div className="row x-gap-20 y-gap-10">
             <div className="col-auto">
               <div className="text-14 lh-14">
-                <strong>Price:</strong> {formatPrice(tour.price)}
+                <strong>{t("myTours.price")}:</strong> {formatPrice(tour.price)}
               </div>
             </div>
             <div className="col-auto">
               <div className="text-14 lh-14">
-                <strong>Sale Price:</strong> {formatPrice(tour.sale_price)}
+                <strong>{t("myTours.salePrice")}:</strong> {formatPrice(tour.sale_price)}
               </div>
             </div>
             <div className="col-auto">
               <div className="text-14 lh-14">
-                <strong>Start Date:</strong> {formatDate(tour.start_date)}
+                <strong>{t("myTours.startDate")}:</strong> {formatDate(tour.start_date)}
               </div>
             </div>
           </div>
 
           {tour.organizer_title && (
             <div className="text-14 lh-14 mt-10">
-              <strong>Organizer:</strong> {tour.organizer_title.en}
+              <strong>{t("myTours.organizer")}:</strong> {tour.organizer_title.en}
             </div>
           )}
 
           {tour.includes && tour.includes.length > 0 && (
             <div className="mt-15">
-              <div className="text-14 fw-500 mb-5">Includes:</div>
+              <div className="text-14 fw-500 mb-5">{t("myTours.includes")}:</div>
               <div className="row x-gap-10 y-gap-5">
                 {tour.includes.map((item, index) => (
                   <div key={index} className="col-auto">
@@ -124,19 +126,19 @@ const TourCard = ({ tour, onUpdate }) => {
             {/* View Button */}
             <button 
               className="button -md -outline-blue-1 text-blue-1 mr-5"
-              title="View Tour Details"
+              title={t("myTours.viewTourDetails")}
             >
               <i className="icon-eye text-16 mr-5"></i>
-              View
+              {t("myTours.view")}
             </button>
             
             {/* Edit Button */}
             <button 
               className="button -md -outline-blue-1 text-blue-1"
-              title="Edit Tour"
+              title={t("myTours.editTour")}
             >
               <i className="icon-edit text-16 mr-5"></i>
-              Edit
+              {t("myTours.edit")}
             </button>
           </div>
 
@@ -144,7 +146,7 @@ const TourCard = ({ tour, onUpdate }) => {
             <div className="d-flex x-gap-5 items-center justify-end md:justify-start mt-10">
               <i className="icon-star text-10 text-yellow-1"></i>
               <span className="text-14 lh-14">{tour.rating}</span>
-              <span className="text-14 lh-14 text-light-1">({tour.review_count} reviews)</span>
+              <span className="text-14 lh-14 text-light-1">{t("myTours.reviews", { count: tour.review_count })}</span>
             </div>
           )}
         </div>
