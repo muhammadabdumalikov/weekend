@@ -1,8 +1,8 @@
-import dynamic from "next/dynamic";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 import Seo from "../../components/common/Seo";
 import PopularDestinations from "../../components/destinations/PopularDestinations";
 import Footer5 from "../../components/footer/footer-5";
-import Header6 from "../../components/header/header-6";
 import Hero6 from "../../components/hero/hero-6";
 import BlockGuide from "../../components/home/home-6/BlockGuide";
 import AddBanner from "../../components/home/home-6/AddBanner";
@@ -13,17 +13,20 @@ import AppBanner from "../../components/home/home-6/AppBanner";
 import Testimonials from "../../components/home/home-6/Testimonials";
 import Activity2 from "../../components/activity/Activity2";
 import Tour from "../../components/home/home-6/Tour";
+import DefaultHeader from "../../components/header/default-header/index2";
 
 const home_6 = () => {
+  const { t, i18n } = useTranslation("common");
+
   return (
     <>
-      <Seo pageTitle="Home-6" />
+      <Seo pageTitle={t("navigation.home")} />
       {/* End Page Title */}
 
-      <Header6 />
+      <DefaultHeader />
       {/* End Header 6 */}
 
-      <Hero6 />
+      <Hero6 key={i18n.language} />
       {/* End Hero 6 */}
 
       {/* <section className="layout-pt-md layout-pb-md bg-light-2"> */}
@@ -64,9 +67,9 @@ const home_6 = () => {
           <div className="row justify-center text-center is-in-view">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Newest Tours</h2>
+                <h2 className="sectionTitle__title">{t("tours.title")}</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames ac ante ipsum
+                  {t("tours.subtitle")}
                 </p>
               </div>
             </div>
@@ -76,7 +79,7 @@ const home_6 = () => {
 
           <div className="row y-gap-30 pt-40 sm:pt-20 item_gap-x30">
             <div className="col-12">
-              <Activity />
+              <Activity key={i18n.language} />
             </div>
           </div>
           {/* End .row */}
@@ -91,10 +94,10 @@ const home_6 = () => {
             <div className="col-auto">
               <div className="sectionTitle -md">
                 <h2 className="sectionTitle__title">
-                  Adventure &amp; Activity
+                  {t("tours.adventure")} &amp; {t("navigation.activities")}
                 </h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames ac ante ipsum
+                  {t("tours.subtitle")}
                 </p>
               </div>
             </div>
@@ -115,9 +118,9 @@ const home_6 = () => {
           <div className="row y-gap-20 justify-between items-end">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Popular Destinations</h2>
+                <h2 className="sectionTitle__title">{t("tours.title")}</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  These popular destinations have a lot to offer
+                  {t("tours.subtitle")}
                 </p>
               </div>
             </div>
@@ -128,7 +131,7 @@ const home_6 = () => {
                 href="#"
                 className="button -md -blue-1 bg-blue-1-05 text-blue-1"
               >
-                View All Destinations
+                {t("tours.viewAll")}
                 <div className="icon-arrow-top-right ml-15" />
               </a>
             </div>
@@ -151,9 +154,9 @@ const home_6 = () => {
           <div className="row justify-center text-center">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Testimonials</h2>
+                <h2 className="sectionTitle__title">{t("common.reviews")}</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames ac ante ipsum
+                  {t("hero.subtitle")}
                 </p>
               </div>
             </div>
@@ -179,9 +182,9 @@ const home_6 = () => {
           <div className="row justify-center text-center is-in-view">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Recommended Activity</h2>
+                <h2 className="sectionTitle__title">{t("tours.title")}</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames ac ante ipsum
+                  {t("tours.subtitle")}
                 </p>
               </div>
             </div>
@@ -207,10 +210,10 @@ const home_6 = () => {
             <div className="col-auto">
               <div className="sectionTitle -md">
                 <h2 className="sectionTitle__title">
-                  Get inspiration for your next trip
+                  {t("hero.title")}
                 </h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames
+                  {t("hero.subtitle")}
                 </p>
               </div>
             </div>
@@ -232,4 +235,12 @@ const home_6 = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(home_6), { ssr: false });
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
+
+export default home_6;

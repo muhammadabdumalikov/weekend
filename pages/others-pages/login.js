@@ -1,15 +1,17 @@
-import dynamic from "next/dynamic";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import CallToActions from "../../components/common/CallToActions";
 import Seo from "../../components/common/Seo";
 import DefaultHeader from "../../components/header/default-header";
 import DefaultFooter from "../../components/footer/default";
 import LoginWithSocial from "../../components/common/LoginWithSocial";
 import LoginForm from "../../components/common/LoginForm";
-
 const LogIn = () => {
+  const { t, i18n } = useTranslation("common");
+  
   return (
     <>
-      <Seo pageTitle="Login" />
+      <Seo pageTitle={t("auth.login")} />
       {/* End Page Title */}
 
       <div className="header-margin"></div>
@@ -23,18 +25,17 @@ const LogIn = () => {
           <div className="row justify-center">
             <div className="col-xl-6 col-lg-7 col-md-9">
               <div className="px-50 py-50 sm:px-20 sm:py-20 bg-white shadow-4 rounded-4">
-                <LoginForm />
+                <LoginForm key={i18n.language} />
                 {/* End .Login */}
 
                 <div className="row y-gap-20 pt-30">
                   <div className="col-12">
-                    <div className="text-center">or sign in with</div>
+                    <div className="text-center">{t("auth.orSignInWith")}</div>
                   </div>
-                  <LoginWithSocial />
+                  <LoginWithSocial key={i18n.language} />
                   <div className="col-12">
                     <div className="text-center px-30">
-                      By creating an account, you agree to our Terms of Service
-                      and Privacy Statement.
+                      {t("auth.termsAgreement")}
                     </div>
                   </div>
                 </div>
@@ -55,4 +56,12 @@ const LogIn = () => {
   );
 };
 
-export default dynamic(() => Promise.resolve(LogIn), { ssr: false });
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
+
+export default LogIn;

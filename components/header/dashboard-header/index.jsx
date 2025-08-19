@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
 import MainMenu from "../MainMenu";
 import MobileMenu from "../MobileMenu";
+import LanguageMegaMenu from "../LanguageMegaMenu";
 
 const HeaderDashBoard = () => {
+  const { t } = useTranslation("common");
   const [navbar, setNavbar] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -55,7 +58,7 @@ const HeaderDashBoard = () => {
                   <input
                     className="pl-50 border-light text-dark-1 h-50 rounded-8"
                     type="email"
-                    placeholder="Search"
+                    placeholder={t("common.search")}
                   />
                   <button className="absolute d-flex items-center h-full">
                     <i className="icon-search text-20 px-15 text-dark-1"></i>
@@ -75,6 +78,12 @@ const HeaderDashBoard = () => {
                 {/* End header-menu */}
 
                 <div className="row items-center x-gap-5 y-gap-20 pl-20 lg:d-none">
+                  {/* Language Switcher */}
+                  <div className="col-auto">
+                    <LanguageMegaMenu textClass="text-dark-1" />
+                  </div>
+                  {/* End Language Switcher */}
+
                   {/* <div className="col-auto">
                     <button className="button -blue-1-05 size-50 rounded-22 flex-center">
                       <i className="icon-email-2 text-20"></i>
@@ -102,6 +111,12 @@ const HeaderDashBoard = () => {
                 </div>
 
                 <div className="d-none xl:d-flex x-gap-20 items-center pl-20">
+                  {/* Language Switcher for Mobile */}
+                  <div className="d-none lg:d-block">
+                    <LanguageMegaMenu textClass="text-dark-1" />
+                  </div>
+                  {/* End Language Switcher for Mobile */}
+                  
                   <div>
                     <button
                       className="d-flex items-center icon-menu text-20"

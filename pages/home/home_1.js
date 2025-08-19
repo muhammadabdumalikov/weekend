@@ -1,4 +1,6 @@
 import dynamic from "next/dynamic";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 import AddBanner from "../../components/add-banner/AddBanner";
 import Seo from "../../components/common/Seo";
 import PopularDestinations from "../../components/destinations/PopularDestinations";
@@ -15,9 +17,11 @@ import Hotels from "../../components/hotels/Hotels";
 import SelectFilter from "../../components/hotels/filter-tabs/SelectFilter";
 
 const Home_1 = () => {
+  const { t } = useTranslation("common");
+
   return (
     <>
-      <Seo pageTitle="Home-1" />
+      <Seo pageTitle={t("navigation.home")} />
       {/* End Page Title */}
 
       <Header1 />
@@ -31,9 +35,9 @@ const Home_1 = () => {
           <div className="row y-gap-20 justify-between items-end">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Popular Destinations</h2>
+                <h2 className="sectionTitle__title">{t("tours.title")}</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  These popular destinations have a lot to offer
+                  {t("tours.subtitle")}
                 </p>
               </div>
             </div>
@@ -44,7 +48,7 @@ const Home_1 = () => {
                 href="#"
                 className="button -md -blue-1 bg-blue-1-05 text-blue-1"
               >
-                View All Destinations
+                {t("tours.viewAll")}
                 <div className="icon-arrow-top-right ml-15" />
               </a>
             </div>
@@ -75,9 +79,9 @@ const Home_1 = () => {
           <div className="row y-gap-10 justify-between items-end">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Recommended</h2>
+                <h2 className="sectionTitle__title">{t("hotels.title")}</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames ac ante ipsum
+                  {t("hotels.subtitle")}
                 </p>
               </div>
             </div>
@@ -134,10 +138,10 @@ const Home_1 = () => {
             <div className="col-auto">
               <div className="sectionTitle -md">
                 <h2 className="sectionTitle__title">
-                  Get inspiration for your next trip
+                  {t("hero.title")}
                 </h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames
+                  {t("hero.subtitle")}
                 </p>
               </div>
             </div>
@@ -157,9 +161,9 @@ const Home_1 = () => {
           <div className="row">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Destinations we love</h2>
+                <h2 className="sectionTitle__title">{t("tours.title")}</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames ac ante ipsum
+                  {t("tours.subtitle")}
                 </p>
               </div>
             </div>
@@ -182,5 +186,13 @@ const Home_1 = () => {
     </>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
 
 export default dynamic(() => Promise.resolve(Home_1), { ssr: false });

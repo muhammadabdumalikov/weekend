@@ -1,57 +1,62 @@
+import { useTranslation } from "next-i18next";
+
 const RercentBooking = () => {
+  const { t } = useTranslation("common");
+  
   const data = [
     {
-      item: "New York",
-      description: "Discover America",
+      item: t("dashboard.newYork"),
+      description: t("dashboard.discoverAmerica"),
       total: "$130",
       paid: "$0",
-      status: { color: "yellow-4", text: "yellow-3", label: "Pending" },
+      status: { color: "yellow-4", text: "yellow-3", label: t("dashboard.pending") },
       createdAt: "04/04/2022 08:16",
     },
     {
-      item: "New York",
-      description: "Discover America",
+      item: t("dashboard.newYork"),
+      description: t("dashboard.discoverAmerica"),
       total: "$130",
       paid: "$0",
-      status: { color: "blue-1-05", text: "blue-1", label: "Confirmed" },
+      status: { color: "blue-1-05", text: "blue-1", label: t("dashboard.confirmed") },
       createdAt: "04/04/2022 08:16",
     },
     {
-      item: "New York",
-      description: "Discover America",
+      item: t("dashboard.newYork"),
+      description: t("dashboard.discoverAmerica"),
       total: "$130",
       paid: "$0",
-      status: { color: "red-3", text: "red-2", label: "Rejected" },
+      status: { color: "red-3", text: "red-2", label: t("dashboard.rejected") },
       createdAt: "04/04/2022 08:16",
     },
     {
-      item: "New York",
-      description: "Discover America",
+      item: t("dashboard.newYork"),
+      description: t("dashboard.discoverAmerica"),
       total: "$130",
       paid: "$0",
-      status: { color: "blue-1-05", text: "blue-1", label: "Confirmed" },
+      status: { color: "blue-1-05", text: "blue-1", label: t("dashboard.confirmed") },
       createdAt: "04/04/2022 08:16",
     },
     {
-      item: "New York",
-      description: "Discover America",
+      item: t("dashboard.newYork"),
+      description: t("dashboard.discoverAmerica"),
       total: "$130",
       paid: "$0",
-      status: { color: "blue-1-05", text: "blue-1", label: "Confirmed" },
+      status: { color: "blue-1-05", text: "blue-1", label: t("dashboard.confirmed") },
       createdAt: "04/04/2022 08:16",
     },
   ];
+  
   return (
     <div className="overflow-scroll scroll-bar-1 pt-30">
       <table className="table-2 col-12">
         <thead>
           <tr>
             <th>#</th>
-            <th>Item</th>
-            <th>Total</th>
-            <th>Paid</th>
-            <th>Status</th>
-            <th>Created At</th>
+            <th>{t("dashboard.item")}</th>
+            <th>{t("dashboard.total")}</th>
+            <th>{t("dashboard.paid")}</th>
+            <th>{t("dashboard.status")}</th>
+            <th>{t("dashboard.createdAt")}</th>
           </tr>
         </thead>
         <tbody>

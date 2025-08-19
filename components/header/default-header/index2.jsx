@@ -2,12 +2,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
 import MainMenu from "../MainMenu";
-import MobileMenu from "../MobileMenu";
-// import CurrenctyMegaMenu from "../CurrenctyMegaMenu";
+import CurrenctyMegaMenu from "../CurrenctyMegaMenu";
 import LanguageMegaMenu from "../LanguageMegaMenu";
 
-const Header1 = () => {
+import MobileMenu from "../MobileMenu";
+
+const DefaultHeader = () => {
   const { t } = useTranslation("common");
+
   const [navbar, setNavbar] = useState(false);
 
   const changeBackground = () => {
@@ -24,16 +26,23 @@ const Header1 = () => {
 
   return (
     <>
-      <header className={`header ${navbar ? "bg-dark-1 is-sticky" : ""}`}>
-        <div className="header__container container">
-          <div className="row justify-between items-center">
+      <header className={`header ${navbar ? "bg-white is-sticky" : ""}`}>
+      <div className="header__container container">
+      <div className="row justify-between items-center">
             <div className="col-auto">
               <div className="d-flex items-center">
                 <Link href="/" className="header-logo mr-20">
-                  <img src="/img/general/logo-light.svg" alt="logo icon" />
+                  <img src="/img/general/logo-dark.svg" alt="logo icon" />
                   <img src="/img/general/logo-dark.svg" alt="logo icon" />
                 </Link>
                 {/* End logo */}
+
+                <div className="header-menu">
+                  <div className="header-menu__content">
+                    <MainMenu style={`${navbar ? "text-dark-1" : "text-white"}`} />
+                  </div>
+                </div>
+                {/* End header-menu */}
               </div>
               {/* End d-flex */}
             </div>
@@ -42,36 +51,31 @@ const Header1 = () => {
             <div className="col-auto">
               <div className="d-flex items-center">
                 <div className="row x-gap-20 items-center xxl:d-none">
-                  {/* <CurrenctyMegaMenu textClass="text-light" /> */}
+                  <CurrenctyMegaMenu textClass={`${navbar ? "text-dark-1" : "text-white"}`} />
                   {/* End Megamenu for Currencty */}
 
                   {/* Start vertical devider*/}
                   <div className="col-auto">
-                    <div className="w-1 h-20 bg-white-120" />
+                    <div className="w-1 h-20 bg-white-20" />
                   </div>
                   {/* End vertical devider*/}
 
-                  <LanguageMegaMenu textClass="text-light" />
+                  <LanguageMegaMenu textClass={`${navbar ? "text-dark-1" : "text-white"}`} />
                   {/* End Megamenu for Language */}
                 </div>
-                <div className="header-menu">
-                  <div className="header-menu__content">
-                    <MainMenu style="text-white" />
-                  </div>
-                </div>
-                {/* End header-menu */}
+                {/* End language and currency selector */}
 
                 {/* Start btn-group */}
                 <div className="d-flex items-center ml-20 is-menu-opened-hide md:d-none">
                   <Link
                     href="/others-pages/login"
-                    className="button px-30 fw-400 text-14 -blue-1 bg-white h-50 text-dark-1"
+                    className={`button px-30 fw-400 text-14 -blue-1 bg-white h-50 text-dark-1`}
                   >
                     {t("header.becomeExpert")}
                   </Link>
                   <Link
                     href="/others-pages/signup"
-                    className="button px-30 fw-400 text-14 border-white -blue-1 h-50 text-white ml-20"
+                    className={`button px-30 fw-400 text-14 border-white -blue-1 h-50 ${navbar ? "text-dark-1" : "text-white"} ml-20`}
                   >
                     {t("header.signInRegister")}
                   </Link>
@@ -79,11 +83,11 @@ const Header1 = () => {
                 {/* End btn-group */}
 
                 {/* Start mobile menu icon */}
-                <div className="d-none xl:d-flex x-gap-20 items-center pl-30 text-white">
+                <div className="d-none xl:d-flex x-gap-20 items-center pl-30 text-dark-1">
                   <div>
                     <Link
                       href="/others-pages/login"
-                      className="d-flex items-center icon-user text-inherit"
+                      className="d-flex items-center icon-user text-inherit text-22"
                     />
                   </div>
                   <div>
@@ -115,9 +119,8 @@ const Header1 = () => {
         </div>
         {/* End header_container */}
       </header>
-      {/* End Header */}
     </>
   );
 };
 
-export default Header1;
+export default DefaultHeader;

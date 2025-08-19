@@ -1,31 +1,35 @@
-const data = [
-  {
-    title: "Pending",
-    amount: "$12,800",
-    description: "Total pending",
-    icon: "/img/dashboard/icons/1.svg",
-  },
-  {
-    title: "Earnings",
-    amount: "$14,200",
-    description: "Total earnings",
-    icon: "/img/dashboard/icons/2.svg",
-  },
-  {
-    title: "Bookings",
-    amount: "$8,100",
-    description: "Total hotel bookings",
-    icon: "/img/dashboard/icons/3.svg",
-  },
-  {
-    title: "Services",
-    amount: "22,786",
-    description: "Total bookable services",
-    icon: "/img/dashboard/icons/4.svg",
-  },
-];
+import { useTranslation } from "next-i18next";
 
 const DashboardCard = () => {
+  const { t } = useTranslation("common");
+  
+  const data = [
+    {
+      title: t("dashboard.pending"),
+      amount: "$12,800",
+      description: t("dashboard.totalPending"),
+      icon: "/img/dashboard/icons/1.svg",
+    },
+    {
+      title: t("dashboard.earnings"),
+      amount: "$14,200",
+      description: t("dashboard.totalEarnings"),
+      icon: "/img/dashboard/icons/2.svg",
+    },
+    {
+      title: t("dashboard.bookings"),
+      amount: "$8,100",
+      description: t("dashboard.totalHotelBookings"),
+      icon: "/img/dashboard/icons/3.svg",
+    },
+    {
+      title: t("dashboard.services"),
+      amount: "22,786",
+      description: t("dashboard.totalBookableServices"),
+      icon: "/img/dashboard/icons/4.svg",
+    },
+  ];
+
   return (
     <div className="row y-gap-30">
       {data.map((item, index) => (

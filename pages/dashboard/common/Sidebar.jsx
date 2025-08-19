@@ -1,46 +1,48 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import { isActiveLink } from "../../../utils/linkActiveChecker";
 
 const Sidebar = () => {
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   const sidebarContent = [
     {
       id: 1,
       icon: "/img/dashboard/sidebar/compass.svg",
-      name: "Create Tour",
+      name: t("sidebar.createTour"),
       routePath: "/vendor-dashboard/create-tour",
     },
     {
       id: 2,
       icon: "/img/dashboard/sidebar/compass.svg",
-      name: "My Tours List",
+      name: t("sidebar.myToursList"),
       routePath: "/vendor-dashboard/my-tours",
     },
     // {
     //   id: 2,
     //   icon: "/img/dashboard/sidebar/booking.svg",
-    //   name: " Booking History",
+    //   name: t("sidebar.bookingHistory"),
     //   routePath: "/dashboard/db-booking",
     // },
     // {
     //   id: 3,
     //   icon: "/img/dashboard/sidebar/bookmark.svg",
-    //   name: "Wishlist",
+    //   name: t("sidebar.wishlist"),
     //   routePath: "/dashboard/db-wishlist",
     // },
     // {
     //   id: 4,
     //   icon: "/img/dashboard/sidebar/gear.svg",
-    //   name: " Settings",
+    //   name: t("sidebar.settings"),
     //   routePath: "/dashboard/db-settings",
     // },
     // {
     //   id: 5,
     //   icon: "/img/dashboard/sidebar/log-out.svg",
-    //   name: " Logout",
+    //   name: t("sidebar.logout"),
     //   routePath: "/others-pages/login",
     // },
   ];

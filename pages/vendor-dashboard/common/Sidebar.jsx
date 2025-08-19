@@ -1,9 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 const Sidebar = () => {
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   const isActive = (path) => {
     return router.pathname === path;
@@ -27,7 +29,7 @@ const Sidebar = () => {
               alt="image"
               className="mr-15"
             />
-            Create Tour
+            {t("sidebar.createTour")}
           </Link>
         </div>
         {/* End sidebar__item */}
@@ -47,7 +49,7 @@ const Sidebar = () => {
               alt="image"
               className="mr-15"
             />
-            My Tours List
+            {t("sidebar.myToursList")}
           </Link>
         </div>
         {/* End sidebar__item */}
@@ -67,7 +69,7 @@ const Sidebar = () => {
               alt="image"
               className="mr-15"
             />
-            Tour
+            {t("sidebar.tour")}
           </Link>
         </div>
         {/* End sidebar__item */}
@@ -85,7 +87,7 @@ const Sidebar = () => {
               alt="image"
               className="mr-15"
             />
-            Logout
+            {t("sidebar.logout")}
           </Link>
         </div>
         {/* End sidebar__item */}

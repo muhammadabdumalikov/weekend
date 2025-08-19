@@ -3,23 +3,11 @@ import Link from "next/link";
 import isTextMatched from "../../utils/isTextMatched";
 import { useEffect, useState } from "react";
 import { TourType } from "../../pages/vendor-dashboard/import-instagram/components/ImportInstagramForm";
-
-// Tour Order Types enum
-const TourOrderTypes = {
-  popular: 'popular',
-  newest: 'newest',
-  price_low_to_high: 'price_low_to_high',
-  price_high_to_low: 'price_high_to_low',
-};
-
-const TourOrderTypesNames = {
-  popular: 'Most Popular',
-  newest: 'Newest First',
-  price_low_to_high: 'Price: Low to High',
-  price_high_to_low: 'Price: High to Low',
-};
+import { useTranslation } from "next-i18next";
 
 const Activity = () => {
+  const { t, i18n } = useTranslation("common");
+
   const [activityData, setActivityData] = useState({data: [], total: 0});
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -27,14 +15,36 @@ const Activity = () => {
   const [page, setPage] = useState(1);
   const [limit] = useState(4);
 
-  // Filter states
-  const [priceValue, setPriceValue] = useState("Price");
+  // Tour Order Types enum
+  const TourOrderTypes = {
+    popular: 'popular',
+    newest: 'newest',
+    price_low_to_high: 'price_low_to_high',
+    price_high_to_low: 'price_high_to_low',
+  };
+
+  const TourOrderTypesNames = {
+    popular: t("tours.mostPopular"),
+    newest: t("tours.newestFirst"),
+    price_low_to_high: t("tours.priceLowToHigh"),
+    price_high_to_low: t("tours.priceHighToLow"),
+  };
+
+  // Filter states - initialize with translated values
+  const [priceValue, setPriceValue] = useState(t("common.price"));
   const [priceRange, setPriceRange] = useState({from_price: null, to_price: null});
-  const [languageValue, setLanguageValue] = useState("Language");
-  const [tourTypeValue, setTourTypeValue] = useState("Tour type");
+  const [languageValue, setLanguageValue] = useState(t("common.language"));
+  const [tourTypeValue, setTourTypeValue] = useState(t("tours.tourType"));
   
   // Sort state
   const [sortValue, setSortValue] = useState(TourOrderTypes.newest);
+
+  // Re-initialize filter values when language changes
+  useEffect(() => {
+    setPriceValue(t("common.price"));
+    setLanguageValue(t("common.language"));
+    setTourTypeValue(t("tours.tourType"));
+  }, [i18n.language, t]);
 
   const fetchData = async (pageNum = 1, append = false) => {
     try {
@@ -56,8 +66,8 @@ const Activity = () => {
           limit: limit,
           from_price: priceRange.from_price,
           to_price: priceRange.to_price,
-          tour_type: tourTypeValue === "Tour type" ? null : tourTypeValue,
-          order_by: sortValue === "Sort" ? null : sortValue,
+          tour_type: tourTypeValue === t("tours.tourType") ? null : tourTypeValue,
+          order_by: sortValue === t("common.sort") ? null : sortValue,
         }),
       });
       const data = await response.json();
@@ -82,12 +92,12 @@ const Activity = () => {
 
   useEffect(() => {
     fetchData(1, false);
-  }, [priceRange, tourTypeValue, sortValue]); // Refetch when filters or sort changes
+  }, [priceRange, tourTypeValue, sortValue, i18n.language]); // Added i18n.language dependency
 
   if (isLoading) {
     return (
       <div className="text-center py-40">
-        <div className="text-20 text-light-1 fw-500">Loading activities...</div>
+        <div className="text-20 text-light-1 fw-500">{t("tours.loadingMore")}</div>
       </div>
     );
   }
@@ -95,7 +105,7 @@ const Activity = () => {
   if (!activityData || activityData.length === 0) {
     return (
       <div className="text-center py-40">
-        <div className="text-20 text-light-1 fw-500">No activities available</div>
+        <div className="text-20 text-light-1 fw-500">{t("tours.noToursAvailable")}</div>
       </div>
     );
   }
@@ -111,16 +121,16 @@ const Activity = () => {
     setPriceValue(value);
     
     switch (value) {
-      case "Less than 500":
+      case t("tours.lessThan500"):
         setPriceRange({from_price: 0, to_price: 500});
         break;
-      case "500 - 1000":
+      case t("tours.500to1000"):
         setPriceRange({from_price: 500, to_price: 1000});
         break;
-      case "1000 - 2000":
+      case t("tours.1000to2000"):
         setPriceRange({from_price: 1000, to_price: 2000});
         break;
-      case "2000+":
+      case t("tours.2000plus"):
         setPriceRange({from_price: 2000, to_price: null});
         break;
       default:
@@ -143,33 +153,42 @@ const Activity = () => {
 
   // Clear all filters
   const clearFilters = () => {
-    setPriceValue("Price");
+    setPriceValue(t("common.price"));
     setPriceRange({from_price: null, to_price: null});
-    setLanguageValue("Language");
-    setTourTypeValue("Tour type");
-    setSortValue("Sort");
+    setLanguageValue(t("common.language"));
+    setTourTypeValue(t("tours.tourType"));
+    setSortValue(t("common.sort"));
   };
 
+  // Re-create dropdowns with current translations
   const dropdowns = [
     {
-      title: "Price",
+      title: t("common.price"),
       value: priceValue,
-      options: ["Less than 500", "500 - 1000", "1000 - 2000", "2000+"],
+      options: [t("tours.lessThan500"), t("tours.500to1000"), t("tours.1000to2000"), t("tours.2000plus")],
       onChange: handlePriceValueChange,
     },
     {
-      title: "Language",
+      title: t("common.language"),
       value: languageValue,
-      options: ["English", "Italian", "Deutsch", "Turkish"],
+      options: [t("languages.english"), t("languages.italian"), t("languages.german"), t("languages.turkish")],
       onChange: handleLanguageValueChange,
     },
     {
-      title: "Tour type",
+      title: t("tours.tourType"),
       value: tourTypeValue,
       options: Object.values(TourType),
       onChange: handleTourTypeValueChange,
     },
   ];
+
+  // Re-create TourOrderTypesNames with current translations
+  const currentTourOrderTypesNames = {
+    popular: t("tours.mostPopular"),
+    newest: t("tours.newestFirst"),
+    price_low_to_high: t("tours.priceLowToHigh"),
+    price_high_to_low: t("tours.priceHighToLow"),
+  };
 
   return (
     <>
@@ -222,7 +241,7 @@ const Activity = () => {
             className="button -outline-blue-1 h-34 px-15 rounded-100 text-14 text-blue-1"
           >
             <i className="icon-refresh text-12 mr-8" />
-            Clear Filters
+            {t("common.clearFilters")}
           </button>
         </div>
       </div>
@@ -231,7 +250,7 @@ const Activity = () => {
       <div className="row y-gap-10 justify-between items-center mb-30">
         <div className="col-auto">
           <div className="text-18">
-            <span className="fw-500">{activityData.total} activities</span> available
+            <span className="fw-500">{activityData.total} {t("navigation.tours").toLowerCase()}</span> {t("common.available")}
           </div>
         </div>
         {/* End .col */}
@@ -245,7 +264,7 @@ const Activity = () => {
               data-bs-offset="0,10"
             >
               <i className="icon-up-down text-14 mr-10" />
-              <span className="js-dropdown-title">{TourOrderTypesNames[sortValue]}</span>
+                             <span className="js-dropdown-title">{currentTourOrderTypesNames[sortValue]}</span>
               <i className="icon icon-chevron-sm-down text-7 ml-10" />
             </div>
             {/* End dropdown__button */}
@@ -260,7 +279,7 @@ const Activity = () => {
                       }d-block js-dropdown-link`}
                       onClick={() => handleSortValueChange(value)}
                     >
-                      {TourOrderTypesNames[value]}
+                                             {currentTourOrderTypesNames[value]}
                     </button>
                   </div>
                 ))}
@@ -345,7 +364,7 @@ const Activity = () => {
                         <span className="text-15 text-dark-1 fw-500">
                           {item?.ratings || "0"}
                         </span>{" "}
-                        {item?.numberOfReviews || "0"} reviews
+                        {t("common.reviews", { count: item?.numberOfReviews || "0" })}
                       </div>
                     </div>
                   </div>
@@ -353,7 +372,7 @@ const Activity = () => {
 
                   <div className="col-auto">
                     <div className="text-14 text-light-1">
-                      From{" "}
+                      {t("tours.from")}{" "}
                       <span className="text-16 fw-500 text-dark-1">
                         {item.price
                           ? item.price.slice(0, -3)
@@ -394,12 +413,12 @@ const Activity = () => {
             {isLoadingMore ? (
               <div className="d-flex items-center justify-center">
                 <div className="spinner mr-10"></div>
-                Loading...
+                {t("tours.loadingMore")}
               </div>
             ) : (
               <div className="d-flex items-center justify-center">
                 <i className="icon-arrow-down text-18 mr-10"></i>
-                Load More Activities
+                {t("tours.loadMore")}
               </div>
             )}
           </button>

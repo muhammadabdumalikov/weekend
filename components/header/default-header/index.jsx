@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
 import MainMenu from "../MainMenu";
 import CurrenctyMegaMenu from "../CurrenctyMegaMenu";
 import LanguageMegaMenu from "../LanguageMegaMenu";
 
 import MobileMenu from "../MobileMenu";
 
-const Header1 = () => {
+const DefaultHeader = () => {
+  const { t } = useTranslation("common");
   const [navbar, setNavbar] = useState(false);
 
   const changeBackground = () => {
@@ -24,8 +26,8 @@ const Header1 = () => {
   return (
     <>
       <header className={`header bg-white ${navbar ? "is-sticky" : ""}`}>
-        <div className="header__container px-30 sm:px-20">
-          <div className="row justify-between items-center">
+      <div className="header__container container">
+      <div className="row justify-between items-center">
             <div className="col-auto">
               <div className="d-flex items-center">
                 <Link href="/" className="header-logo mr-20">
@@ -68,13 +70,13 @@ const Header1 = () => {
                     href="/others-pages/login"
                     className="button px-30 fw-400 text-14 -blue-1 bg-blue-1 h-50 text-white"
                   >
-                    Become An Expert
+                    {t("header.becomeExpert")}
                   </Link>
                   <Link
                     href="/others-pages/signup"
                     className="button px-30 fw-400 text-14 -outline-blue-1 h-50 text-blue-1 ml-20"
                   >
-                    Sign In / Register
+                    {t("header.signInRegister")}
                   </Link>
                 </div>
                 {/* End btn-group */}
@@ -120,4 +122,4 @@ const Header1 = () => {
   );
 };
 
-export default Header1;
+export default DefaultHeader;

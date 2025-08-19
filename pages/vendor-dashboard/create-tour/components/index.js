@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { useTranslation } from "next-i18next";
 import TourContentTab from "./TourContentTab";
 import TourDetailsTab from "./TourDetailsTab";
 import TourFileUploadTab from "./TourFileUploadTab";
 
 const Index = () => {
+  const { t } = useTranslation("common");
   const [formData, setFormData] = useState({
     title: { en: "", uz: "", ru: "" },
     description: { en: "", uz: "", ru: "" },
@@ -59,7 +61,7 @@ const Index = () => {
         localStorage.removeItem('instagramTourData');
         
         // Show success message
-        setSuccess("Tour data imported from Instagram successfully!");
+        setSuccess(t("vendor.tourImportedSuccessfully"));
         
         // Clear success message after 3 seconds
         setTimeout(() => {
@@ -71,7 +73,7 @@ const Index = () => {
         localStorage.removeItem('instagramTourData');
       }
     }
-  }, []);
+  }, [t]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,7 +150,7 @@ const Index = () => {
               type="button" 
               className="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button"
             >
-              1. Content
+              1. {t("vendor.content")}
             </button>
           </Tab>
           <Tab className="col-auto">
@@ -156,7 +158,7 @@ const Index = () => {
               type="button" 
               className="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button"
             >
-              2. Details
+              2. {t("vendor.details")}
             </button>
           </Tab>
           <Tab className="col-auto">
@@ -164,7 +166,7 @@ const Index = () => {
               type="button" 
               className="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button"
             >
-              3. Media Files
+              3. {t("vendor.mediaFiles")}
             </button>
           </Tab>
         </TabList>
@@ -201,14 +203,14 @@ const Index = () => {
         <div className="d-flex justify-content-between align-items-center">
           {/* Previous Button */}
           {currentTab > 0 && (
-            <button
-              type="button"
-              onClick={handlePrevious}
-              className="button h-50 px-24 -outline-blue-1 text-blue-1"
-            >
-              <div className="icon-arrow-left mr-15" />
-              Previous
-            </button>
+                          <button
+                type="button"
+                onClick={handlePrevious}
+                className="button h-50 px-24 -outline-blue-1 text-blue-1"
+              >
+                <div className="icon-arrow-left mr-15" />
+                {t("common.previous")}
+              </button>
           )}
           
           {/* Next/Create Tour Button */}
@@ -223,11 +225,11 @@ const Index = () => {
                 {isLoading ? (
                   <>
                     <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                    Creating Tour...
+                    {t("vendor.creatingTour")}
                   </>
                 ) : (
                   <>
-                    Create Tour <div className="icon-arrow-top-right ml-15" />
+                    {t("vendor.createTour")} <div className="icon-arrow-top-right ml-15" />
                   </>
                 )}
               </button>
@@ -237,7 +239,7 @@ const Index = () => {
                 onClick={handleNext}
                 className="button h-50 px-24 -dark-1 bg-blue-1 text-white"
               >
-                Next <div className="icon-arrow-right ml-15" />
+                {t("common.next")} <div className="icon-arrow-right ml-15" />
               </button>
             )}
           </div>

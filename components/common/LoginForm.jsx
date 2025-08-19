@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 const LoginForm = () => {
+  const { t } = useTranslation("common");
   const [formData, setFormData] = useState({
     login: "",
     password: "",
@@ -48,11 +50,11 @@ const LoginForm = () => {
         // Redirect to dashboard or home page
         router.push("/dashboard/db-dashboard");
       } else {
-        setError(data.message || "Login failed. Please check your credentials.");
+        setError(data.message || t("auth.loginFailed"));
       }
     } catch (error) {
       console.error("Login error:", error);
-      setError("Network error. Please try again.");
+      setError(t("auth.networkError"));
     } finally {
       setIsLoading(false);
     }
@@ -61,11 +63,11 @@ const LoginForm = () => {
   return (
     <form className="row y-gap-20" onSubmit={handleSubmit}>
       <div className="col-12">
-        <h1 className="text-22 fw-500">Welcome back</h1>
+        <h1 className="text-22 fw-500">{t("auth.welcomeBack")}</h1>
         <p className="mt-10">
-          Don&apos;t have an account yet?{" "}
+          {t("auth.dontHaveAccount")}{" "}
           <Link href="/others-pages/signup" className="text-blue-1">
-            Sign up for free
+            {t("auth.signUpForFree")}
           </Link>
         </p>
       </div>
@@ -88,7 +90,7 @@ const LoginForm = () => {
             onChange={handleInputChange}
             required 
           />
-          <label className="lh-1 text-14 text-light-1">Email or Username</label>
+          <label className="lh-1 text-14 text-light-1">{t("auth.emailOrUsername")}</label>
         </div>
       </div>
       {/* End .col */}
@@ -102,14 +104,14 @@ const LoginForm = () => {
             onChange={handleInputChange}
             required 
           />
-          <label className="lh-1 text-14 text-light-1">Password</label>
+          <label className="lh-1 text-14 text-light-1">{t("auth.password")}</label>
         </div>
       </div>
       {/* End .col */}
 
       <div className="col-12">
         <a href="#" className="text-14 fw-500 text-blue-1 underline">
-          Forgot your password?
+          {t("auth.forgotPassword")}
         </a>
       </div>
       {/* End .col */}
@@ -123,11 +125,11 @@ const LoginForm = () => {
           {isLoading ? (
             <>
               <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              Signing In...
+              {t("auth.signingIn")}
             </>
           ) : (
             <>
-              Sign In <div className="icon-arrow-top-right ml-15" />
+              {t("auth.signIn")} <div className="icon-arrow-top-right ml-15" />
             </>
           )}
         </button>

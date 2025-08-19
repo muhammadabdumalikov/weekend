@@ -101,10 +101,10 @@ export const dashboardItems = [
     name: "My Tours List",
     routePath: "/vendor-dashboard/my-tours",
   },
-  {
-    name: "Tour",
-    routePath: "/#",
-  },
+  // {
+  //   name: "Tour",
+  //   routePath: "/#",
+  // },
   // {
   //   name: "Booking History",
   //   routePath: "/dashboard/db-booking",

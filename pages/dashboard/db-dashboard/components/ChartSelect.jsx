@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useTranslation } from "next-i18next";
 
 const ChartSelect = () => {
+  const { t } = useTranslation("common");
+  
   const options = [
-    "This Week",
-    "Animation",
-    "Design",
-    "Illustration",
-    "Business",
+    t("dashboard.thisWeek"),
+    t("dashboard.animation"),
+    t("dashboard.design"),
+    t("dashboard.illustration"),
+    t("dashboard.business"),
   ];
 
   const [selectedOption, setSelectedOption] = useState(options[0]);

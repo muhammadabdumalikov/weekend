@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "next-i18next";
 
 const LoginWithSocial = () => {
+  const { t } = useTranslation("common");
   const [showTelegramModal, setShowTelegramModal] = useState(false);
   const [telegramUsername, setTelegramUsername] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +20,7 @@ const LoginWithSocial = () => {
     e.preventDefault();
     
     if (!telegramUsername.trim()) {
-      setError("Please enter your Telegram username");
+      setError(t("auth.enterTelegramUsername"));
       return;
     }
 
@@ -44,11 +46,11 @@ const LoginWithSocial = () => {
         setError("");
       } else {
         // Handle API error
-        setError(data.message || "Failed to send OTP. Please try again.");
+        setError(data.message || t("auth.failedToSendOtp"));
       }
     } catch (error) {
       console.error("Error sending OTP:", error);
-      setError("Network error. Please check your connection and try again.");
+      setError(t("auth.networkError"));
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +60,7 @@ const LoginWithSocial = () => {
     e.preventDefault();
     
     if (!otpCode.trim()) {
-      setError("Please enter the OTP code");
+      setError(t("auth.enterOtpCode"));
       return;
     }
 
@@ -85,11 +87,11 @@ const LoginWithSocial = () => {
         setShowTelegramModal(false);
       } else {
         // Handle API error
-        setError(data.message || "Invalid OTP code. Please try again.");
+        setError(data.message || t("auth.invalidOtpCode"));
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);
-      setError("Network error. Please check your connection and try again.");
+      setError(t("auth.networkError"));
     } finally {
       setIsOtpLoading(false);
     }
@@ -124,14 +126,14 @@ const LoginWithSocial = () => {
       <div className="col-md-4 col-12">
         <button className="button col-12 -outline-blue-1 text-blue-1 py-15 rounded-8 ">
           <i className="icon-apple text-15 mr-10" />
-          Facebook
+          {t("auth.facebook")}
         </button>
       </div>
 
       <div className="col-md-4 col-12">
         <button className="button col-12 -outline-red-1 text-red-1 py-15 rounded-8 ">
           <i className="icon-apple text-15 mr-10" />
-          Google
+          {t("auth.google")}
         </button>
       </div>
 
@@ -141,7 +143,7 @@ const LoginWithSocial = () => {
           onClick={handleTelegramClick}
         >
           <i className="icon-apple text-15 mr-10" />
-          Telegram
+          {t("auth.telegram")}
         </button>
       </div>
 
@@ -150,7 +152,7 @@ const LoginWithSocial = () => {
         <div className="telegram-modal-overlay">
           <div className="telegram-modal">
             <div className="telegram-modal-header">
-              <h3>{showOtpInput ? "Enter OTP Code" : "Sign up with Telegram"}</h3>
+              <h3>{showOtpInput ? t("auth.enterOtpCode") : t("auth.signUpWithTelegram")}</h3>
               <button className="modal-close" onClick={closeModal}>
                 <i className="icon-close"></i>
               </button>
@@ -161,7 +163,7 @@ const LoginWithSocial = () => {
               <form onSubmit={handleTelegramSubmit}>
                 <div className="telegram-modal-body">
                   <p className="modal-description">
-                    <a href="https://t.me/my443_bot" target="_blank" rel="noopener noreferrer" className="text-blue-1">Start our bot</a> and send your Telegram username to continue with signup
+                    <a href="https://t.me/my443_bot" target="_blank" rel="noopener noreferrer" className="text-blue-1">{t("auth.startOurBot")}</a> {t("auth.telegramSignupDescription")}
                   </p>
                   <div className="form-input">
                     <input
@@ -171,12 +173,12 @@ const LoginWithSocial = () => {
                         setTelegramUsername(e.target.value);
                         setError(""); // Clear error when user types
                       }}
-                      placeholder="Enter your Telegram username"
+                      placeholder={t("auth.enterTelegramUsername")}
                       required
                       disabled={isLoading}
                     />
                     <label className="lh-1 text-14 text-light-1">
-                      Telegram Username
+                      {t("auth.telegramUsername")}
                     </label>
                   </div>
                   {error && (
@@ -191,7 +193,7 @@ const LoginWithSocial = () => {
                     className="button -outline-blue-1 text-blue-1" 
                     onClick={closeModal}
                   >
-                    Cancel
+                    {t("common.cancel")}
                   </button>
                   <button 
                     type="submit" 
@@ -201,10 +203,10 @@ const LoginWithSocial = () => {
                     {isLoading ? (
                       <>
                         <span className="loading-spinner"></span>
-                        Sending...
+                        {t("auth.sending")}
                       </>
                     ) : (
-                      "Send Code Via Telegram"
+                      t("auth.sendCodeViaTelegram")
                     )}
                   </button>
                 </div>
@@ -214,7 +216,7 @@ const LoginWithSocial = () => {
               <form onSubmit={handleOtpSubmit}>
                 <div className="telegram-modal-body">
                   <p className="modal-description">
-                    We've sent a verification code to your Telegram account. Please enter the code below.
+                    {t("auth.otpSentDescription")}
                   </p>
                   <div className="form-input">
                     <input
@@ -224,13 +226,13 @@ const LoginWithSocial = () => {
                         setOtpCode(e.target.value);
                         setError(""); // Clear error when user types
                       }}
-                      placeholder="Enter 5-digit code"
+                      placeholder={t("auth.enterOtpCode")}
                       required
                       disabled={isOtpLoading}
                       maxLength={6}
                     />
                     <label className="lh-1 text-14 text-light-1">
-                      OTP Code
+                      {t("auth.otpCode")}
                     </label>
                   </div>
                   {error && (
@@ -245,7 +247,7 @@ const LoginWithSocial = () => {
                     className="button -outline-blue-1 text-blue-1" 
                     onClick={goBackToUsername}
                   >
-                    Back
+                    {t("common.back")}
                   </button>
                   <button 
                     type="submit" 
@@ -255,10 +257,10 @@ const LoginWithSocial = () => {
                     {isOtpLoading ? (
                       <>
                         <span className="loading-spinner"></span>
-                        Verifying...
+                        {t("auth.verifying")}
                       </>
                     ) : (
-                      "Verify OTP"
+                      t("auth.verifyOtp")
                     )}
                   </button>
                 </div>
@@ -273,7 +275,7 @@ const LoginWithSocial = () => {
         <div className="telegram-modal-overlay">
           <div className="telegram-modal success-modal">
             <div className="telegram-modal-header">
-              <h3>Authentication Successful!</h3>
+              <h3>{t("auth.authenticationSuccessful")}</h3>
               <button className="modal-close" onClick={closeSuccessModal}>
                 <i className="icon-close"></i>
               </button>
@@ -285,10 +287,10 @@ const LoginWithSocial = () => {
                   <i className="icon-check text-30 text-white" />
                 </div>
                 <div className="text-22 lh-1 fw-600 text-center mb-10">
-                  Welcome to GoTrip!
+                  {t("auth.welcomeToGoTrip")}
                 </div>
                 <div className="text-15 text-light-1 text-center">
-                  Your Telegram account has been successfully verified. You can now enjoy all our services.
+                  {t("auth.telegramVerifiedSuccess")}
                 </div>
               </div>
             </div>

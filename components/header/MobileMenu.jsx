@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 import {
   ProSidebarProvider,
   Sidebar,
@@ -23,9 +24,11 @@ import {
 } from "../../utils/linkActiveChecker";
 import Social from "../common/social/Social";
 import ContactInfo from "./ContactInfo";
+import LanguageMegaMenu from "./LanguageMegaMenu";
 
 const MobileMenu = () => {
   const router = useRouter();
+  const { t } = useTranslation("common");
 
   return (
     <>
@@ -49,7 +52,7 @@ const MobileMenu = () => {
       <ProSidebarProvider>
         <Sidebar width="400" backgroundColor="#fff">
           <Menu>
-            <SubMenu label="Home">
+            <SubMenu label={t("navigation.home")}>
               {homeItems.map((item, i) => (
                 <MenuItem
                   key={i}
@@ -70,7 +73,7 @@ const MobileMenu = () => {
             </SubMenu>
             {/* End  All Home Menu */}
 
-            <SubMenu label="Categories">
+            <SubMenu label={t("navigation.categories")}>
               {categorieMobileItems.map((item) => (
                 <SubMenu label={item.title} key={item.id}>
                   {item.menuItems.map((single) => (
@@ -115,7 +118,7 @@ const MobileMenu = () => {
             </MenuItem>
             {/* End  Desitinations Menu */}
 
-            <SubMenu label="Blog">
+            <SubMenu label={t("navigation.blog")}>
               {blogItems.map((item, i) => (
                 <MenuItem
                   key={i}
@@ -136,7 +139,7 @@ const MobileMenu = () => {
             </SubMenu>
             {/* End  All Blog Menu */}
 
-            <SubMenu label="Pages">
+            <SubMenu label={t("navigation.pages")}>
               {pageItems.map((item, i) => (
                 <MenuItem
                   key={i}
@@ -157,7 +160,7 @@ const MobileMenu = () => {
             </SubMenu>
             {/* End  All Pages Menu */}
 
-            <SubMenu label="Dashboard">
+            <SubMenu label={t("navigation.dashboard")}>
               {dashboardItems.map((item, i) => (
                 <MenuItem
                   key={i}
@@ -188,19 +191,21 @@ const MobileMenu = () => {
                 />
               }
             >
-              Contact
+              {t("navigation.contact")}
             </MenuItem>
             {/* End Contact  Menu */}
           </Menu>
         </Sidebar>
       </ProSidebarProvider>
 
-      <div className="mobile-footer px-20 py-5 border-top-light"></div>
+      <div className="mobile-footer px-20 py-5 border-top-light">
+        <LanguageMegaMenu />
+      </div>
 
       <div className="pro-footer">
         <ContactInfo />
         <div className="mt-10">
-          <h5 className="text-16 fw-500 mb-10">Follow us on social media</h5>
+          <h5 className="text-16 fw-500 mb-10">{t("footer.followUs")}</h5>
           <div className="d-flex x-gap-20 items-center">
             <Social />
           </div>
@@ -210,7 +215,7 @@ const MobileMenu = () => {
             className=" button -dark-1 px-30 fw-400 text-14 bg-blue-1 h-50 text-white"
             href="/others-pages/login"
           >
-            Become An Expert
+            {t("header.becomeExpert")}
           </Link>
         </div>
       </div>

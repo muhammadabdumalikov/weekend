@@ -4,8 +4,12 @@ import { Navigation, Pagination as SwiperPagination } from "swiper";
 import { useState, useEffect } from "react";
 import { getProxiedImageUrl } from "../../../providers/helpers";
 import Link from "next/link";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const ActivityProperties = () => {
+  const { t, i18n } = useTranslation("common");
+  const router = useRouter();
   const [tours, setTours] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -55,7 +59,7 @@ const ActivityProperties = () => {
       setHasMore(newTours.length === limit);
     } catch (error) {
       console.error("Error fetching tours:", error);
-      setError("Failed to load tours");
+      setError(t("common.error"));
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +67,7 @@ const ActivityProperties = () => {
 
   useEffect(() => {
     fetchTours(1, false);
-  }, []);
+  }, [i18n.language]); // Added i18n.language dependency to refetch when language changes
 
   const loadMore = async () => {
     if (!isLoading && hasMore) {
@@ -121,7 +125,7 @@ const ActivityProperties = () => {
     return (
       <div className="col-12">
         <div className="text-center py-40">
-          <div className="text-20 text-light-1 fw-500">Loading tours...</div>
+          <div className="text-20 text-light-1 fw-500">{t("common.loading")}</div>
         </div>
       </div>
     );
@@ -131,13 +135,13 @@ const ActivityProperties = () => {
     return (
       <div className="col-12">
         <div className="text-center py-40">
-          <div className="text-20 text-red-1 fw-500 mb-10">Error loading tours</div>
+          <div className="text-20 text-red-1 fw-500 mb-10">{t("common.error")}</div>
           <div className="text-14 text-light-1 mb-20">{error}</div>
           <button 
             onClick={fetchTours}
             className="button -md -dark-1 bg-blue-1 text-white"
           >
-            Try Again
+            {t("common.tryAgain")}
           </button>
         </div>
       </div>
@@ -148,8 +152,8 @@ const ActivityProperties = () => {
     return (
       <div className="col-12">
         <div className="text-center py-40">
-          <div className="text-20 text-light-1 fw-500 mb-10">No tours found</div>
-          <div className="text-14 text-light-1">No tours are available at the moment.</div>
+          <div className="text-20 text-light-1 fw-500 mb-10">{t("tours.noToursFound")}</div>
+          <div className="text-14 text-light-1">{t("tours.noToursAvailable")}</div>
         </div>
       </div>
     );
@@ -212,7 +216,7 @@ const ActivityProperties = () => {
                   {tour?.organizer_title}
                 </div>
                 <div className="text-14 text-green-2 fw-500 lh-15 mt-5">
-                  {tour?.seats} seats available
+                  {t("tours.seatsAvailable", { count: tour?.seats })}
                 </div>
               </div>
               {/* End .col-md */}
@@ -222,10 +226,10 @@ const ActivityProperties = () => {
                   <i className="icon-star text-10 text-yellow-1" />
                   <div className="text-15 fw-500 ml-5">{tour?.rating || "0"}</div>
                   <div className="text-14 text-light-1">
-                    {tour?.review_count || "0"} reviews
+                    {t("common.reviews", { count: tour?.review_count || "0" })}
                   </div>
                 </div>
-                <div className="text-14 text-light-1 mt-50 md:mt-20">From</div>
+                <div className="text-14 text-light-1 mt-50 md:mt-20">{t("tours.from")}</div>
                 <div className="text-22 lh-12 fw-600 mt-5">
                   ${tour?.price}
                 </div>
@@ -234,12 +238,12 @@ const ActivityProperties = () => {
                     Sale: ${tour.sale_price}
                   </div>
                 )}
-                <div className="text-14 text-light-1 mt-5">per person</div>
+                <div className="text-14 text-light-1 mt-5">{t("tours.perPerson")}</div>
                 <Link
                   href={`/activity/activity-single/${tour.id}`}
                   className="button -md -dark-1 bg-blue-1 text-white mt-24"
                 >
-                  View Detail <div className="icon-arrow-top-right ml-15" />
+                  {t("common.viewDetail")} <div className="icon-arrow-top-right ml-15" />
                 </Link>
               </div>
               {/* End .col-md-auto */}
@@ -256,7 +260,7 @@ const ActivityProperties = () => {
             <div id="scroll-sentinel" className="py-20">
               {isLoading && hasMore && (
                 <div className="text-center">
-                  <div className="text-16 text-light-1 mb-10">Loading more tours...</div>
+                  <div className="text-16 text-light-1 mb-10">{t("tours.loadingMore")}</div>
                   <div className="d-flex justify-center">
                     <div className="size-20 rounded-full bg-blue-1 animate-spin"></div>
                   </div>
@@ -264,7 +268,7 @@ const ActivityProperties = () => {
               )}
               {!hasMore && tours.length > 0 && (
                 <div className="text-center">
-                  <div className="text-16 text-light-1">No more tours to load</div>
+                  <div className="text-16 text-light-1">{t("tours.noMoreTours")}</div>
                 </div>
               )}
             </div>

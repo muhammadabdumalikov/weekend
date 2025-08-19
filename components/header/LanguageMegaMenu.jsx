@@ -1,21 +1,40 @@
 // import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 const LanguageMegaMenu = ({ textClass }) => {
   const [click, setClick] = useState(false);
+  const router = useRouter();
+  const { t, i18n } = useTranslation("common");
+  
   const handleCurrency = () => setClick((prevState) => !prevState);
 
   const languageContent = [
-    { id: 1, language: "English", country: "United States" },
-    { id: 2, language: "Russian", country: "Russia" },
-    { id: 3, language: "Uzbek", country: "Uzbekistan" },
+    { id: 1, language: t("languages.english"), country: "United States", code: "en" },
+    { id: 2, language: t("languages.russian"), country: "Russia", code: "ru" },
+    { id: 3, language: t("languages.uzbek"), country: "Uzbekistan", code: "uz" },
   ];
 
-  const [selectedCurrency, setSelectedCurrency] = useState(languageContent[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    languageContent.find(lang => lang.code === router.locale) || languageContent[0]
+  );
+
+  // Update selected language when router locale changes
+  useEffect(() => {
+    const currentLanguage = languageContent.find(lang => lang.code === router.locale);
+    if (currentLanguage) {
+      setSelectedLanguage(currentLanguage);
+    }
+  }, [router.locale, i18n.language]);
 
   const handleItemClick = (item) => {
-    setSelectedCurrency(item);
+    setSelectedLanguage(item);
     setClick(false);
+    
+    // Change the language
+    const { pathname, asPath, query } = router;
+    router.push({ pathname, query }, asPath, { locale: item.code });
   };
 
   return (
@@ -26,16 +45,8 @@ const LanguageMegaMenu = ({ textClass }) => {
           className={`d-flex items-center text-14 ${textClass}`}
           onClick={handleCurrency}
         >
-          {/* <Image
-            width={20}
-            height={20}
-            src="/img/general/lang.png"
-            alt="image"
-            className="rounded-full mr-10"
-          /> */}
           <span className="js-language-mainTitle">
-            {" "}
-            {selectedCurrency.language}
+            {selectedLanguage.language}
           </span>
           <i className="icon-chevron-sm-down text-7 ml-15" />
         </button>
@@ -58,7 +69,7 @@ const LanguageMegaMenu = ({ textClass }) => {
             {languageContent.map((item) => (
               <li
                 className={`modalGrid__item js-item ${
-                  selectedCurrency.country === item.country ? "active" : ""
+                  selectedLanguage.code === item.code ? "active" : ""
                 }`}
                 key={item.id}
                 onClick={() => handleItemClick(item)}

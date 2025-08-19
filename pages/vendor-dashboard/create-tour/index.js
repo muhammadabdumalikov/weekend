@@ -1,3 +1,5 @@
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Seo from "../../../components/common/Seo";
 import Sidebar from "../common/Sidebar";
 import Header from "../../../components/header/dashboard-header";
@@ -6,6 +8,8 @@ import Footer from "../common/Footer";
 import { useEffect } from "react";
 
 const index = () => {
+  const { t, i18n } = useTranslation("common");
+  
   useEffect(() => {
     // Check if there's Instagram tour data to pre-fill
     const instagramTourData = localStorage.getItem('instagramTourData');
@@ -15,7 +19,6 @@ const index = () => {
       
       // You can pass this data to your SettingsTabs component
       // or handle it as needed in your form components
-      console.log('Instagram tour data:', JSON.parse(instagramTourData));
       
       // Show a success message that data was imported
       // You can implement this using your preferred state management
@@ -24,17 +27,17 @@ const index = () => {
 
   return (
     <>
-      <Seo pageTitle="Create Tour" />
+      <Seo pageTitle={t("vendor.createTour")} />
       {/* End Page Title */}
 
       <div className="header-margin"></div>
 
-      <Header />
+      <Header key={i18n.language} />
       {/* End dashboard-header */}
 
       <div className="dashboard">
         <div className="dashboard__sidebar bg-white scroll-bar-1">
-          <Sidebar />
+          <Sidebar key={i18n.language} />
           {/* End sidebar */}
         </div>
 
@@ -43,9 +46,9 @@ const index = () => {
             <div className="dashboard__content-top">
               <div className="row y-gap-20 justify-between items-center pb-20 lg:pb-20 md:pb-15">
                 <div className="col-lg-auto">
-                  <div className="text-18 lh-12 fw-500">Create Tour</div>
+                  <div className="text-18 lh-12 fw-500">{t("vendor.createTour")}</div>
                   <div className="text-14 text-light-1 lh-12">
-                    Add a new tour to your portfolio
+                    {t("vendor.addNewTour")}
                   </div>
                 </div>
 
@@ -56,20 +59,20 @@ const index = () => {
                       onClick={() => window.open('/vendor-dashboard/import-instagram', '_blank')}
                     >
                       <i className="icon-instagram mr-10"></i>
-                      Import from Instagram
+                      {t("vendor.importFromInstagram")}
                     </button>
                     <button 
                       className="button -md -outline-gray-1 text-gray-1"
                       disabled
                     >
                       <i className="icon-telegram mr-10"></i>
-                      Import from Telegram
+                      {t("vendor.importFromTelegram")}
                     </button>
                   </div>
                 </div>
               </div>
 
-              <SettingsTabs />
+              <SettingsTabs key={i18n.language} />
             </div>
 
             <div className="dashboard__content-bottom">
@@ -81,5 +84,13 @@ const index = () => {
     </>
   );
 };
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
 
 export default index;

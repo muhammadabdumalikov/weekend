@@ -1,6 +1,8 @@
 import MainFilterSearchBox from "./MainFilterSearchBox";
+import { useTranslation } from "next-i18next";
 
 const index = () => {
+  const { t } = useTranslation("common");
   return (
     <section className="masthead -type-6">
       <div className="masthead__bg bg-dark-3">
@@ -15,14 +17,14 @@ const index = () => {
                 className="text-60 lg:text-40 md:text-30 text-white"
                 data-aos="fade-up"
               >
-                The World is Waiting For You
+                {t("hero.title")}
               </h1>
               <p
                 className="text-white mt-5"
                 data-aos="fade-up"
                 data-aos-delay="100"
               >
-                Discover amzaing places at exclusive deals
+                {t("hero.subtitle")}
               </p>
             </div>
             {/* End hero title */}

@@ -12,12 +12,13 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "../app/store";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
+import { appWithTranslation } from "next-i18next";
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
 }
 
-export default function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   useEffect(() => {
     Aos.init({
       duration: 1200,
@@ -38,3 +39,5 @@ export default function App({ Component, pageProps }) {
     </main>
   );
 }
+
+export default appWithTranslation(App);
