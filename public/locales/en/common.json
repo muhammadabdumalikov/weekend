@@ -252,6 +252,7 @@
   },
   "sidebar": {
     "createTour": "Create Tour",
+    "createBlog": "Create Blog",
     "myToursList": "My Tours List",
     "bookingHistory": "Booking History",
     "wishlist": "Wishlist",
@@ -406,5 +407,20 @@
     "editTour": "Edit Tour",
     "edit": "Edit",
     "reviews": "({{count}} reviews)"
+  },
+  "blog": {
+    "createBlog": "Create Blog",
+    "createBlogSubtitle": "Create and manage your blog posts",
+    "saveDraft": "Save Draft",
+    "publish": "Publish",
+    "blogTitle": "Blog Title",
+    "title": "Title",
+    "titlePlaceholder": "Enter blog title",
+    "blogDescription": "Blog Description",
+    "description": "Description",
+    "descriptionPlaceholder": "Write your blog content here...",
+    "blogDetails": "Blog Details",
+    "author": "Author",
+    "authorPlaceholder": "Enter author name"
   }
 }

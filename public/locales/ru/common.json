@@ -252,6 +252,7 @@
   },
   "sidebar": {
     "createTour": "Создать тур",
+    "createBlog": "Создать блог",
     "myToursList": "Мои туры",
     "bookingHistory": "История бронирований",
     "wishlist": "Избранное",
@@ -406,5 +407,20 @@
     "editTour": "Редактировать тур",
     "edit": "Редактировать",
     "reviews": "({{count}} отзывов)"
+  },
+  "blog": {
+    "createBlog": "Создать блог",
+    "createBlogSubtitle": "Создавайте и управляйте своими блог-постами",
+    "saveDraft": "Сохранить черновик",
+    "publish": "Опубликовать",
+    "blogTitle": "Заголовок блога",
+    "title": "Заголовок",
+    "titlePlaceholder": "Введите заголовок блога",
+    "blogDescription": "Описание блога",
+    "description": "Описание",
+    "descriptionPlaceholder": "Напишите содержание вашего блога здесь...",
+    "blogDetails": "Детали блога",
+    "author": "Автор",
+    "authorPlaceholder": "Введите имя автора"
   }
 }

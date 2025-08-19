@@ -34,6 +34,7 @@ const LanguageMegaMenu = ({ textClass }) => {
     
     // Change the language
     const { pathname, asPath, query } = router;
+    console.log('Changing language to:', item.code);
     router.push({ pathname, query }, asPath, { locale: item.code });
   };
 

@@ -252,6 +252,7 @@
   },
   "sidebar": {
     "createTour": "Tur yaratish",
+    "createBlog": "Blog yaratish",
     "myToursList": "Mening turlarim",
     "bookingHistory": "Bronlash tarixi",
     "wishlist": "Sevimlilar",
@@ -406,5 +407,20 @@
     "editTour": "Turni tahrirlash",
     "edit": "Tahrirlash",
     "reviews": "({{count}} ta sharh)"
+  },
+  "blog": {
+    "createBlog": "Blog yaratish",
+    "createBlogSubtitle": "Blog postlaringizni yarating va boshqaring",
+    "saveDraft": "Qoralama saqlash",
+    "publish": "Nashr etish",
+    "blogTitle": "Blog sarlavhasi",
+    "title": "Sarlavha",
+    "titlePlaceholder": "Blog sarlavhasini kiriting",
+    "blogDescription": "Blog tavsifi",
+    "description": "Tavsif",
+    "descriptionPlaceholder": "Blog kontentingizni bu yerga yozing...",
+    "blogDetails": "Blog tafsilotlari",
+    "author": "Muallif",
+    "authorPlaceholder": "Muallif nomini kiriting"
   }
 }
