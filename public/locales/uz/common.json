@@ -140,20 +140,6 @@
     "discount": "Chegirma",
     "confirmBooking": "Bronlashni tasdiqlash"
   },
-  "dashboard": {
-    "overview": "Umumiy ma'lumot",
-    "bookings": "Bronlashlar",
-    "profile": "Profil",
-    "settings": "Sozlamalar",
-    "logout": "Chiqish",
-    "myTours": "Mening turlarim",
-    "myHotels": "Mening mehmonxonalarim",
-    "myFlights": "Mening samolyot chiptalarim",
-    "myCars": "Mening avtomobillarim",
-    "wishlist": "Sevimlilar",
-    "notifications": "Bildirishnomalar",
-    "messages": "Xabarlar"
-  },
   "languages": {
     "english": "Inglizcha",
     "russian": "Ruscha",
@@ -161,9 +147,6 @@
     "italian": "Italyancha",
     "german": "Nemis",
     "turkish": "Turkcha"
-  },
-  "common": {
-    "search": "Qidirish"
   },
   "currencies": {
     "usd": "USD",
@@ -254,7 +237,18 @@
     "total": "Jami",
     "paid": "To'langan",
     "status": "Holat",
-    "createdAt": "Yaratilgan"
+    "createdAt": "Yaratilgan",
+    "overview": "Umumiy ma'lumot",
+    "profile": "Profil",
+    "settings": "Sozlamalar",
+    "logout": "Chiqish",
+    "myTours": "Mening turlarim",
+    "myHotels": "Mening mehmonxonalarim",
+    "myFlights": "Mening samolyot chiptalarim",
+    "myCars": "Mening avtomobillarim",
+    "wishlist": "Sevimlilar",
+    "notifications": "Bildirishnomalar",
+    "messages": "Xabarlar"
   },
   "sidebar": {
     "createTour": "Tur yaratish",
@@ -357,9 +351,6 @@
     "imageLoadError": "{{fileName}} rasm yuklanishi mumkin emas.",
     "webpRequirements": "Webp 1800px dan katta bo'lmasligi kerak.",
     "pngJpgRequirements": "PNG yoki JPG 1800px dan katta bo'lmasligi kerak.",
-    "tourImages": "Tur rasmlari",
-    "uploadImages": "Rasmlarni yuklash",
-    "pricing": "Narxlash",
     "hotelPrice": "Mehmonxona narxi",
     "enableExtraPrice": "Qo'shimcha narxni yoqish",
     "enableServiceFee": "Xizmat to'lovini yoqish",

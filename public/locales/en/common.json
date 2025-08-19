@@ -140,20 +140,6 @@
     "discount": "Discount",
     "confirmBooking": "Confirm Booking"
   },
-  "dashboard": {
-    "overview": "Overview",
-    "bookings": "Bookings",
-    "profile": "Profile",
-    "settings": "Settings",
-    "logout": "Logout",
-    "myTours": "My Tours",
-    "myHotels": "My Hotels",
-    "myFlights": "My Flights",
-    "myCars": "My Cars",
-    "wishlist": "Wishlist",
-    "notifications": "Notifications",
-    "messages": "Messages"
-  },
   "languages": {
     "english": "English",
     "russian": "Russian",
@@ -161,9 +147,6 @@
     "italian": "Italian",
     "german": "German",
     "turkish": "Turkish"
-  },
-  "common": {
-    "search": "Search"
   },
   "currencies": {
     "usd": "USD",
@@ -254,7 +237,18 @@
     "total": "Total",
     "paid": "Paid",
     "status": "Status",
-    "createdAt": "Created At"
+    "createdAt": "Created At",
+    "overview": "Overview",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "myTours": "My Tours",
+    "myHotels": "My Hotels",
+    "myFlights": "My Flights",
+    "myCars": "My Cars",
+    "wishlist": "Wishlist",
+    "notifications": "Notifications",
+    "messages": "Messages"
   },
   "sidebar": {
     "createTour": "Create Tour",
@@ -357,9 +351,6 @@
     "imageLoadError": "Image {{fileName}} could not be loaded.",
     "webpRequirements": "Webp no bigger than 1800px wide and tall.",
     "pngJpgRequirements": "PNG or JPG no bigger than 1800px wide and tall.",
-    "tourImages": "Tour Images",
-    "uploadImages": "Upload Images",
-    "pricing": "Pricing",
     "hotelPrice": "Hotel Price",
     "enableExtraPrice": "Enable extra price",
     "enableServiceFee": "Enable service fee",

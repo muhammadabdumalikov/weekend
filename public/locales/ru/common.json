@@ -140,20 +140,6 @@
     "discount": "Скидка",
     "confirmBooking": "Подтвердить бронирование"
   },
-  "dashboard": {
-    "overview": "Обзор",
-    "bookings": "Бронирования",
-    "profile": "Профиль",
-    "settings": "Настройки",
-    "logout": "Выйти",
-    "myTours": "Мои туры",
-    "myHotels": "Мои отели",
-    "myFlights": "Мои авиабилеты",
-    "myCars": "Мои автомобили",
-    "wishlist": "Избранное",
-    "notifications": "Уведомления",
-    "messages": "Сообщения"
-  },
   "languages": {
     "english": "Английский",
     "russian": "Русский",
@@ -161,9 +147,6 @@
     "italian": "Итальянский",
     "german": "Немецкий",
     "turkish": "Турецкий"
-  },
-  "common": {
-    "search": "Поиск"
   },
   "currencies": {
     "usd": "USD",
@@ -254,7 +237,18 @@
     "total": "Всего",
     "paid": "Оплачено",
     "status": "Статус",
-    "createdAt": "Создано"
+    "createdAt": "Создано",
+    "overview": "Обзор",
+    "profile": "Профиль",
+    "settings": "Настройки",
+    "logout": "Выйти",
+    "myTours": "Мои туры",
+    "myHotels": "Мои отели",
+    "myFlights": "Мои авиабилеты",
+    "myCars": "Мои автомобили",
+    "wishlist": "Избранное",
+    "notifications": "Уведомления",
+    "messages": "Сообщения"
   },
   "sidebar": {
     "createTour": "Создать тур",
@@ -357,9 +351,6 @@
     "imageLoadError": "Изображение {{fileName}} не удалось загрузить.",
     "webpRequirements": "Webp не больше 1800px в ширину и высоту.",
     "pngJpgRequirements": "PNG или JPG не больше 1800px в ширину и высоту.",
-    "tourImages": "Изображения тура",
-    "uploadImages": "Загрузить изображения",
-    "pricing": "Ценообразование",
     "hotelPrice": "Цена отеля",
     "enableExtraPrice": "Включить дополнительную цену",
     "enableServiceFee": "Включить плату за обслуживание",
