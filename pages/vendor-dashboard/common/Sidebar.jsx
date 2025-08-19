@@ -54,6 +54,26 @@ const Sidebar = () => {
         </div>
         {/* End sidebar__item */}
 
+        {/* Blog List */}
+        <div className="sidebar__item">
+          <Link
+            href="/vendor-dashboard/blog-list"
+            className={`sidebar__button d-flex items-center text-15 lh-1 fw-500 ${
+              isActive("/vendor-dashboard/blog-list") ? "active" : ""
+            }`}
+          >
+            <Image
+              width={20}
+              height={20}
+              src="/img/dashboard/sidebar/list.svg"
+              alt="image"
+              className="mr-15"
+            />
+            {t("sidebar.blogList")}
+          </Link>
+        </div>
+        {/* End sidebar__item */}
+
         {/* My Tours List */}
         <div className="sidebar__item">
           <Link

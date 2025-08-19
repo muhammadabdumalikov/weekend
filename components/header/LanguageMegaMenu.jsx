@@ -1,5 +1,5 @@
 // import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 
@@ -10,11 +10,11 @@ const LanguageMegaMenu = ({ textClass }) => {
   
   const handleCurrency = () => setClick((prevState) => !prevState);
 
-  const languageContent = [
+  const languageContent = useMemo(() => [
     { id: 1, language: t("languages.english"), country: "United States", code: "en" },
     { id: 2, language: t("languages.russian"), country: "Russia", code: "ru" },
     { id: 3, language: t("languages.uzbek"), country: "Uzbekistan", code: "uz" },
-  ];
+  ], [t]);
 
   const [selectedLanguage, setSelectedLanguage] = useState(
     languageContent.find(lang => lang.code === router.locale) || languageContent[0]

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination as SwiperPagination } from "swiper";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getProxiedImageUrl } from "../../../providers/helpers";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";
@@ -19,7 +19,7 @@ const ActivityProperties = () => {
   const limit = 10;
 
   // Fetch tours from API
-  const fetchTours = async (page = 1, append = false) => {
+  const fetchTours = useCallback(async (page = 1, append = false) => {
     try {
       setIsLoading(true);
       const offset = (page - 1) * limit;
@@ -63,19 +63,19 @@ const ActivityProperties = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
   useEffect(() => {
     fetchTours(1, false);
-  }, [i18n.language]); // Added i18n.language dependency to refetch when language changes
+  }, [i18n.language, fetchTours]); // Added i18n.language dependency to refetch when language changes
 
-  const loadMore = async () => {
+  const loadMore = useCallback(async () => {
     if (!isLoading && hasMore) {
       const nextPage = currentPage + 1;
       setCurrentPage(nextPage);
       await fetchTours(nextPage, true);
     }
-  };
+  }, [isLoading, hasMore, currentPage, fetchTours]);
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
@@ -102,7 +102,7 @@ const ActivityProperties = () => {
         observer.unobserve(sentinel);
       }
     };
-  }, [hasMore, isLoading, currentPage]);
+  }, [hasMore, isLoading, loadMore]);
 
   // Get main image from files array
   const getMainImage = (files) => {
