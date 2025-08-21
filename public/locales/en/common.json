@@ -410,6 +410,7 @@
     "reviews": "({{count}} reviews)"
   },
   "blog": {
+    "howWeTravel": "How We Travel",
     "createBlog": "Create Blog",
     "createBlogSubtitle": "Create and manage your blog posts",
     "saveDraft": "Save Draft",
@@ -456,6 +457,7 @@
     "lastUpdated": "Last Updated",
     "noDate": "No date",
     "invalidDate": "Invalid date",
-    "noDescription": "No description"
+    "noDescription": "No description",
+    "noBlogsFound": "No blogs found"
   }
 }

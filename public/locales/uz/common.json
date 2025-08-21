@@ -410,6 +410,7 @@
     "reviews": "({{count}} ta sharh)"
   },
   "blog": {
+    "howWeTravel": "Biz qanday sayohat qilamiz",
     "createBlog": "Blog yaratish",
     "createBlogSubtitle": "Blog postlaringizni yarating va boshqaring",
     "saveDraft": "Qoralama saqlash",
@@ -456,6 +457,7 @@
     "lastUpdated": "Oxirgi yangilanish",
     "noDate": "Sana yo'q",
     "invalidDate": "Noto'g'ri sana",
-    "noDescription": "Tavsif yo'q"
+    "noDescription": "Tavsif yo'q",
+    "noBlogsFound": "Bloglar topilmadi"
   }
 }

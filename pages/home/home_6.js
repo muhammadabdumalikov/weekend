@@ -210,7 +210,7 @@ const home_6 = () => {
             <div className="col-auto">
               <div className="sectionTitle -md">
                 <h2 className="sectionTitle__title">
-                  {t("hero.title")}
+                  {t("blog.howWeTravel")}
                 </h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
                   {t("hero.subtitle")}

@@ -410,6 +410,7 @@
     "reviews": "({{count}} отзывов)"
   },
   "blog": {
+    "howWeTravel": "Как мы путешествуем",
     "createBlog": "Создать блог",
     "createBlogSubtitle": "Создавайте и управляйте своими блог-постами",
     "saveDraft": "Сохранить черновик",
@@ -456,6 +457,7 @@
     "lastUpdated": "Последнее обновление",
     "noDate": "Нет даты",
     "invalidDate": "Неверная дата",
-    "noDescription": "Нет описания"
+    "noDescription": "Нет описания",
+    "noBlogsFound": "Блоги не найдены"
   }
 }
