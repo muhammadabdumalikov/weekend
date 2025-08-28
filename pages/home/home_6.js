@@ -192,10 +192,6 @@ const home_6 = () => {
           </div>
           {/* End .row */}
 
-          <div className="row y-gap-30 pt-40 sm:pt-20 item_gap-x30">
-            <Activity2 />
-          </div>
-          {/* End .row */}
         </div>
         {/* End .container */}
       </section>
