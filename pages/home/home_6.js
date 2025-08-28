@@ -123,8 +123,8 @@ const home_6 = () => {
                 </p>
               </div>
             </div> */}
-            {/* End col-auto */}
-{/* 
+      {/* End col-auto */}
+      {/* 
             <div className="col-auto md:d-none">
               <a
                 href="#"
@@ -134,21 +134,21 @@ const home_6 = () => {
                 <div className="icon-arrow-top-right ml-15" />
               </a>
             </div> */}
-            {/* End col-auto */}
-          {/* </div> */}
-          {/* End .row */}
+      {/* End col-auto */}
+      {/* </div> */}
+      {/* End .row */}
 
-          {/* <div className="relative pt-40 sm:pt-20 item_gap-x30">
+      {/* <div className="relative pt-40 sm:pt-20 item_gap-x30">
             <div className="col-12">
               <PopularDestinations />
             </div>
           </div>
         </div> */}
-        {/* End .container */}
+      {/* End .container */}
       {/* </section> */}
       {/* End Popular Destinations */}
 
-      <section className="section-bg layout-pt-lg layout-pb-lg bg-light-2">
+      {/* <section className="section-bg layout-pt-lg layout-pb-lg bg-light-2">
         <div className="container">
           <div className="row justify-center text-center">
             <div className="col-auto">
@@ -159,24 +159,24 @@ const home_6 = () => {
                 </p>
               </div>
             </div>
-          </div>
-      {/* End .row */}
+          </div> */}
+          {/* End .row */}
 
-      <div className="row justify-center pt-50 md:pt-30">
+          {/* <div className="row justify-center pt-50 md:pt-30">
             <div className="col-xl-7 col-lg-10">
               <div className="overflow-hidden">
                 <Testimonials />
               </div>
-            </div>
-      {/* End .col */}
-      </div>
-      {/* End .row */}
-      </div>
-      {/* End .container */}
-      </section>
+            </div> */}
+          {/* End .col */}
+          {/* </div> */}
+          {/* End .row */}
+        {/* </div> */}
+        {/* End .container */}
+      {/* </section> */}
       {/* End Testimonials Section */}
 
-      <section className="layout-pt-lg layout-pb-md">
+      {/* <section className="layout-pt-lg layout-pb-md">
         <div className="container">
           <div className="row justify-center text-center is-in-view">
             <div className="col-auto">
@@ -186,18 +186,15 @@ const home_6 = () => {
                   {t("tours.subtitle")}
                 </p>
               </div>
-            </div>
+            </div> */}
             {/* End .col */}
-          </div>
+          {/* </div> */}
           {/* End .row */}
 
-        </div>
+        {/* </div> */}
         {/* End .container */}
-      </section>
+      {/* </section> */}
       {/* Trending Activity Sections */}
-
-      {/* <AppBanner /> */}
-      {/* End DownloadAppBanner section */}
 
       <section className="layout-pt-md layout-pb-lg">
         <div className="container">

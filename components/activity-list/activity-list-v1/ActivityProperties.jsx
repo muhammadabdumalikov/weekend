@@ -67,7 +67,7 @@ const ActivityProperties = () => {
 
   useEffect(() => {
     fetchTours(1, false);
-  }, [i18n.language, fetchTours]); // Added i18n.language dependency to refetch when language changes
+  }, [i18n.language]); // Added i18n.language dependency to refetch when language changes
 
   const loadMore = useCallback(async () => {
     if (!isLoading && hasMore) {
@@ -75,7 +75,7 @@ const ActivityProperties = () => {
       setCurrentPage(nextPage);
       await fetchTours(nextPage, true);
     }
-  }, [isLoading, hasMore, currentPage, fetchTours]);
+  }, [isLoading, hasMore, currentPage]);
 
   // Intersection Observer for infinite scroll
   useEffect(() => {
@@ -102,7 +102,7 @@ const ActivityProperties = () => {
         observer.unobserve(sentinel);
       }
     };
-  }, [hasMore, isLoading, loadMore]);
+  }, [hasMore, isLoading, currentPage]);
 
   // Get main image from files array
   const getMainImage = (files) => {

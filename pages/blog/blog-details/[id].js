@@ -128,9 +128,6 @@ const BlogSingleDynamic = () => {
       <DefaultHeader />
       {/* End Header 1 */}
 
-      <LocationTopBar />
-      {/* End location top bar section */}
-
       <section className="layout-pt-md layout-pb-md">
         <div className="container">
           <div className="row y-gap-40 justify-center text-center">

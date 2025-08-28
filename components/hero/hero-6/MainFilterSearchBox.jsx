@@ -33,7 +33,7 @@ const MainFilterSearchBox = () => {
 
           <div className="button-item">
             <button
-              className="mainSearch__submit button -orange-1 h-60 px-35 col-12 rounded-100 bg-blue-1 text-white"
+              className="mainSearch__submit button h-60 px-35 col-12 rounded-100 bg-blue-1 text-white"
               onClick={() => Router.push("/activity/activity-list-v1")}
             >
               <i className="icon-search text-20 mr-10" />
