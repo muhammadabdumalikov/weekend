@@ -411,6 +411,7 @@
   },
   "blog": {
     "howWeTravel": "How We Travel",
+    "viewAll": "View All",
     "createBlog": "Create Blog",
     "createBlogSubtitle": "Create and manage your blog posts",
     "saveDraft": "Save Draft",
@@ -467,6 +468,13 @@
     "imageRequirements": "PNG, JPEG, or WebP files up to 5MB",
     "blogContent": "Blog Content",
     "blogTags": "Blog Tags",
-    "contentPlaceholder": "Write your blog content here..."
+    "contentPlaceholder": "Write your blog content here...",
+    "searchBlogs": "Search blogs...",
+    "allBlogs": "All Blogs",
+    "showing": "Showing",
+    "of": "of",
+    "blogs": "blogs",
+    "tryDifferentFilters": "Try different filters or search terms",
+    "discoverAmazingStories": "Discover Amazing Stories"
   }
 }

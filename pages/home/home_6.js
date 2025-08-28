@@ -113,7 +113,7 @@ const home_6 = () => {
       </section>
       {/* Adventure and activity */}
 
-      <section className="layout-pt-lg layout-pb-md" data-aos="fade-up">
+      {/* <section className="layout-pt-lg layout-pb-md" data-aos="fade-up">
         <div className="container">
           <div className="row y-gap-20 justify-between items-end">
             <div className="col-auto">
@@ -123,9 +123,9 @@ const home_6 = () => {
                   {t("tours.subtitle")}
                 </p>
               </div>
-            </div>
+            </div> */}
             {/* End col-auto */}
-
+{/* 
             <div className="col-auto md:d-none">
               <a
                 href="#"
@@ -134,19 +134,19 @@ const home_6 = () => {
                 {t("tours.viewAll")}
                 <div className="icon-arrow-top-right ml-15" />
               </a>
-            </div>
+            </div> */}
             {/* End col-auto */}
-          </div>
+          {/* </div> */}
           {/* End .row */}
 
-          <div className="relative pt-40 sm:pt-20 item_gap-x30">
+          {/* <div className="relative pt-40 sm:pt-20 item_gap-x30">
             <div className="col-12">
               <PopularDestinations />
             </div>
           </div>
-        </div>
+        </div> */}
         {/* End .container */}
-      </section>
+      {/* </section> */}
       {/* End Popular Destinations */}
 
       <section className="section-bg layout-pt-lg layout-pb-lg bg-light-2">
@@ -206,20 +206,6 @@ const home_6 = () => {
 
       <section className="layout-pt-md layout-pb-lg">
         <div className="container">
-          <div className="row justify-center text-center">
-            <div className="col-auto">
-              <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">
-                  {t("blog.howWeTravel")}
-                </h2>
-                <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  {t("hero.subtitle")}
-                </p>
-              </div>
-            </div>
-          </div>
-          {/* End .row */}
-
           <div className="row y-gap-30 pt-40">
             <Blog />
           </div>

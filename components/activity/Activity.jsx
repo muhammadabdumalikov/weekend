@@ -8,7 +8,7 @@ import { useTranslation } from "next-i18next";
 const Activity = () => {
   const { t, i18n } = useTranslation("common");
 
-  const [activityData, setActivityData] = useState({data: [], total: 0});
+  const [activityData, setActivityData] = useState({ data: [], total: 0 });
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -23,19 +23,12 @@ const Activity = () => {
     price_high_to_low: 'price_high_to_low',
   };
 
-  const TourOrderTypesNames = {
-    popular: t("tours.mostPopular"),
-    newest: t("tours.newestFirst"),
-    price_low_to_high: t("tours.priceLowToHigh"),
-    price_high_to_low: t("tours.priceHighToLow"),
-  };
-
   // Filter states - initialize with translated values
   const [priceValue, setPriceValue] = useState(t("common.price"));
-  const [priceRange, setPriceRange] = useState({from_price: null, to_price: null});
+  const [priceRange, setPriceRange] = useState({ from_price: null, to_price: null });
   const [languageValue, setLanguageValue] = useState(t("common.language"));
   const [tourTypeValue, setTourTypeValue] = useState(t("tours.tourType"));
-  
+
   // Sort state
   const [sortValue, setSortValue] = useState(TourOrderTypes.newest);
 
@@ -71,13 +64,13 @@ const Activity = () => {
         }),
       });
       const data = await response.json();
- 
+
       const newData = data.data || [];
 
       if (append) {
-        setActivityData(prev => ({...prev, data: [...prev.data, ...newData], total: data.total}));
+        setActivityData(prev => ({ ...prev, data: [...prev.data, ...newData], total: data.total }));
       } else {
-        setActivityData({data: newData, total: data.total});
+        setActivityData({ data: newData, total: data.total });
       }
 
       // Check if there are more items to load
@@ -119,22 +112,22 @@ const Activity = () => {
   // Filter handlers
   const handlePriceValueChange = (value) => {
     setPriceValue(value);
-    
+
     switch (value) {
       case t("tours.lessThan500"):
-        setPriceRange({from_price: 0, to_price: 500});
+        setPriceRange({ from_price: 0, to_price: 500 });
         break;
       case t("tours.500to1000"):
-        setPriceRange({from_price: 500, to_price: 1000});
+        setPriceRange({ from_price: 500, to_price: 1000 });
         break;
       case t("tours.1000to2000"):
-        setPriceRange({from_price: 1000, to_price: 2000});
+        setPriceRange({ from_price: 1000, to_price: 2000 });
         break;
       case t("tours.2000plus"):
-        setPriceRange({from_price: 2000, to_price: null});
+        setPriceRange({ from_price: 2000, to_price: null });
         break;
       default:
-        setPriceRange({from_price: null, to_price: null});
+        setPriceRange({ from_price: null, to_price: null });
     }
   };
 
@@ -154,7 +147,7 @@ const Activity = () => {
   // Clear all filters
   const clearFilters = () => {
     setPriceValue(t("common.price"));
-    setPriceRange({from_price: null, to_price: null});
+    setPriceRange({ from_price: null, to_price: null });
     setLanguageValue(t("common.language"));
     setTourTypeValue(t("tours.tourType"));
     setSortValue(t("common.sort"));
@@ -216,9 +209,8 @@ const Activity = () => {
                       {dropdown.options.map((item, index) => (
                         <div key={index}>
                           <button
-                            className={`${
-                              item === dropdown.value ? "text-blue-1 " : ""
-                            }d-block js-dropdown-link`}
+                            className={`${item === dropdown.value ? "text-blue-1 " : ""
+                              }d-block js-dropdown-link`}
                             onClick={() => dropdown.onChange(item)}
                           >
                             {item}
@@ -234,9 +226,9 @@ const Activity = () => {
             ))}
           </div>
         </div>
-        
+
         <div className="col-auto">
-          <button 
+          <button
             onClick={clearFilters}
             className="button -outline-blue-1 h-34 px-15 rounded-100 text-14 text-blue-1"
           >
@@ -264,7 +256,7 @@ const Activity = () => {
               data-bs-offset="0,10"
             >
               <i className="icon-up-down text-14 mr-10" />
-                             <span className="js-dropdown-title">{currentTourOrderTypesNames[sortValue]}</span>
+              <span className="js-dropdown-title">{currentTourOrderTypesNames[sortValue]}</span>
               <i className="icon icon-chevron-sm-down text-7 ml-10" />
             </div>
             {/* End dropdown__button */}
@@ -274,12 +266,11 @@ const Activity = () => {
                 {Object.entries(TourOrderTypes).map(([key, value]) => (
                   <div key={key}>
                     <button
-                      className={`${
-                        value === sortValue ? "text-blue-1 " : ""
-                      }d-block js-dropdown-link`}
+                      className={`${value === sortValue ? "text-blue-1 " : ""
+                        }d-block js-dropdown-link`}
                       onClick={() => handleSortValueChange(value)}
                     >
-                                             {currentTourOrderTypesNames[value]}
+                      {currentTourOrderTypesNames[value]}
                     </button>
                   </div>
                 ))}
@@ -328,8 +319,8 @@ const Activity = () => {
                 <div className="cardImage__leftBadge">
                   <div
                     className={`py-5 px-15 rounded-right-4 text-12 lh-16 fw-500 uppercase ${isTextMatched(item?.tag, "likely to sell out*")
-                        ? "bg-dark-1 text-white"
-                        : ""
+                      ? "bg-dark-1 text-white"
+                      : ""
                       } ${isTextMatched(item?.tag, "best seller")
                         ? "bg-blue-1 text-white"
                         : ""

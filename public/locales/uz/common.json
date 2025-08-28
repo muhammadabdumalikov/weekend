@@ -411,6 +411,7 @@
   },
   "blog": {
     "howWeTravel": "Biz qanday sayohat qilamiz",
+    "viewAll": "Barchasini ko'rish",
     "createBlog": "Blog yaratish",
     "createBlogSubtitle": "Blog postlaringizni yarating va boshqaring",
     "saveDraft": "Qoralama saqlash",
@@ -467,6 +468,13 @@
     "imageRequirements": "PNG, JPEG yoki WebP fayllari 5MB gacha",
     "blogContent": "Blog kontenti",
     "blogTags": "Blog teglari",
-    "contentPlaceholder": "Blog kontentingizni bu yerga yozing..."
+    "contentPlaceholder": "Blog kontentingizni bu yerga yozing...",
+    "searchBlogs": "Bloglarni qidirish...",
+    "allBlogs": "Barcha bloglar",
+    "showing": "Ko'rsatilmoqda",
+    "of": "dan",
+    "blogs": "bloglar",
+    "tryDifferentFilters": "Qidiruv mezonlarini o'zgartirishga harakat qiling",
+    "discoverAmazingStories": "Ajoyib maqolalar"
   }
 }

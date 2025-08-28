@@ -411,6 +411,7 @@
   },
   "blog": {
     "howWeTravel": "Как мы путешествуем",
+    "viewAll": "Посмотреть все",
     "createBlog": "Создать блог",
     "createBlogSubtitle": "Создавайте и управляйте своими блог-постами",
     "saveDraft": "Сохранить черновик",
@@ -467,6 +468,13 @@
     "imageRequirements": "Файлы PNG, JPEG или WebP до 5МБ",
     "blogContent": "Содержание блога",
     "blogTags": "Теги блога",
-    "contentPlaceholder": "Введите содержание вашего блога здесь..."
+    "contentPlaceholder": "Введите содержание вашего блога здесь...",
+    "searchBlogs": "Поиск блогов...",
+    "allBlogs": "Все блоги",
+    "showing": "Показано",
+    "of": "из",
+    "blogs": "блогов",
+    "tryDifferentFilters": "Попробуйте изменить критерии поиска",
+    "discoverAmazingStories": "Откройте для себя удивительные истории"
   }
 }
