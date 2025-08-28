@@ -458,6 +458,12 @@
     "noDate": "Sana yo'q",
     "invalidDate": "Noto'g'ri sana",
     "noDescription": "Tavsif yo'q",
-    "noBlogsFound": "Bloglar topilmadi"
+    "blogImage": "Blog rasmi",
+    "uploadImage": "Rasm yuklash",
+    "removeImage": "Rasmni olib tashlash",
+    "imageRequired": "Rasm talab qilinadi",
+    "invalidImageType": "Noto'g'ri rasm turi. PNG, JPEG yoki WebP fayllarini yuklang",
+    "imageSizeLimit": "Rasm hajmi 5MB dan kam bo'lishi kerak",
+    "imageRequirements": "PNG, JPEG yoki WebP fayllari 5MB gacha"
   }
 }

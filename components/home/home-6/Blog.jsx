@@ -107,7 +107,7 @@ const Blog = () => {
                 width={250}
                 height={250}
                 className="size-250 rounded-4"
-                src="/img/blog/2.png"
+                src={blog.files[0]?.url}
                 alt={blog.title || "Blog image"}
               />
             </div>

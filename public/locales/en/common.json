@@ -458,6 +458,13 @@
     "noDate": "No date",
     "invalidDate": "Invalid date",
     "noDescription": "No description",
-    "noBlogsFound": "No blogs found"
+    "noBlogsFound": "No blogs found",
+    "blogImage": "Blog Image",
+    "uploadImage": "Upload Image",
+    "removeImage": "Remove Image",
+    "imageRequired": "Image is required",
+    "invalidImageType": "Invalid image type. Please upload PNG, JPEG, or WebP files",
+    "imageSizeLimit": "Image size must be less than 5MB",
+    "imageRequirements": "PNG, JPEG, or WebP files up to 5MB"
   }
 }
