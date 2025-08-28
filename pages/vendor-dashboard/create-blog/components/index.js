@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
+import dynamic from "next/dynamic";
+
+// Dynamically import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
 
 const SettingsTabs = () => {
     const { t, i18n } = useTranslation("common");
@@ -10,8 +15,10 @@ const SettingsTabs = () => {
     console.log('Current locale:', i18n.language);
     const [formData, setFormData] = useState({
         title: "",
-        description: "",
-        author: ""
+        content: "", // Rich HTML content
+        // excerpt: "", // Short description for preview
+        author: "",
+        tags: [] // Blog tags
     });
     const [selectedImage, setSelectedImage] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
@@ -21,10 +28,50 @@ const SettingsTabs = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
+    // Quill editor configuration
+    const quillModules = {
+        toolbar: [
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'align': [] }],
+            ['link', 'image', 'blockquote'],
+            ['clean']
+        ],
+    };
+
+    const quillFormats = [
+        'header', 'bold', 'italic', 'underline', 'strike',
+        'list', 'bullet', 'color', 'background', 'align',
+        'link', 'image', 'blockquote'
+    ];
+
     const handleInputChange = (field, value) => {
         setFormData(prev => ({
             ...prev,
             [field]: value
+        }));
+    };
+
+    const handleTagInput = (e) => {
+        if (e.key === 'Enter' && e.target.value.trim()) {
+            e.preventDefault();
+            const newTag = e.target.value.trim();
+            if (!formData.tags.includes(newTag)) {
+                setFormData(prev => ({
+                    ...prev,
+                    tags: [...prev.tags, newTag]
+                }));
+            }
+            e.target.value = '';
+        }
+    };
+
+    const removeTag = (tagToRemove) => {
+        setFormData(prev => ({
+            ...prev,
+            tags: prev.tags.filter(tag => tag !== tagToRemove)
         }));
     };
 
@@ -97,10 +144,14 @@ const SettingsTabs = () => {
             setError(t("blog.titleRequired"));
             return;
         }
-        if (!formData.description.trim()) {
-            setError(t("blog.descriptionRequired"));
+        if (!formData.content.trim()) {
+            setError(t("blog.contentRequired"));
             return;
         }
+        // if (!formData.excerpt.trim()) {
+        //     setError(t("blog.excerptRequired"));
+        //     return;
+        // }
         if (!formData.author.trim()) {
             setError(t("blog.authorRequired"));
             return;
@@ -117,7 +168,7 @@ const SettingsTabs = () => {
         try {
             // Upload image first
             const uploadedImage = await uploadImage(selectedImage);
-            
+
             const response = await fetch('https://api.wetrippo.com/api/admin/blog/create', {
                 method: 'POST',
                 headers: {
@@ -126,8 +177,10 @@ const SettingsTabs = () => {
                 },
                 body: JSON.stringify({
                     title: formData.title.trim(),
-                    description: formData.description.trim(),
+                    content: formData.content.trim(), // HTML content
+                    // excerpt: formData.excerpt.trim(),
                     author: formData.author.trim(),
+                    tags: formData.tags,
                     files: [uploadedImage]
                 })
             });
@@ -143,8 +196,10 @@ const SettingsTabs = () => {
             // Clear form after successful creation
             setFormData({
                 title: "",
-                description: "",
-                author: ""
+                content: "",
+                // excerpt: "",
+                author: "",
+                tags: []
             });
             setSelectedImage(null);
             setImagePreview(null);
@@ -179,7 +234,7 @@ const SettingsTabs = () => {
                     {/* Blog Form */}
                     <div className="row y-gap-20">
                         {/* Title Section */}
-                        <div className="col-12">
+                        <div className="col-8">
                             <h4 className="text-18 fw-500 mb-20">{t("blog.blogTitle")}</h4>
                             <div className="form-input bg-white">
                                 <input
@@ -192,22 +247,67 @@ const SettingsTabs = () => {
                             </div>
                         </div>
 
-                        {/* Description Section */}
-                        <div className="col-12">
-                            <h4 className="text-18 fw-500 mb-20">{t("blog.blogDescription")}</h4>
+                        {/* Excerpt Section */}
+                        {/* <div className="col-12">
+                            <h4 className="text-18 fw-500 mb-20">{t("blog.blogExcerpt")}</h4>
                             <div className="form-input bg-white">
                                 <textarea
-                                    value={formData.description}
-                                    onChange={(e) => handleInputChange("description", e.target.value)}
-                                    rows={12}
-                                    placeholder={t("blog.descriptionPlaceholder")}
+                                    value={formData.excerpt}
+                                    onChange={(e) => handleInputChange("excerpt", e.target.value)}
+                                    rows={3}
+                                    placeholder={t("blog.excerptPlaceholder")}
                                     required
+                                />
+                            </div>
+                            <div className="text-14 text-light-1 mt-5">
+                                {t("blog.excerptHelp")}
+                            </div>
+                        </div> */}
+
+                        {/* Rich Content Editor */}
+                        <div className="col-8 mb-20">
+                            <h4 className="text-18 fw-500 mb-20">{t("blog.blogContent")}</h4>
+                            <div className="bg-white rounded-4 border-type-1">
+                                <ReactQuill
+                                    value={formData.content}
+                                    onChange={(value) => handleInputChange("content", value)}
+                                    modules={quillModules}
+                                    formats={quillFormats}
+                                    placeholder={t("blog.contentPlaceholder")}
                                 />
                             </div>
                         </div>
 
+                        {/* Tags Section */}
+                        {/* <div className="col-8">
+                            <h4 className="text-18 fw-500 mb-20">{t("blog.blogTags")}</h4>
+                            <div className="form-input bg-white">
+                                <input
+                                    type="text"
+                                    onKeyPress={handleTagInput}
+                                    placeholder={t("blog.tagsPlaceholder")}
+                                />
+                            </div>
+                            {formData.tags.length > 0 && (
+                                <div className="d-flex flex-wrap x-gap-10 y-gap-10 mt-10">
+                                    {formData.tags.map((tag, index) => (
+                                        <div key={index} className="button -sm -outline-blue-1 text-blue-1">
+                                            {tag}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeTag(tag)}
+                                                className="ml-5 text-red-1"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div> */}
+
                         {/* Author Section */}
-                        <div className="col-12">
+                        <div className="col-8">
                             <h4 className="text-18 fw-500 mb-20">{t("blog.blogDetails")}</h4>
                             <div className="row y-gap-20">
                                 <div className="col-md-6">
@@ -225,7 +325,7 @@ const SettingsTabs = () => {
                         </div>
 
                         {/* Image Upload Section */}
-                        <div className="col-12">
+                        <div className="col-8">
                             <h4 className="text-18 fw-500 mb-20">{t("blog.blogImage")}</h4>
                             <div className="row y-gap-20">
                                 <div className="col-md-6">
@@ -242,7 +342,7 @@ const SettingsTabs = () => {
                                             <button
                                                 type="button"
                                                 onClick={handleRemoveImage}
-                                                className="button -sm -outline-red-1 text-red-1 mt-10"
+                                                className="button -md -outline-red-1 text-red-1 mt-10"
                                             >
                                                 <i className="icon-trash text-16 mr-5" />
                                                 {t("blog.removeImage")}
@@ -281,13 +381,6 @@ const SettingsTabs = () => {
 
                     {/* Action Buttons */}
                     <div className="d-flex justify-end x-gap-20 pt-30 border-top-light">
-                        {/* <button
-              onClick={handleSave}
-              className="button -md -outline-blue-1 text-blue-1 mr-10"
-            >
-              <i className="icon-save text-16 mr-10" />
-              {t("blog.saveDraft")}
-            </button> */}
                         <button
                             onClick={handlePublish}
                             disabled={isLoading}

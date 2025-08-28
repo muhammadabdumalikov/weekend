@@ -458,13 +458,15 @@
     "noDate": "Нет даты",
     "invalidDate": "Неверная дата",
     "noDescription": "Нет описания",
-    "noBlogsFound": "Блоги не найдены",
     "blogImage": "Изображение блога",
     "uploadImage": "Загрузить изображение",
     "removeImage": "Удалить изображение",
     "imageRequired": "Изображение обязательно",
     "invalidImageType": "Неверный тип изображения. Загрузите файлы PNG, JPEG или WebP",
     "imageSizeLimit": "Размер изображения должен быть менее 5МБ",
-    "imageRequirements": "Файлы PNG, JPEG или WebP до 5МБ"
+    "imageRequirements": "Файлы PNG, JPEG или WebP до 5МБ",
+    "blogContent": "Содержание блога",
+    "blogTags": "Теги блога",
+    "contentPlaceholder": "Введите содержание вашего блога здесь..."
   }
 }

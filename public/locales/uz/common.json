@@ -464,6 +464,9 @@
     "imageRequired": "Rasm talab qilinadi",
     "invalidImageType": "Noto'g'ri rasm turi. PNG, JPEG yoki WebP fayllarini yuklang",
     "imageSizeLimit": "Rasm hajmi 5MB dan kam bo'lishi kerak",
-    "imageRequirements": "PNG, JPEG yoki WebP fayllari 5MB gacha"
+    "imageRequirements": "PNG, JPEG yoki WebP fayllari 5MB gacha",
+    "blogContent": "Blog kontenti",
+    "blogTags": "Blog teglari",
+    "contentPlaceholder": "Blog kontentingizni bu yerga yozing..."
   }
 }
