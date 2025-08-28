@@ -11,7 +11,6 @@ import Activity from "../../components/activity/Activity";
 import Blog from "../../components/home/home-6/Blog";
 import AppBanner from "../../components/home/home-6/AppBanner";
 import Testimonials from "../../components/home/home-6/Testimonials";
-import Activity2 from "../../components/activity/Activity2";
 import Tour from "../../components/home/home-6/Tour";
 import DefaultHeader from "../../components/header/default-header/index2";
 
