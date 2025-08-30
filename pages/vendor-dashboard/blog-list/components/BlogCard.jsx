@@ -52,7 +52,7 @@ const BlogCard = ({ blog, onDelete }) => {
 
           <h3 className="text-18 lh-16 fw-500 mb-10">{blog.title}</h3>
           <p className="text-14 lh-14 text-light-1 mb-15">
-            {truncateText(blog.description)}
+            {truncateText(blog.content)}
           </p>
 
           <div className="row x-gap-20 y-gap-10">
@@ -76,7 +76,7 @@ const BlogCard = ({ blog, onDelete }) => {
             <button 
               className="button -md -outline-blue-1 text-blue-1 mr-5" 
               title={t("blog.viewBlogDetails")}
-              onClick={() => window.open(`/blog/${blog.id}`, '_blank')}
+              onClick={() => window.open(`/blog/blog-details/${blog.id}`, '_blank')}
             >
               <i className="icon-eye text-16 mr-5"></i>
               {t("blog.view")}

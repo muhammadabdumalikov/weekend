@@ -422,7 +422,7 @@
     "blogDescription": "Blog tavsifi",
     "description": "Tavsif",
     "descriptionPlaceholder": "Blog kontentingizni bu yerga yozing...",
-    "blogDetails": "Blog tafsilotlari",
+    "blogDetails": "Blog muallifi",
     "author": "Muallif",
     "authorPlaceholder": "Muallif nomini kiriting",
     "titleRequired": "Sarlavha talab qilinadi",
@@ -475,6 +475,14 @@
     "of": "dan",
     "blogs": "bloglar",
     "tryDifferentFilters": "Qidiruv mezonlarini o'zgartirishga harakat qiling",
-    "discoverAmazingStories": "Ajoyib maqolalar"
+    "discoverAmazingStories": "Ajoyib maqolalar",
+    "editBlog": "Blogni tahrirlash",
+    "editBlogSubtitle": "Blog postlaringizni tahrirlang va yangilang",
+    "blogUpdatedSuccess": "Blog muvaffaqiyatli yangilandi!",
+    "blogUpdateError": "Blogni yangilashda xatolik yuz berdi. Qaytadan urinib ko'ring.",
+    "updating": "Yangilanmoqda...",
+    "update": "Yangilash",
+    "cancel": "Bekor qilish",
+    "tagsPlaceholder": "Teglarni qo'shish uchun yozing va Enter bosing"
   }
 }

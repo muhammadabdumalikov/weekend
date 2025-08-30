@@ -75,12 +75,15 @@ const BlogList = () => {
     }
 
     try {
-      const response = await fetch(`https://api.wetrippo.com/api/admin/blog/delete/${blogId}`, {
-        method: 'DELETE',
+      const response = await fetch(`https://api.wetrippo.com/api/admin/blog/delete`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        }
+        },
+        body: JSON.stringify({
+          id: blogId
+        })
       });
 
       if (!response.ok) {
