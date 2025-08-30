@@ -87,7 +87,7 @@ const Blog = () => {
   }
 
   // Show only the first 2 blogs
-  const displayBlogs = blogs.slice(0, 2);
+  const displayBlogs = blogs.slice(0, 4);
 
   return (
     <>
