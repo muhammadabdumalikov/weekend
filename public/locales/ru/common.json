@@ -453,7 +453,7 @@
     "blogDescription": "Описание блога",
     "description": "Описание",
     "descriptionPlaceholder": "Напишите содержание вашего блога здесь...",
-    "blogDetails": "Детали блога",
+    "blogDetails": "Автор блога",
     "author": "Автор",
     "authorPlaceholder": "Введите имя автора",
     "titleRequired": "Заголовок обязателен",
@@ -506,6 +506,14 @@
     "of": "из",
     "blogs": "блогов",
     "tryDifferentFilters": "Попробуйте изменить критерии поиска",
-    "discoverAmazingStories": "Откройте для себя удивительные истории"
+    "discoverAmazingStories": "Откройте для себя удивительные истории",
+    "editBlog": "Редактировать блог",
+    "editBlogSubtitle": "Редактируйте и обновляйте свой блог-пост",
+    "blogUpdatedSuccess": "Блог успешно обновлен!",
+    "blogUpdateError": "Не удалось обновить блог. Попробуйте еще раз.",
+    "updating": "Обновление...",
+    "update": "Обновить",
+    "cancel": "Отмена",
+    "tagsPlaceholder": "Введите и нажмите Enter для добавления тегов"
   }
 }

@@ -1,20 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import CallToActions from "../../../components/common/CallToActions";
 import Seo from "../../../components/common/Seo";
 import DefaultHeader from "../../../components/header/default-header";
 import DefaultFooter from "../../../components/footer/default";
-import LocationTopBar from "../../../components/common/LocationTopBar";
-import RelatedBlog from "../../../components/blog/blog-details/RelatedBlog";
 import blogsData from "../../../data/blogs";
 import { useRouter } from "next/router";
 import DetailsContent from "../../../components/blog/blog-details/DetailsContent";
-import FormReply from "../../../components/blog/blog-details/FormReply";
-import TopComment from "../../../components/blog/blog-details/TopComment";
-import BlogNavigator from "../../../components/blog/blog-details/BlogNavigator";
-import Comments from "../../../components/blog/blog-details/Comments";
 
 const BlogSingleDynamic = () => {
+  const { t } = useTranslation("common");
   const router = useRouter();
   const [blog, setBlogItem] = useState({});
   const [dynamicBlog, setDynamicBlog] = useState(null);
@@ -164,32 +161,6 @@ const BlogSingleDynamic = () => {
               <DetailsContent blogData={isDynamicBlog ? currentBlog : null} />
               {/* Details content */}
 
-              <div className="border-top-light border-bottom-light py-30 mt-30">
-                <TopComment />
-              </div>
-              {/* End  topcommnet  */}
-              <div className="border-bottom-light py-30">
-                <BlogNavigator />
-              </div>
-              {/* End BlogNavigator */}
-
-              <h2 className="text-22 fw-500 mb-15 pt-30">Guest reviews</h2>
-              <Comments />
-              {/* End comments components */}
-
-              <div className="border-top-light pt-40 mt-40" />
-
-              <div className="row">
-                <div className="col-auto">
-                  <h3 className="text-22 fw-500">Leave a Reply</h3>
-                  <p className="text-15 text-dark-1 mt-5">
-                    Your email address will not be published.
-                  </p>
-                </div>
-              </div>
-              {/* End Leave a repy title */}
-
-              <FormReply />
             </div>
             {/* End .col */}
           </div>
@@ -199,29 +170,6 @@ const BlogSingleDynamic = () => {
       </section>
       {/* Details Blog Details Content */}
 
-      <section className="layout-pt-md layout-pb-lg">
-        <div className="container">
-          <div className="row justify-center text-center">
-            <div className="col-auto">
-              <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Related content</h2>
-                <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames
-                </p>
-              </div>
-            </div>
-          </div>
-          {/* End .row */}
-
-          <div className="row y-gap-30 pt-40">
-            <RelatedBlog />
-          </div>
-          {/* End .row */}
-        </div>
-        {/* End .container */}
-      </section>
-      {/* End Related Content */}
-
       <CallToActions />
       {/* End Call To Actions Section */}
 
@@ -230,5 +178,34 @@ const BlogSingleDynamic = () => {
     </>
   );
 };
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
+
+export async function getStaticPaths({ locales }) {
+  // Generate paths for all static blog IDs
+  const paths = [];
+  
+  // Add paths for each locale
+  locales.forEach((locale) => {
+    // Add static blog IDs from blogsData
+    blogsData.forEach((blog) => {
+      paths.push({
+        params: { id: blog.id.toString() },
+        locale: locale,
+      });
+    });
+  });
+
+  return {
+    paths,
+    fallback: 'blocking', // This allows new blog IDs to be generated at runtime
+  };
+}
 
 export default BlogSingleDynamic;

@@ -21,8 +21,8 @@
     "cancellationInfo": "Ishonchsizmisiz? Siz bu bronlashni to'liq pul qaytarish uchun 24 soat oldin bekor qilishingiz mumkin."
   },
   "hero": {
-    "title": "Ajoyib joylarni kashf eting",
-    "subtitle": "Yaqinroqdan o'rganing, biz bilan yaxshiroq sayohat qiling",
+    "title": "Betakror joylarni kashf eting",
+    "subtitle": "Sayohat qiling, biz bilan yaqindan o'rganing",
     "search": "Qidirish",
     "where": "Qayerga?",
     "when": "Qachon?",
@@ -453,7 +453,7 @@
     "blogDescription": "Blog tavsifi",
     "description": "Tavsif",
     "descriptionPlaceholder": "Blog kontentingizni bu yerga yozing...",
-    "blogDetails": "Blog tafsilotlari",
+    "blogDetails": "Blog muallifi",
     "author": "Muallif",
     "authorPlaceholder": "Muallif nomini kiriting",
     "titleRequired": "Sarlavha talab qilinadi",
@@ -506,6 +506,14 @@
     "of": "dan",
     "blogs": "bloglar",
     "tryDifferentFilters": "Qidiruv mezonlarini o'zgartirishga harakat qiling",
-    "discoverAmazingStories": "Ajoyib maqolalar"
+    "discoverAmazingStories": "Ajoyib maqolalar",
+    "editBlog": "Blogni tahrirlash",
+    "editBlogSubtitle": "Blog postlaringizni tahrirlang va yangilang",
+    "blogUpdatedSuccess": "Blog muvaffaqiyatli yangilandi!",
+    "blogUpdateError": "Blogni yangilashda xatolik yuz berdi. Qaytadan urinib ko'ring.",
+    "updating": "Yangilanmoqda...",
+    "update": "Yangilash",
+    "cancel": "Bekor qilish",
+    "tagsPlaceholder": "Teglarni qo'shish uchun yozing va Enter bosing"
   }
 }

@@ -453,7 +453,7 @@
     "blogDescription": "Blog Description",
     "description": "Description",
     "descriptionPlaceholder": "Write your blog content here...",
-    "blogDetails": "Blog Details",
+    "blogDetails": "Blog Author",
     "author": "Author",
     "authorPlaceholder": "Enter author name",
     "titleRequired": "Title is required",
@@ -506,6 +506,14 @@
     "of": "of",
     "blogs": "blogs",
     "tryDifferentFilters": "Try different filters or search terms",
-    "discoverAmazingStories": "Discover Amazing Stories"
+    "discoverAmazingStories": "Discover Amazing Stories",
+    "editBlog": "Edit Blog",
+    "editBlogSubtitle": "Edit and update your blog post",
+    "blogUpdatedSuccess": "Blog updated successfully!",
+    "blogUpdateError": "Failed to update blog. Please try again.",
+    "updating": "Updating...",
+    "update": "Update",
+    "cancel": "Cancel",
+    "tagsPlaceholder": "Type and press Enter to add tags"
   }
 }
