@@ -3,9 +3,11 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ModalVideo from "react-modal-video";
 import "photoswipe/dist/photoswipe.css";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 // import activityData from "../../../data/activity";
 import Seo from "../../../components/common/Seo";
-import Header6 from "../../../components/header/header-6";
+import DefaultHeader from "../../../components/header/default-header/index2";
 import Overview from "../../../components/activity-single/Overview";
 import TourSnapShot from "../../../components/activity-single/TourSnapShot";
 import TopBreadCrumb from "../../../components/activity-single/TopBreadCrumb";
@@ -25,8 +27,12 @@ import SlideGallery from "../../../components/activity-single/SlideGallery";
 import TravelItinerary from "../../../components/itinerary/itinerary1";
 import { useDispatch } from "react-redux";
 import { setImages } from "../../../app/gallerySlice";
+import { useI18n } from "../../../utils/useI18n";
 
 const TourSingleV1Dynamic = () => {
+  const { t } = useTranslation("common");
+  const { getCurrentLanguage } = useI18n(); 
+  const language = getCurrentLanguage();
   const [isOpen, setOpen] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -68,13 +74,13 @@ const TourSingleV1Dynamic = () => {
         onClose={() => setOpen(false)}
       />
 
-      <Seo pageTitle="Activity Single" />
+      <Seo pageTitle={t("activities.single")} />
       {/* End Page Title */}
 
       <div className="header-margin"></div>
       {/* header top margin */}
 
-      <Header6 />
+      <DefaultHeader />
       {/* End Header 1 */}
 
       <TopBreadCrumb data={activity} />
@@ -103,7 +109,7 @@ const TourSingleV1Dynamic = () => {
                           <span className="text-15 fw-500 text-dark-1">
                             {activity?.ratings}
                           </span>
-                          {activity?.numberOffReviews} reviews
+                          {t("common.reviews", { count: activity?.numberOffReviews })}
                         </div>
                       </div>
                     </div>
@@ -122,7 +128,7 @@ const TourSingleV1Dynamic = () => {
 
                         <div className="col-auto">
                           <button className="text-blue-1 text-15 underline">
-                            Show on map
+                            {t("common.showOnMap")}
                           </button>
                         </div>
                       </div>
@@ -138,14 +144,14 @@ const TourSingleV1Dynamic = () => {
                     <div className="col-auto">
                       <button className="button px-15 py-10 -blue-1">
                         <i className="icon-share mr-10"></i>
-                        Share
+                        {t("common.share")}
                       </button>
                     </div>
 
                     <div className="col-auto">
                       <button className="button px-15 py-10 -blue-1 bg-light-2">
                         <i className="icon-heart mr-10"></i>
-                        Save
+                        {t("common.save")}
                       </button>
                     </div>
                   </div>
@@ -154,22 +160,22 @@ const TourSingleV1Dynamic = () => {
               </div>
               {/* End .row */}
 
-              <h3 className="text-22 fw-500 mt-40">Tour snapshot</h3>
+              <h3 className="text-22 fw-500 mt-40">{t("tours.snapshot")}</h3>
               <TourSnapShot data={activity} />
               {/* End toursnapshot */}
               <div className="border-top-light mt-40 mb-40"></div>
 
-              <Overview data={activity} />
+              <Overview data={activity} language={language} t={t} />
               {/* End  Overview */}
 
               {/* Tour Details Section */}
               {(activity?.details?.difficulty || activity?.details?.tour_type || activity?.details?.start_location) && (
                 <div className="border-top-light mt-40 pt-40 mb-40">
-                  <h3 className="text-22 fw-500">Tour Details</h3>
+                  <h3 className="text-22 fw-500">{t("tours.details")}</h3>
                   <div className="row y-gap-30 pt-15">
                     {activity?.details?.tour_type && (
                       <div className="col-sm-4">
-                        <div className="fw-500">Tour Type</div>
+                        <div className="fw-500">{t("tours.tourType")}</div>
                         <div className="text-15">
                           {activity?.details?.tour_type}
                         </div>
@@ -177,7 +183,7 @@ const TourSingleV1Dynamic = () => {
                     )}
                     {activity?.details?.start_location && (
                       <div className="col-sm-4">
-                        <div className="fw-500">Start Location</div>
+                        <div className="fw-500">{t("tours.startLocation")}</div>
                         <div className="text-15">{activity?.details?.start_location}</div>
                       </div>
                     )}
@@ -204,7 +210,7 @@ const TourSingleV1Dynamic = () => {
           <div className="pt-40 border-top-light">
             <div className="row x-gap-40 y-gap-40">
               <div className="col-auto">
-                <h3 className="text-22 fw-500">Itinerary</h3>
+                <h3 className="text-22 fw-500">{t("tours.itinerary")}</h3>
               </div>
             </div>
             {/* End row */}
@@ -229,7 +235,7 @@ const TourSingleV1Dynamic = () => {
         <div className="container">
           <div className="row y-gap-40 justify-between">
             <div className="col-xl-3">
-              <h3 className="text-22 fw-500">Guest reviews</h3>
+              <h3 className="text-22 fw-500">{t("reviews.guestReviews")}</h3>
               <ReviewProgress2 />
               {/* End review with progress */}
             </div>
@@ -253,9 +259,9 @@ const TourSingleV1Dynamic = () => {
             <div className="col-xl-3">
               <div className="row">
                 <div className="col-auto">
-                  <h3 className="text-22 fw-500">Leave a Reply</h3>
+                  <h3 className="text-22 fw-500">{t("reviews.leaveReply")}</h3>
                   <p className="text-15 text-dark-1 mt-5">
-                    Your email address will not be published.
+                    {t("reviews.emailNotPublished")}
                   </p>
                 </div>
               </div>
@@ -282,9 +288,9 @@ const TourSingleV1Dynamic = () => {
           <div className="row y-gap-20 justify-between items-end">
             <div className="col-auto">
               <div className="sectionTitle -md">
-                <h2 className="sectionTitle__title">Most Popular Tours</h2>
+                <h2 className="sectionTitle__title">{t("tours.mostPopular")}</h2>
                 <p className=" sectionTitle__text mt-5 sm:mt-0">
-                  Interdum et malesuada fames ac ante ipsum
+                  {t("tours.mostPopularSubtitle")}
                 </p>
               </div>
             </div>
@@ -295,7 +301,7 @@ const TourSingleV1Dynamic = () => {
                 href="#"
                 className="button -md -blue-1 bg-blue-1-05 text-blue-1"
               >
-                More <div className="icon-arrow-top-right ml-15" />
+                {t("common.more")} <div className="icon-arrow-top-right ml-15" />
               </Link>
             </div>
             {/* End .col */}
@@ -331,6 +337,14 @@ const TourSingleV1Dynamic = () => {
     </>
   );
 };
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
 
 export default dynamic(() => Promise.resolve(TourSingleV1Dynamic), {
   ssr: false,

@@ -160,19 +160,19 @@ const home_6 = () => {
               </div>
             </div>
           </div> */}
-          {/* End .row */}
+      {/* End .row */}
 
-          {/* <div className="row justify-center pt-50 md:pt-30">
+      {/* <div className="row justify-center pt-50 md:pt-30">
             <div className="col-xl-7 col-lg-10">
               <div className="overflow-hidden">
                 <Testimonials />
               </div>
             </div> */}
-          {/* End .col */}
-          {/* </div> */}
-          {/* End .row */}
-        {/* </div> */}
-        {/* End .container */}
+      {/* End .col */}
+      {/* </div> */}
+      {/* End .row */}
+      {/* </div> */}
+      {/* End .container */}
       {/* </section> */}
       {/* End Testimonials Section */}
 
@@ -187,12 +187,12 @@ const home_6 = () => {
                 </p>
               </div>
             </div> */}
-            {/* End .col */}
-          {/* </div> */}
-          {/* End .row */}
+      {/* End .col */}
+      {/* </div> */}
+      {/* End .row */}
 
-        {/* </div> */}
-        {/* End .container */}
+      {/* </div> */}
+      {/* End .container */}
       {/* </section> */}
       {/* Trending Activity Sections */}
 

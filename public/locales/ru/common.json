@@ -15,6 +15,11 @@
     "categories": "Категории",
     "pages": "Страницы"
   },
+  "activities": {
+    "single": "Активность",
+    "recommendation": "94% путешественников рекомендуют этот опыт",
+    "cancellationInfo": "Не уверены? Вы можете отменить это бронирование за 24 часа до начала для полного возврата средств."
+  },
   "hero": {
     "title": "Мир ждет вас",
     "subtitle": "Откройте удивительные места",
@@ -64,7 +69,11 @@
     "currency": "Валюта",
     "tryAgain": "Попробовать снова",
     "clearFilters": "Очистить фильтры",
-    "available": "доступно"
+    "available": "доступно",
+    "showOnMap": "Показать на карте",
+    "share": "Поделиться",
+    "more": "Еще",
+    "from": "От"
   },
   "footer": {
     "aboutUs": "О нас",
@@ -77,6 +86,17 @@
     "subscribe": "Подписаться",
     "followUs": "Следите за нами",
     "allRightsReserved": "Все права защищены"
+  },
+  "contact": {
+    "contactInfo": "Контактная информация",
+    "customerCare": "Бесплатная служба поддержки клиентов",
+    "liveSupport": "Нужна живая поддержка?",
+    "callConfirm": "Позвонить"
+  },
+  "reviews": {
+    "guestReviews": "Отзывы гостей",
+    "leaveReply": "Оставить ответ",
+    "emailNotPublished": "Ваш email адрес не будет опубликован."
   },
   "tours": {
     "title": "Популярные туры",
@@ -98,6 +118,15 @@
     "adventure": "Приключенческий",
     "cultural": "Культурный",
     "nature": "Природный",
+    "snapshot": "Обзор тура",
+    "details": "Детали тура",
+    "startLocation": "Место начала",
+    "itinerary": "Маршрут",
+    "mostPopular": "Самые популярные туры",
+    "mostPopularSubtitle": "Interdum et malesuada fames ac ante ipsum",
+    "whatsIncluded": "Что включено",
+    "included": "Включено",
+    "notIncluded": "Не включено",
     "city": "Городской",
     "beach": "Пляжный",
     "mountain": "Горный",
@@ -108,14 +137,16 @@
     "loadingMore": "Загрузка дополнительных туров...",
     "loadMore": "Загрузить больше",
     "noMoreTours": "Больше туров для загрузки нет",
-    "mostPopular": "Самые популярные",
     "newestFirst": "Сначала новые",
     "priceLowToHigh": "Цена: от низкой к высокой",
     "priceHighToLow": "Цена: от высокой к низкой",
     "lessThan500": "Меньше 500",
     "500to1000": "500 - 1000",
     "1000to2000": "1000 - 2000",
-    "2000plus": "2000+"
+    "2000plus": "2000+",
+    "overview": "Детали тура",
+    "cancellationPolicy": "Политика отмены",
+    "highlights": "Основные особенности"
   },
   "booking": {
     "title": "Бронирование",

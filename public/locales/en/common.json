@@ -15,6 +15,11 @@
     "categories": "Categories",
     "pages": "Pages"
   },
+  "activities": {
+    "single": "Activity Single",
+    "recommendation": "94% of travelers recommend this experience",
+    "cancellationInfo": "Not sure? You can cancel this reservation up to 24 hours in advance for a full refund."
+  },
   "hero": {
     "title": "The World is Waiting For You",
     "subtitle": "Explore Closer, Adventure Better – Your Gateway to Central Asia",
@@ -64,7 +69,11 @@
     "currency": "Currency",
     "tryAgain": "Try Again",
     "clearFilters": "Clear Filters",
-    "available": "available"
+    "available": "available",
+    "showOnMap": "Show on map",
+    "share": "Share",
+    "more": "More",
+    "from": "From"
   },
   "footer": {
     "aboutUs": "About Us",
@@ -77,6 +86,17 @@
     "subscribe": "Subscribe",
     "followUs": "Follow Us",
     "allRightsReserved": "All Rights Reserved"
+  },
+  "contact": {
+    "contactInfo": "Contact Information",
+    "customerCare": "Toll Free Customer Care",
+    "liveSupport": "Need live support?",
+    "callConfirm": "Call"
+  },
+  "reviews": {
+    "guestReviews": "Guest reviews",
+    "leaveReply": "Leave a Reply",
+    "emailNotPublished": "Your email address will not be published."
   },
   "tours": {
     "title": "Popular Tours",
@@ -98,6 +118,14 @@
     "adventure": "Adventure",
     "cultural": "Cultural",
     "nature": "Nature",
+    "snapshot": "Tour snapshot",
+    "details": "Tour Details",
+    "startLocation": "Start Location",
+    "itinerary": "Itinerary",
+    "mostPopularSubtitle": "Interdum et malesuada fames ac ante ipsum",
+    "whatsIncluded": "What's Included",
+    "included": "Included",
+    "notIncluded": "Not Included",
     "city": "City",
     "beach": "Beach",
     "mountain": "Mountain",
@@ -115,7 +143,10 @@
     "lessThan500": "Less than 500",
     "500to1000": "500 - 1000",
     "1000to2000": "1000 - 2000",
-    "2000plus": "2000+"
+    "2000plus": "2000+",
+    "overview": "Overview",
+    "cancellationPolicy": "Cancellation Policy",
+    "highlights": "Highlights"
   },
   "booking": {
     "title": "Booking",

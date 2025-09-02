@@ -21,13 +21,6 @@ const TopBreadCrumb = ({ data }) => {
             {/* End .row */}
           </div>
           {/* End .col-auto */}
-
-          <div className="col-auto">
-            <a href="#" className="text-14 text-blue-1 underline">
-              All Hotel in London
-            </a>
-          </div>
-          {/* End col-auto */}
         </div>
         {/* End .row */}
       </div>

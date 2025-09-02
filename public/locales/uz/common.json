@@ -15,6 +15,11 @@
     "categories": "Kategoriyalar",
     "pages": "Sahifalar"
   },
+  "activities": {
+    "single": "Faoliyat",
+    "recommendation": "94% sayohatchilar bu tajribani tavsiya qiladi",
+    "cancellationInfo": "Ishonchsizmisiz? Siz bu bronlashni to'liq pul qaytarish uchun 24 soat oldin bekor qilishingiz mumkin."
+  },
   "hero": {
     "title": "Ajoyib joylarni kashf eting",
     "subtitle": "Yaqinroqdan o'rganing, biz bilan yaxshiroq sayohat qiling",
@@ -64,7 +69,11 @@
     "currency": "Valyuta",
     "tryAgain": "Qayta urinish",
     "clearFilters": "Filtrlarni tozalash",
-    "available": "mavjud"
+    "available": "mavjud",
+    "showOnMap": "Xaritada ko'rsatish",
+    "share": "Ulashish",
+    "more": "Ko'proq",
+    "from": "Dan"
   },
   "footer": {
     "aboutUs": "Biz haqida",
@@ -77,6 +86,17 @@
     "subscribe": "Obuna bo'lish",
     "followUs": "Bizni kuzatib boring",
     "allRightsReserved": "Barcha huquqlar himoyalangan"
+  },
+  "contact": {
+    "contactInfo": "Aloqa ma'lumotlari",
+    "customerCare": "Bepul mijozlarga xizmat ko'rsatish",
+    "liveSupport": "Jonli yordam kerakmi?",
+    "callConfirm": "Qo'ng'iroq qilish"
+  },
+  "reviews": {
+    "guestReviews": "Mehmonlar sharhlari",
+    "leaveReply": "Javob qoldirish",
+    "emailNotPublished": "Sizning elektron pochta manzilingiz nashr etilmaydi."
   },
   "tours": {
     "title": "Mashhur turlar",
@@ -98,6 +118,15 @@
     "adventure": "Sarguzasht",
     "cultural": "Madaniy",
     "nature": "Tabiiy",
+    "snapshot": "Tur haqida ma'lumot",
+    "details": "Tur tafsilotlari",
+    "startLocation": "Boshlash joyi",
+    "itinerary": "Marshrut",
+    "mostPopular": "Eng mashhur turlar",
+    "mostPopularSubtitle": "Interdum et malesuada fames ac ante ipsum",
+    "whatsIncluded": "Nima kiritilgan",
+    "included": "Kiritilgan",
+    "notIncluded": "Kiritilmagan",
     "city": "Shahar",
     "beach": "Plyaj",
     "mountain": "Tog'",
@@ -108,14 +137,16 @@
     "loadingMore": "Ko'proq turlar yuklanmoqda...",
     "loadMore": "Ko'proq yuklash",
     "noMoreTours": "Yuklash uchun boshqa turlar yo'q",
-    "mostPopular": "Eng mashhur",
     "newestFirst": "Avval yangilar",
     "priceLowToHigh": "Narx: pastdan yuqoriga",
     "priceHighToLow": "Narx: yuqoridan pastga",
     "lessThan500": "500 dan kam",
     "500to1000": "500 - 1000",
     "1000to2000": "1000 - 2000",
-    "2000plus": "2000+"
+    "2000plus": "2000+",
+    "overview": "Tur tafsilotlari",
+    "cancellationPolicy": "Bekor qilish siyosati",
+    "highlights": "Xususiyatlar"
   },
   "booking": {
     "title": "Bronlash",

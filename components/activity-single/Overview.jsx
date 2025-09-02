@@ -1,11 +1,13 @@
-const Overview = ({ data }) => {
+import dynamic from "next/dynamic";
+
+const Overview = ({ data, language, t }) => {
   return (
     <>
       <div className="row x-gap-40 y-gap-40">
         <div className="col-12">
-          <h3 className="text-22 fw-500">Overview</h3>
+          <h3 className="text-22 fw-500">{t("tours.overview")}</h3>
 
-          <p className="text-dark-1 text-15 mt-20">{data?.description?.en}</p>
+          <p className="text-dark-1 text-15 mt-20">{data?.description?.[language]}</p>
 
           {/* <a
             href="#"
@@ -24,22 +26,21 @@ const Overview = ({ data }) => {
         </div>
 
         <div className="col-md-6">
-          <h5 className="text-16 fw-500">Cancellation policy</h5>
+          <h5 className="text-16 fw-500">{t("tours.cancellationPolicy")}</h5>
           <div className="text-15 mt-10">
-            For a full refund, cancel at least 24 hours in advance of the start
+            {t("tours.cancellationPolicyDescription")}
             date of the experience.
           </div>
         </div>
 
         <div className="col-12">
-          <h5 className="text-16 fw-500">Highlights</h5>
+          <h5 className="text-16 fw-500">{t("tours.highlights")}</h5>
           <ul className="list-disc text-15 mt-10">
             <li>
-              Travel between the UNESCO World Heritage sites aboard a
-              comfortable coach
+              {t("tours.highlightsDescription")}
             </li>
-            <li>Explore with a guide to delve deeper into the history</li>
-            <li>Great for history buffs and travelers with limited time</li>
+            <li>{t("tours.highlightsDescription2")}</li>
+            <li>{t("tours.highlightsDescription3")}</li>
           </ul>
         </div> */}
       </div>
@@ -47,7 +48,7 @@ const Overview = ({ data }) => {
       <div className="mt-40 border-top-light">
         <div className="row x-gap-40 y-gap-40 pt-40">
           <div className="col-12">
-            <h3 className="text-22 fw-500">What&lsquo;s Included</h3>
+            <h3 className="text-22 fw-500">{t("tours.whatsIncluded")}</h3>
 
             <div className="row x-gap-40 y-gap-40 pt-20">
               <div className="col-md-6">
@@ -79,4 +80,14 @@ const Overview = ({ data }) => {
   );
 };
 
-export default Overview;
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
+}
+
+export default dynamic(() => Promise.resolve(Overview), {
+  ssr: false,
+});

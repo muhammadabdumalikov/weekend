@@ -293,8 +293,6 @@ const Activity = () => {
             <Link
               href={`/activity/activity-single/${item.id}`}
               className="activityCard -type-1 rounded-4 hover-inside-slider"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               <div className="activityCard__image position-relative">
                 <div className="cardImage ratio ratio-1:1">
