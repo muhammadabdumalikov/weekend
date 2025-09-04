@@ -7,7 +7,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 // import activityData from "../../../data/activity";
 import Seo from "../../../components/common/Seo";
-import DefaultHeader from "../../../components/header/default-header/index2";
+import DefaultHeader from "../../../components/header/default-header";
 import Overview from "../../../components/activity-single/Overview";
 import TourSnapShot from "../../../components/activity-single/TourSnapShot";
 import TopBreadCrumb from "../../../components/activity-single/TopBreadCrumb";

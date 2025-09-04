@@ -79,7 +79,7 @@ const GuestSearch = () => {
         <div className="text-15 text-light-1 ls-2 lh-16">
           <span className="js-count-adult">{guestCounts.Adults}</span> adults -{" "}
           <span className="js-count-child">{guestCounts.Children}</span>{" "}
-          childeren - <span className="js-count-room">{guestCounts.Rooms}</span>{" "}
+          children - <span className="js-count-room">{guestCounts.Rooms}</span>{" "}
           room
         </div>
       </div>
