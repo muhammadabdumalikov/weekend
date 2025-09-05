@@ -9,31 +9,17 @@ const index = ({ activity }) => {
 
   // Function to detect mobile devices
   const isMobileDevice = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-           window.innerWidth <= 768;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+      window.innerWidth <= 768;
   };
 
   // Enhanced phone click handler
   const handlePhoneClick = (phone, e) => {
     e.preventDefault();
-    
+
     if (isMobileDevice()) {
-      // For mobile devices, show choice dialog
-      const choice = window.confirm(
-        `📞 Contact: ${phone}\n\n` +
-        `Choose communication method:\n\n` +
-        `✅ OK = Open Telegram\n` +
-        `❌ Cancel = Make phone call`
-      );
-      
-      if (choice) {
-        // Open Telegram with the phone number
-        const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
-        window.open(`https://t.me/+${cleanPhone}`, '_blank');
-      } else {
-        // Make phone call
-        window.location.href = `tel:${phone}`;
-      }
+      const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
+      window.open(`https://t.me/+${cleanPhone}`, '_blank');
     } else {
       // For desktop, directly open Telegram
       const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
@@ -43,21 +29,19 @@ const index = ({ activity }) => {
 
   return (
     <>
-      <div className="col-12">
+      {/* <div className="col-12">
         <div className="searchMenu-date px-20 py-10 border-light rounded-4 -right js-form-dd js-calendar">
           <div>
             <h4 className="text-15 fw-500 ls-2 lh-16">{t("common.date")}</h4>
             <DateSearch />
           </div>
         </div>
-        {/* End check-in-out */}
-      </div>
+      </div> */}
       {/* End .col-12 */}
 
-      <div className="col-12">
+      {/* <div className="col-12">
         <GuestSearch />
-        {/* End guest */}
-      </div>
+      </div> */}
       {/* End .col-12 */}
 
       {/* Book Now Button */}
@@ -85,11 +69,10 @@ const index = ({ activity }) => {
                     </div>
                     <div className="flex-grow-1">
                       <div className="text-12 text-light-1">{t("contact.phoneNumber")} {index + 1}</div>
-                      <a 
+                      <a
                         href={`tel:${phone}`}
-                        className={`text-14 fw-500 text-dark-1 hover:text-blue-1 transition-colors cursor-pointer ${
-                          isMobileDevice() ? 'underline' : ''
-                        }`}
+                        className={`text-14 fw-500 text-dark-1 hover:text-blue-1 transition-colors cursor-pointer ${isMobileDevice() ? 'underline' : ''
+                          }`}
                         onClick={(e) => handlePhoneClick(phone, e)}
                         title={isMobileDevice() ? "Tap to open Telegram or call" : "Click to open Telegram"}
                       >

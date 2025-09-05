@@ -1,7 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
+import { Navigation, Pagination } from "swiper";
 // import { Gallery, Item } from "react-photoswipe-gallery";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 // import "../../styles/tailwind.scss";
 
 const SlideGallery = () => {
@@ -9,17 +10,27 @@ const SlideGallery = () => {
   // const sliderImg = data;
   if (!sliderImg || sliderImg.length === 0) return <p>No images found.</p>;
 
+  // Check if device is mobile
+  const isMobile = () => {
+    return window.innerWidth <= 768;
+  };
+
   return (
     <>
       <div className="relative">
         <Swiper
           loop={true}
           spaceBetween={10}
-          modules={[Navigation]}
+          modules={[Navigation, Pagination]}
           className="overflow-visible"
           navigation={{
             nextEl: ".js-activity-next-active",
             prevEl: ".js-activity-prev-active",
+          }}
+          pagination={{
+            el: ".swiper-pagination",
+            clickable: true,
+            dynamicBullets: true,
           }}
           breakpoints={{
             540: {
@@ -81,10 +92,31 @@ const SlideGallery = () => {
           ))}
         </Gallery> */}
 
-        <button className="section-slider-nav -prev flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full sm:d-none js-activity-prev-active">
+        {/* Navigation Buttons - Visible on mobile with smaller size */}
+        <button className="section-slider-nav -prev flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full js-activity-prev-active"
+          style={{
+            position: 'absolute',
+            left: '10px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 20,
+            width: isMobile() ? '32px' : '40px',
+            height: isMobile() ? '32px' : '40px',
+            opacity: isMobile() ? '0.8' : '1'
+          }}>
           <i className="icon icon-chevron-left text-12" />
         </button>
-        <button className="section-slider-nav -next flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full sm:d-none js-activity-next-active">
+        <button className="section-slider-nav -next flex-center button -blue-1 bg-white shadow-1 size-40 rounded-full js-activity-next-active"
+          style={{
+            position: 'absolute',
+            right: '10px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 20,
+            width: isMobile() ? '32px' : '40px',
+            height: isMobile() ? '32px' : '40px',
+            opacity: isMobile() ? '0.8' : '1'
+          }}>
           <i className="icon icon-chevron-right text-12" />
         </button>
 

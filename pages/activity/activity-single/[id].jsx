@@ -14,8 +14,6 @@ import TopBreadCrumb from "../../../components/activity-single/TopBreadCrumb";
 import SidebarRight from "../../../components/activity-single/SidebarRight";
 import ReviewProgress2 from "../../../components/activity-single/guest-reviews/ReviewProgress2";
 import DetailsReview2 from "../../../components/activity-single/guest-reviews/DetailsReview2";
-import ReplyForm from "../../../components/activity-single/ReplyForm";
-import ReplyFormReview2 from "../../../components/activity-single/ReplyFormReview2";
 import CallToActions from "../../../components/common/CallToActions";
 import DefaultFooter from "../../../components/footer/default";
 import Tours from "../../../components/tours/Tours";
@@ -38,6 +36,24 @@ const TourSingleV1Dynamic = () => {
   const dispatch = useDispatch();
   const [activity, setActivity] = useState({});
   const id = router.query.id;
+
+  // Handle Telegram sharing
+  const handleTelegramShare = () => {
+    if (!activity || !activity.title) return;
+    
+    const currentUrl = window.location.href;
+    const shareText = `🌟 ${activity.title?.[language]} 🌟\n\n` +
+      `📍 ${activity.location || 'Amazing destination'}\n` +
+      `💰 From $${activity.price || 'Contact for price'}\n\n` +
+      `✨ ${activity.description ? activity?.description?.[language]?.substring(0, 150) + '...' : 'Discover this amazing experience!'}\n\n` +
+      `🔗 Check it out: ${currentUrl}\n\n` +
+      `#Travel #Adventure #Experience #Wetrippo`;
+    
+    const encodedText = encodeURIComponent(shareText);
+    const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodedText}`;
+    
+    window.open(telegramUrl, '_blank');
+  };
 
   useEffect(() => {
     if (!id) {
@@ -142,8 +158,12 @@ const TourSingleV1Dynamic = () => {
                 <div className="col-auto">
                   <div className="row x-gap-10 y-gap-10">
                     <div className="col-auto">
-                      <button className="button px-15 py-10 -blue-1">
-                        <i className="icon-share mr-10"></i>
+                      <button 
+                        className="button px-15 py-10 -blue-1"
+                        onClick={handleTelegramShare}
+                        title="Share on Telegram"
+                      >
+                        <i className="icon-telegram mr-10"></i>
                         {t("common.share")}
                       </button>
                     </div>
@@ -205,21 +225,21 @@ const TourSingleV1Dynamic = () => {
       </section>
       {/* End single page content */}
 
-      <section className="pt-40">
+      {/* <section className="pt-40">
         <div className="container">
           <div className="pt-40 border-top-light">
             <div className="row x-gap-40 y-gap-40">
               <div className="col-auto">
                 <h3 className="text-22 fw-500">{t("tours.itinerary")}</h3>
               </div>
-            </div>
+            </div> */}
             {/* End row */}
-            <TravelItinerary />
-          </div>
+            {/* <TravelItinerary /> */}
+          {/* </div> */}
           {/* End pt-40 */}
-        </div>
+        {/* </div> */}
         {/* End .container */}
-      </section>
+      {/* </section> */}
 
       {/* <section className="border-top-light  mt-40 pt-40">
         <div className="container">
@@ -231,57 +251,27 @@ const TourSingleV1Dynamic = () => {
       </section> */}
       {/* End Itinerary */}
 
-      <section className="mt-40 border-top-light pt-40">
+      {/* <section className="mt-40 border-top-light pt-40">
         <div className="container">
           <div className="row y-gap-40 justify-between">
             <div className="col-xl-3">
               <h3 className="text-22 fw-500">{t("reviews.guestReviews")}</h3>
-              <ReviewProgress2 />
+              <ReviewProgress2 /> */}
               {/* End review with progress */}
-            </div>
+            {/* </div> */}
             {/* End col-xl-3 */}
 
-            <div className="col-xl-8">
+            {/* <div className="col-xl-8">
               <DetailsReview2 />
-            </div>
+            </div> */}
             {/* End col-xl-8 */}
-          </div>
+          {/* </div> */}
           {/* End .row */}
-        </div>
+        {/* </div> */}
         {/* End .container */}
         {/* End container */}
-      </section>
+      {/* </section> */}
       {/* End Review section */}
-
-      <section className="mt-40 border-top-light pt-40">
-        <div className="container">
-          <div className="row y-gap-30 justify-between">
-            <div className="col-xl-3">
-              <div className="row">
-                <div className="col-auto">
-                  <h3 className="text-22 fw-500">{t("reviews.leaveReply")}</h3>
-                  <p className="text-15 text-dark-1 mt-5">
-                    {t("reviews.emailNotPublished")}
-                  </p>
-                </div>
-              </div>
-              {/* End .row */}
-
-              <ReplyFormReview2 />
-              {/* End ReplyFormReview */}
-            </div>
-            {/* End .col-xl-3 */}
-
-            <div className="col-xl-8">
-              <ReplyForm />
-            </div>
-            {/* End .col-xl-8 */}
-          </div>
-          {/* End .row */}
-        </div>
-        {/* End .container */}
-      </section>
-      {/* End Reply Comment box section */}
 
       <section className="layout-pt-lg layout-pb-lg mt-50 border-top-light">
         <div className="container">

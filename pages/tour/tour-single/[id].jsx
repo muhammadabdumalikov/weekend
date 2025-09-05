@@ -32,6 +32,24 @@ const TourSingleV1Dynamic = () => {
   const [tour, setTour] = useState({});
   const id = router.query.id;
 
+  // Handle Telegram sharing
+  const handleTelegramShare = () => {
+    if (!tour || !tour.title) return;
+    
+    const currentUrl = window.location.href;
+    const shareText = `🌟 ${tour.title} 🌟\n\n` +
+      `📍 ${tour.location || 'Amazing destination'}\n` +
+      `💰 From $${tour.price || 'Contact for price'}\n\n` +
+      `✨ ${tour.description ? tour.description.substring(0, 150) + '...' : 'Discover this amazing tour experience!'}\n\n` +
+      `🔗 Check it out: ${currentUrl}\n\n` +
+      `#Travel #Tour #Adventure #Experience #Wetrippo`;
+    
+    const encodedText = encodeURIComponent(shareText);
+    const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodedText}`;
+    
+    window.open(telegramUrl, '_blank');
+  };
+
   useEffect(() => {
     if (!id) <h1>Loading...</h1>;
     else setTour(toursData.find((item) => item.id == id));
@@ -115,8 +133,12 @@ const TourSingleV1Dynamic = () => {
             <div className="col-auto">
               <div className="row x-gap-10 y-gap-10">
                 <div className="col-auto">
-                  <button className="button px-15 py-10 -blue-1">
-                    <i className="icon-share mr-10"></i>
+                  <button 
+                    className="button px-15 py-10 -blue-1"
+                    onClick={handleTelegramShare}
+                    title="Share on Telegram"
+                  >
+                    <i className="icon-telegram mr-10"></i>
                     Share
                   </button>
                 </div>
