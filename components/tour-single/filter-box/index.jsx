@@ -18,10 +18,7 @@ const index = ({ tour }) => {
     e.preventDefault();
     
     if (isMobileDevice()) {
-      // For mobile devices, directly initiate the call
-      window.location.href = `tel:${phone}`;
-    } else {
-      // For desktop, show options dialog
+      // For mobile devices, show choice dialog
       const choice = window.confirm(
         `📞 Contact: ${phone}\n\n` +
         `Choose communication method:\n\n` +
@@ -37,6 +34,10 @@ const index = ({ tour }) => {
         // Make phone call
         window.location.href = `tel:${phone}`;
       }
+    } else {
+      // For desktop, directly open Telegram
+      const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
+      window.open(`https://t.me/+${cleanPhone}`, '_blank');
     }
   };
   return (
@@ -89,7 +90,7 @@ const index = ({ tour }) => {
                           isMobileDevice() ? 'underline' : ''
                         }`}
                         onClick={(e) => handlePhoneClick(phone, e)}
-                        title={isMobileDevice() ? "Tap to call" : "Click to open Telegram or call"}
+                        title={isMobileDevice() ? "Tap to open Telegram or call" : "Click to open Telegram"}
                       >
                         {phone}
                       </a>
