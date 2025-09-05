@@ -91,7 +91,8 @@
     "contactInfo": "Contact Information",
     "customerCare": "Toll Free Customer Care",
     "liveSupport": "Need live support?",
-    "callConfirm": "Call"
+    "callConfirm": "Call",
+    "phoneNumber": "Phone Number"
   },
   "reviews": {
     "guestReviews": "Guest reviews",
@@ -367,6 +368,9 @@
     "active": "Active",
     "inactive": "Inactive",
     "locationId": "Location ID",
+    "contactPhones": "Contact Phones",
+    "phoneNumber": "Phone Number",
+    "addPhoneNumber": "Add Phone Number",
     "maxImagesExceeded": "You can only upload a maximum of {{maxFiles}} images. You currently have {{currentFileCount}} images.",
     "invalidImageType": "Image {{fileName}} is not a valid file type. Only PNG, JPEG and WebP are allowed.",
     "minimumImageRequired": "You must upload at least 1 image for the tour.",
@@ -483,7 +487,6 @@
     "edit": "Edit",
     "delete": "Delete",
     "viewBlogDetails": "View blog details",
-    "editBlog": "Edit blog",
     "deleteBlog": "Delete blog",
     "id": "ID",
     "lastUpdated": "Last Updated",

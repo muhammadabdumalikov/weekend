@@ -14,7 +14,7 @@ const SidebarRight = ({ tour }) => {
           {/* End div */}
 
           <div className="row y-gap-20 pt-30">
-            <FilterBox />
+            <FilterBox tour={tour} />
           </div>
           {/* End div */}
 

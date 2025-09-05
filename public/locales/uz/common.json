@@ -91,7 +91,8 @@
     "contactInfo": "Aloqa ma'lumotlari",
     "customerCare": "Bepul mijozlarga xizmat ko'rsatish",
     "liveSupport": "Jonli yordam kerakmi?",
-    "callConfirm": "Qo'ng'iroq qilish"
+    "callConfirm": "Qo'ng'iroq qilish",
+    "phoneNumber": "Telefon raqami"
   },
   "reviews": {
     "guestReviews": "Mehmonlar sharhlari",
@@ -367,6 +368,9 @@
     "active": "Faol",
     "inactive": "Faol emas",
     "locationId": "Joylashuv ID",
+    "contactPhones": "Aloqa telefonlari",
+    "phoneNumber": "Telefon raqami",
+    "addPhoneNumber": "Telefon raqami qo'shish",
     "maxImagesExceeded": "Siz maksimal {{maxFiles}} rasm yuklashingiz mumkin. Hozirda {{currentFileCount}} rasm bor.",
     "invalidImageType": "{{fileName}} rasm to'g'ri fayl turi emas. Faqat PNG, JPEG va WebP ruxsat etiladi.",
     "minimumImageRequired": "Tur uchun kamida 1 rasm yuklashingiz kerak.",

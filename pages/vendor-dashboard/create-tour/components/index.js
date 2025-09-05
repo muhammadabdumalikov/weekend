@@ -17,6 +17,7 @@ const Index = () => {
     duration: "",
     start_date: "",
     seats: 0,
+    contact_phone: [""],
     route_json: [{ title: "", description: "" }],
     includes: [{ title: "", included: true }]
   });
@@ -83,9 +84,29 @@ const Index = () => {
     setError("");
     setSuccess("");
 
+    // Validate required fields
+    if (!formData.price || formData.price <= 0) {
+      setError("Price is required and must be greater than 0");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!formData.start_date) {
+      setError("Start date is required");
+      setIsLoading(false);
+      return;
+    }
+
+    if (!formData.currency) {
+      setError("Currency is required");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const requestBody = {
         ...formData,
+        contact_phone: formData.contact_phone.filter(phone => phone.trim() !== ""), // Filter out empty phone numbers
         files: files
       };
 
@@ -219,7 +240,7 @@ const Index = () => {
               <button
                 type="button"
                 onClick={handleCreateTour}
-                disabled={isLoading}
+                disabled={isLoading || !formData.price || formData.price <= 0 || !formData.start_date || !formData.currency}
                 className="button h-50 px-24 -dark-1 bg-blue-1 text-white"
               >
                 {isLoading ? (

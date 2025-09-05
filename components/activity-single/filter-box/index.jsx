@@ -1,29 +1,45 @@
 import GuestSearch from "./GuestSearch";
 import DateSearch from "./DateSearch";
-import Link from "next/link";
 import { useTranslation } from "next-i18next";
+import { useState } from "react";
 
-const index = () => {
+const index = ({ activity }) => {
   const { t } = useTranslation("common");
+  const [showContactPhones, setShowContactPhones] = useState(false);
 
-  const contactInfo = [
-    {
-      id: 1,
-      title: t("contact.customerCare"),
-      action: "tel:+998937377793",
-      text: "+998937377793",
-      icon: "icon-phone",
-      type: "phone"
-    },
-    {
-      id: 2,
-      title: t("contact.liveSupport"),
-      action: "mailto:trippolive@gmail.com",
-      text: "trippolive@gmail.com",
-      icon: "icon-mail",
-      type: "email"
+  // Function to detect mobile devices
+  const isMobileDevice = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           window.innerWidth <= 768;
+  };
+
+  // Enhanced phone click handler
+  const handlePhoneClick = (phone, e) => {
+    e.preventDefault();
+    
+    if (isMobileDevice()) {
+      // For mobile devices, directly initiate the call
+      // This will trigger the native phone app
+      window.location.href = `tel:${phone}`;
+    } else {
+      // For desktop, show options dialog
+      const choice = window.confirm(
+        `📞 Contact: ${phone}\n\n` +
+        `Choose communication method:\n\n` +
+        `✅ OK = Open Telegram\n` +
+        `❌ Cancel = Make phone call`
+      );
+      
+      if (choice) {
+        // Open Telegram with the phone number
+        const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
+        window.open(`https://t.me/+${cleanPhone}`, '_blank');
+      } else {
+        // Make phone call
+        window.location.href = `tel:${phone}`;
+      }
     }
-  ];
+  };
 
   return (
     <>
@@ -44,56 +60,50 @@ const index = () => {
       </div>
       {/* End .col-12 */}
 
+      {/* Book Now Button */}
       <div className="col-12">
-        <Link
-          href="/hotel/booking-page"
+        <button
+          onClick={() => setShowContactPhones(!showContactPhones)}
           className="button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
         >
           {t("common.book")}
-        </Link>
+        </button>
       </div>
       {/* End .col-12 */}
 
-      {/* Contact Information Section */}
-      <div className="col-12">
-        <div className="border-top-light pt-20">
-          <h5 className="text-16 fw-500 mb-15">{t("contact.contactInfo")}</h5>
-          <div className="row y-gap-10">
-            {contactInfo.map((item) => (
-              <div className="col-12" key={item.id}>
-                <div className="d-flex items-center">
-                  <div className="size-30 flex-center bg-light-2 rounded-full mr-10">
-                    <i className={`${item.icon} text-14 text-blue-1`}></i>
-                  </div>
-                  <div className="flex-grow-1">
-                    <div className="text-12 text-light-1">{item.title}</div>
-                    <a 
-                      href={item.action}
-                      className={`text-14 fw-500 text-dark-1 hover:text-blue-1 transition-colors ${
-                        item.type === 'phone' ? 'cursor-pointer' : ''
-                      }`}
-                      onClick={(e) => {
-                        if (item.type === 'phone') {
-                          // For mobile devices, this will open the phone app
-                          // For desktop, it will show a confirmation dialog
-                          if (window.confirm(`${t("contact.callConfirm")} ${item.text}?`)) {
-                            window.location.href = item.action;
-                          } else {
-                            e.preventDefault();
-                          }
-                        }
-                      }}
-                    >
-                      {item.text}
-                    </a>
+      {/* Contact Phone Section - Show when Book Now is clicked */}
+      {showContactPhones && activity?.contact_phone && activity.contact_phone.length > 0 && (
+        <div className="col-12">
+          <div className="border-top-light pt-20">
+            <h5 className="text-16 fw-500 mb-15">{t("contact.contactInfo")}</h5>
+            <div className="row y-gap-10">
+              {activity.contact_phone.map((phone, index) => (
+                <div className="col-12" key={index}>
+                  <div className="d-flex items-center">
+                    <div className="size-30 flex-center bg-light-2 rounded-full mr-10">
+                      <i className="icon-phone text-14 text-blue-1"></i>
+                    </div>
+                    <div className="flex-grow-1">
+                      <div className="text-12 text-light-1">{t("contact.phoneNumber")} {index + 1}</div>
+                      <a 
+                        href={`tel:${phone}`}
+                        className={`text-14 fw-500 text-dark-1 hover:text-blue-1 transition-colors cursor-pointer ${
+                          isMobileDevice() ? 'underline' : ''
+                        }`}
+                        onClick={(e) => handlePhoneClick(phone, e)}
+                        title={isMobileDevice() ? "Tap to call" : "Click to open Telegram or call"}
+                      >
+                        {phone}
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-      {/* End Contact Information Section */}
+      )}
+      {/* End Contact Phone Section */}
     </>
   );
 };

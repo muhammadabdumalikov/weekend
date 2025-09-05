@@ -38,7 +38,7 @@ const SidebarRight = ({ rental }) => {
         {/* End .row */}
 
         <div className="row y-gap-20 pt-30">
-          <FilterBox />
+          <FilterBox rental={rental} />
         </div>
       </div>
     </div>

@@ -91,7 +91,8 @@
     "contactInfo": "Контактная информация",
     "customerCare": "Бесплатная служба поддержки клиентов",
     "liveSupport": "Нужна живая поддержка?",
-    "callConfirm": "Позвонить"
+    "callConfirm": "Позвонить",
+    "phoneNumber": "Номер телефона"
   },
   "reviews": {
     "guestReviews": "Отзывы гостей",
@@ -367,6 +368,9 @@
     "active": "Активный",
     "inactive": "Неактивный",
     "locationId": "ID местоположения",
+    "contactPhones": "Контактные телефоны",
+    "phoneNumber": "Номер телефона",
+    "addPhoneNumber": "Добавить номер телефона",
     "maxImagesExceeded": "Вы можете загрузить максимум {{maxFiles}} изображений. У вас сейчас {{currentFileCount}} изображений.",
     "invalidImageType": "Изображение {{fileName}} не является допустимым типом файла. Разрешены только PNG, JPEG и WebP.",
     "minimumImageRequired": "Вы должны загрузить хотя бы 1 изображение для тура.",

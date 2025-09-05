@@ -47,6 +47,20 @@ const ImportInstagramForm = () => {
       if (extractedTourData.files && extractedTourData.files.length > 0) {
         setSelectedImages(extractedTourData.files.map((_, index) => index));
       }
+      // Initialize phones if not present
+      if (!extractedTourData?.contact_phone) {
+        setExtractedTourData(prev => ({
+          ...prev,
+          contact_phone: [""]
+        }));
+      }
+      // Initialize details object if not present
+      if (!extractedTourData?.details) {
+        setExtractedTourData(prev => ({
+          ...prev,
+          details: {}
+        }));
+      }
     }
   }, [extractedTourData]);
 
@@ -67,6 +81,29 @@ const ImportInstagramForm = () => {
       setExtractedTourData(prev => ({
         ...prev,
         [field]: (field === "price" || field === "sale_price") ? String(value) : value
+      }));
+    }
+  };
+
+  const handlePhoneChange = (index, value) => {
+    setExtractedTourData(prev => ({
+      ...prev,
+      contact_phone: prev.contact_phone.map((phone, i) => i === index ? value : phone)
+    }));
+  };
+
+  const addPhone = () => {
+    setExtractedTourData(prev => ({
+      ...prev,
+      contact_phone: [...prev.contact_phone, ""]
+    }));
+  };
+
+  const removePhone = (index) => {
+    if (extractedTourData?.contact_phone.length > 1) {
+      setExtractedTourData(prev => ({
+        ...prev,
+        contact_phone: prev.contact_phone.filter((_, i) => i !== index)
       }));
     }
   };
@@ -181,6 +218,25 @@ const ImportInstagramForm = () => {
     setError("");
     setSuccess("");
 
+    // Validate required fields
+    if (!extractedTourData.price || extractedTourData.price <= 0) {
+      setError("Price is required and must be greater than 0");
+      setIsCreating(false);
+      return;
+    }
+
+    if (!extractedTourData.start_date) {
+      setError("Start date is required");
+      setIsCreating(false);
+      return;
+    }
+
+    if (!extractedTourData.currency) {
+      setError("Currency is required");
+      setIsCreating(false);
+      return;
+    }
+
     try {
       // Get image URLs from extracted tour data
       const imageUrls = extractedTourData.files?.map(file => file.url) || [];
@@ -200,6 +256,7 @@ const ImportInstagramForm = () => {
           ...extractedTourData,
           price: extractedTourData.price > 0 ? String(extractedTourData.price) : null,
           sale_price: extractedTourData.sale_price > 0 ? String(extractedTourData.sale_price) : null,
+          contact_phone: extractedTourData.contact_phone ? extractedTourData.contact_phone.filter(phone => phone.trim() !== "") : [],
           files: uploadedUrls,
         };
 
@@ -246,6 +303,7 @@ const ImportInstagramForm = () => {
         // Update the tour data with details
         const updatedTourData = {
           ...editableData,
+          contact_phone: editableData.contact_phone ? editableData.contact_phone.filter(phone => phone.trim() !== "") : [],
           details: Object.keys(details).length > 0 ? details : undefined
         };
 
@@ -450,7 +508,7 @@ const ImportInstagramForm = () => {
               <button
                 className="button -md -dark-1 bg-blue-1 text-white"
                 onClick={handleCreateTour}
-                disabled={isCreating || isUploadingImages || selectedImages.length === 0}
+                disabled={isCreating || isUploadingImages || selectedImages.length === 0 || !extractedTourData.price || extractedTourData.price <= 0 || !extractedTourData.start_date || !extractedTourData.currency}
               >
                 {isUploadingImages ? "Uploading Images..." : isCreating ? "Creating..." : `Create Tour (${selectedImages.length} images)`}
               </button>
@@ -585,7 +643,7 @@ const ImportInstagramForm = () => {
                   required
                   min={1}
                 />
-                <label className="lh-1 text-14 text-light-1">Price</label>
+                <label className="lh-1 text-14 text-light-1">Price <span className="text-red-1">*</span></label>
               </div>
             </div>
             <div className="col-lg-6">
@@ -600,6 +658,7 @@ const ImportInstagramForm = () => {
               </div>
             </div>
             <div className="col-lg-6">
+              <label className="lh-1 text-14 text-light-1 mb-10 d-block">Currency <span className="text-red-1">*</span></label>
               <div className="dropdown js-dropdown js-amenities-active h-full">
                 <div
                   className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
@@ -608,7 +667,7 @@ const ImportInstagramForm = () => {
                   aria-expanded="false"
                   data-bs-offset="0,10"
                 >
-                  <span className="js-dropdown-title fw-500">{extractedTourData.currency || CurrencyType.USD}</span>
+                  <span className="js-dropdown-title fw-500">{extractedTourData.currency || "Select Currency"}</span>
                   <i className="icon icon-chevron-sm-down text-7 ml-10" />
                 </div>
                 {/* End dropdown__button */}
@@ -650,7 +709,7 @@ const ImportInstagramForm = () => {
                   onChange={(e) => handleInputChange('start_date', e.target.value)}
                   required
                 />
-                <label className="lh-1 text-14 text-light-1">Start Date</label>
+                <label className="lh-1 text-14 text-light-1">Start Date <span className="text-red-1">*</span></label>
               </div>
             </div>
             <div className="col-lg-6">
@@ -668,7 +727,7 @@ const ImportInstagramForm = () => {
               <div className="form-input">
                 <input
                   type="text"
-                  value={extractedTourData.start_location || ""}
+                  value={extractedTourData.details?.start_location || ""}
                   onChange={(e) => handleInputChange('details', { ...extractedTourData.details, start_location: e.target.value })}
                 />
                 <label className="lh-1 text-14 text-light-1">Start Location (Optional)</label>
@@ -683,7 +742,7 @@ const ImportInstagramForm = () => {
                   aria-expanded="false"
                   data-bs-offset="0,10"
                 >
-                  <span className="js-dropdown-title fw-500">{extractedTourData.tour_type || "Select Tour Type"}</span>
+                  <span className="js-dropdown-title fw-500">{extractedTourData.details?.tour_type || "Select Tour Type"}</span>
                   <i className="icon icon-chevron-sm-down text-7 ml-10" />
                 </div>
                 {/* End dropdown__button */}
@@ -693,7 +752,7 @@ const ImportInstagramForm = () => {
                     {Object.entries(TourType).map(([key, value]) => (
                       <div key={value}>
                         <button
-                          className={`${value === extractedTourData.tour_type ? "text-blue-1 " : ""
+                          className={`${value === extractedTourData.details?.tour_type ? "text-blue-1 " : ""
                             }d-block js-dropdown-link`}
                           onClick={() => handleInputChange("details", { ...extractedTourData.details, tour_type: value })}
                         >
@@ -706,7 +765,7 @@ const ImportInstagramForm = () => {
                 {/* End dropdown-menu */}
               </div>
             </div>
-            <div className="col-lg-6">
+            <div className="col-lg-6 mb-20">
               <div className="dropdown js-dropdown js-amenities-active h-full">
                 <div
                   className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
@@ -715,7 +774,7 @@ const ImportInstagramForm = () => {
                   aria-expanded="false"
                   data-bs-offset="0,10"
                 >
-                  <span className="js-dropdown-title fw-500">{extractedTourData.difficulty || "Select Difficulty"}</span>
+                  <span className="js-dropdown-title fw-500">{extractedTourData.details?.difficulty || "Select Difficulty"}</span>
                   <i className="icon icon-chevron-sm-down text-7 ml-10" />
                 </div>
                 {/* End dropdown__button */}
@@ -725,7 +784,7 @@ const ImportInstagramForm = () => {
                     {Object.entries(TourDifficulty).map(([key, value]) => (
                       <div key={value}>
                         <button
-                          className={`${value === extractedTourData.difficulty ? "text-blue-1 " : ""
+                          className={`${value === extractedTourData.details?.difficulty ? "text-blue-1 " : ""
                             }d-block js-dropdown-link`}
                           onClick={() => handleInputChange("details", { ...extractedTourData.details, difficulty: value })}
                         >
@@ -736,6 +795,70 @@ const ImportInstagramForm = () => {
                   </div>
                 </div>
                 {/* End dropdown-menu */}
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Phones */}
+          <div className="col-12 mb-20">
+            <h5 className="text-16 fw-500 mb-15">Contact Phones</h5>
+            <div className="row y-gap-20 align-items-center">
+              {extractedTourData.contact_phone && extractedTourData.contact_phone?.map((phone, index) => (
+                <div key={index} className="col-md-6">
+                  <div className="form-input bg-white position-relative">
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => handlePhoneChange(index, e.target.value)}
+                      placeholder="+998 90 123 45 67"
+                      required
+                      style={{ paddingRight: extractedTourData.contact_phone?.length > 1 ? '45px' : '20px' }}
+                    />
+                    {extractedTourData.contact_phone?.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removePhone(index)}
+                        className="position-absolute d-flex items-center justify-center"
+                        style={{
+                          right: '8px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          background: 'transparent',
+                          border: 'none',
+                          color: '#dc3545',
+                          cursor: 'pointer',
+                          padding: '6px',
+                          borderRadius: '50%',
+                          width: '28px',
+                          height: '28px',
+                          transition: 'all 0.2s ease',
+                          zIndex: 10
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = '#f8d7da';
+                          e.target.style.color = '#721c24';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = 'transparent';
+                          e.target.style.color = '#dc3545';
+                        }}
+                        title="Remove"
+                      >
+                        <i className="icon-close text-10"></i>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+              <div className="col-md-6">
+                <button
+                  type="button"
+                  onClick={addPhone}
+                  className="button -md -outline-blue-1 text-blue-1"
+                >
+                  <i className="icon-plus mr-10"></i>
+                  Add Phone Number
+                </button>
               </div>
             </div>
           </div>
