@@ -9,26 +9,26 @@ const index = () => {
       <div className="container">
         <div className="pt-60 pb-60">
           <div className="row y-gap-40 justify-between xl:justify-start">
-            <div className="col-xl-2 col-lg-4 col-sm-6">
+            {/* <div className="col-xl-2 col-lg-4 col-sm-6">
               <h5 className="text-16 fw-500 mb-30">Contact Us</h5>
               <ContactInfo />
-            </div>
+            </div> */}
             {/* End col */}
 
-            <FooterContent />
+            {/* <FooterContent /> */}
             {/* End footer menu content */}
-
+{/* 
             <div className="col-xl-2 col-lg-4 col-sm-6">
               <h5 className="text-16 fw-500 mb-30">Mobile</h5>
               <AppButton />
-            </div>
+            </div> */}
           </div>
         </div>
         {/* End footer top */}
-
+{/* 
         <div className="py-20 border-top-light">
           <Copyright />
-        </div>
+        </div> */}
         {/* End footer-copyright */}
       </div>
       {/* End container */}

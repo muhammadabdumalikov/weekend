@@ -273,7 +273,7 @@ const TourSingleV1Dynamic = () => {
       {/* </section> */}
       {/* End Review section */}
 
-      <section className="layout-pt-lg layout-pb-lg mt-50 border-top-light">
+      {/* <section className="layout-pt-lg layout-pb-lg mt-50 border-top-light">
         <div className="container">
           <div className="row y-gap-20 justify-between items-end">
             <div className="col-auto">
@@ -284,7 +284,6 @@ const TourSingleV1Dynamic = () => {
                 </p>
               </div>
             </div>
-            {/* End .col */}
 
             <div className="col-auto">
               <Link
@@ -294,17 +293,13 @@ const TourSingleV1Dynamic = () => {
                 {t("common.more")} <div className="icon-arrow-top-right ml-15" />
               </Link>
             </div>
-            {/* End .col */}
           </div>
-          {/* End .row */}
 
           <div className="row y-gap-30 pt-40 sm:pt-20 item_gap-x30">
             <Tours />
           </div>
-          {/* End .row */}
         </div>
-        {/* End .container */}
-      </section>
+      </section> */}
       {/* End Tours Sections */}
 
       <CallToActions />

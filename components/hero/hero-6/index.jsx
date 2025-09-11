@@ -28,7 +28,7 @@ const index = () => {
               </p>
             </div>
             {/* End hero title */}
-            <MainFilterSearchBox />
+            {/* <MainFilterSearchBox /> */}
           </div>
         </div>
       </div>

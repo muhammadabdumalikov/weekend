@@ -87,7 +87,7 @@ const home_6 = () => {
       </section>
       {/* Trending Activity Sections */}
 
-      <section className="layout-pt-md layout-pb-md">
+      {/* <section className="layout-pt-md layout-pb-md">
         <div className="container">
           <div className="row justify-center text-center">
             <div className="col-auto">
@@ -101,15 +101,12 @@ const home_6 = () => {
               </div>
             </div>
           </div>
-          {/* End .row */}
 
           <div className="row y-gap-30 pt-40 sm:pt-20 item_gap-x30">
             <TourCategories />
           </div>
-          {/* End .row */}
         </div>
-        {/* End .container */}
-      </section>
+      </section> */}
       {/* Adventure and activity */}
 
       {/* <section className="layout-pt-lg layout-pb-md" data-aos="fade-up">
@@ -196,15 +193,13 @@ const home_6 = () => {
       {/* </section> */}
       {/* Trending Activity Sections */}
 
-      <section className="layout-pt-md layout-pb-lg">
+      {/* <section className="layout-pt-md layout-pb-lg">
         <div className="container">
           <div className="row y-gap-30 pt-40">
             <Blog />
           </div>
-          {/* End .row */}
         </div>
-        {/* End .container */}
-      </section>
+      </section> */}
       {/* End blog sections */}
 
       <Footer5 />

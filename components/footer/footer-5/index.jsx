@@ -18,24 +18,23 @@ const index = () => {
               </div>
               {/* End .row */}
 
-              <div className="row x-gap-20 y-gap-15 pt-60">
+              {/* <div className="row x-gap-20 y-gap-15 pt-60">
                 <div className="col-12">
                   <h5 className="text-16 fw-500">Your all-in-one travel app</h5>
                 </div>
-                {/* End .col */}
 
                 <AppButton />
-              </div>
+              </div> */}
               {/* End .row */}
 
-              <div className="mt-60">
+              {/* <div className="mt-60">
                 <h5 className="text-16 fw-500 mb-10">
                   Follow us on social media
                 </h5>
                 <div className="d-flex x-gap-20 items-center">
                   <Social />
                 </div>
-              </div>
+              </div> */}
             </div>
             {/* End .col */}
 
@@ -49,7 +48,7 @@ const index = () => {
                 </div>
                 {/* End .col */}
 
-                <FooterContent />
+                {/* <FooterContent /> */}
               </div>
               {/* End .row */}
             </div>
@@ -59,9 +58,9 @@ const index = () => {
         </div>
         {/* End footer top */}
 
-        <div className="py-20 border-top-white-15">
+        {/* <div className="py-20 border-top-white-15">
           <Copyright />
-        </div>
+        </div> */}
         {/* End footer-copyright */}
       </div>
       {/* End container */}
