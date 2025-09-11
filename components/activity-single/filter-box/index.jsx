@@ -68,7 +68,7 @@ const index = ({ activity }) => {
                       <i className="icon-phone text-14 text-blue-1"></i>
                     </div>
                     <div className="flex-grow-1">
-                      <div className="text-12 text-light-1">{t("contact.phoneNumber")} {index + 1}</div>
+                      <div className="text-12 text-light-1">{t("contact.phoneNumber")} {activity.contact_phone.length > 1 ? index + 1 : ''}</div>
                       <a
                         href={`tel:${phone}`}
                         className={`text-14 fw-500 text-dark-1 hover:text-blue-1 transition-colors cursor-pointer ${isMobileDevice() ? 'underline' : ''
