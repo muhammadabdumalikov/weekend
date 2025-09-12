@@ -41,7 +41,11 @@ const HeaderDashBoard = () => {
         <div className="header__container px-30 sm:px-20">
           <div className="-left-side">
             <Link href="/" className="header-logo">
-              <img src="/img/general/logo-dark.svg" alt="logo icon" />
+              <h1
+                className={`text-30 lg:text-25 md:text-20 font-bold text-dark-1`}
+              >
+                WeTrippo
+              </h1>            
             </Link>
             {/* End logo */}
           </div>
@@ -116,17 +120,17 @@ const HeaderDashBoard = () => {
                     <LanguageMegaMenu textClass="text-dark-1" />
                   </div>
                   {/* End Language Switcher for Mobile */}
-                  
-                  <div>
+
+                  {/* <div>
                     <button
                       className="d-flex items-center icon-menu text-20"
                       data-bs-toggle="offcanvas"
                       aria-controls="mobile-sidebar_menu"
                       data-bs-target="#mobile-sidebar_menu"
                     ></button>
-                  </div>
+                  </div> */}
 
-                  <div
+                  {/* <div
                     className="offcanvas offcanvas-start  mobile_menu-contnet "
                     tabIndex="-1"
                     id="mobile-sidebar_menu"
@@ -134,8 +138,7 @@ const HeaderDashBoard = () => {
                     data-bs-scroll="true"
                   >
                     <MobileMenu />
-                    {/* End MobileMenu */}
-                  </div>
+                  </div> */}
                 </div>
               </div>
               {/* End -flex items-center */}

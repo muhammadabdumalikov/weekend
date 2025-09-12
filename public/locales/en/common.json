@@ -234,7 +234,7 @@
     "verifying": "Verifying...",
     "verifyOtp": "Verify OTP",
     "authenticationSuccessful": "Authentication Successful!",
-    "welcomeToGoTrip": "Welcome to GoTrip!",
+    "welcomeToGoTrip": "Welcome to WeTrippo!",
     "telegramVerifiedSuccess": "Your Telegram account has been successfully verified. You can now enjoy all our services.",
     "failedToSendOtp": "Failed to send OTP. Please try again.",
     "invalidOtpCode": "Invalid OTP code. Please try again.",

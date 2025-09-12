@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { getProxiedImageUrl } from "../../../../providers/helpers";
 
 export const CurrencyType = {
@@ -38,6 +39,7 @@ const ImportInstagramForm = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedMainImage, setSelectedMainImage] = useState(0);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [currentTab, setCurrentTab] = useState(0);
 
   // Update editableData when extractedTourData changes
   useEffect(() => {
@@ -68,7 +70,36 @@ const ImportInstagramForm = () => {
     return /^https?:\/\/(www\.)?instagram\.com\/p\/[A-Za-z0-9_\-]+/.test(value);
   };
 
+  // Helper function to validate and update date to current year if in the past
+  const validateAndUpdateDate = (dateValue) => {
+    if (!dateValue) return dateValue;
+    
+    const selectedDate = new Date(dateValue);
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    
+    // If selected date is in the past, update the year to current year
+    if (selectedDate < currentDate) {
+      const updatedDate = new Date(selectedDate);
+      updatedDate.setFullYear(currentYear);
+      const updatedDateString = updatedDate.toISOString().split('T')[0];
+      
+      // Show notification
+      setSuccess(`Date updated to current year (${currentYear})`);
+      setTimeout(() => setSuccess(""), 3000);
+      
+      return updatedDateString;
+    }
+    
+    return dateValue;
+  };
+
   const handleInputChange = (field, value, language = null) => {
+    // Handle start_date validation - if date is in the past, update year to current year
+    if (field === 'start_date' && value) {
+      value = validateAndUpdateDate(value);
+    }
+
     if (language) {
       setExtractedTourData(prev => ({
         ...prev,
@@ -465,8 +496,609 @@ const ImportInstagramForm = () => {
     );
   };
 
-  // Extracted tour component - improved with template's custom components and toggle switches
+  // Tab navigation handlers
+  const handleNextTab = () => {
+    if (currentTab < 3) {
+      setCurrentTab(currentTab + 1);
+    }
+  };
+
+  const handlePreviousTab = () => {
+    if (currentTab > 0) {
+      setCurrentTab(currentTab - 1);
+    }
+  };
+
+  // Basic Information Tab Content
+  const renderBasicInfoTab = () => {
+    if (isProcessingAI) {
+      return (
+        <div className="text-center p-40">
+          <div className="size-80 rounded-full bg-blue-1-light d-flex items-center justify-center mx-auto mb-20">
+            <div className="spinner-border text-blue-1" role="status" style={{ width: '40px', height: '40px' }}>
+            </div>
+          </div>
+          <h4 className="text-18 fw-500 text-dark-1 mb-10">Extracting Tour Data</h4>
+          <p className="text-14 text-light-1 mb-20">
+            AI is analyzing the Instagram post to extract tour information...
+          </p>
+          <div className="d-flex items-center justify-center">
+            <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse"></div>
+            <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+            <div className="size-6 rounded-full bg-blue-1 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+          </div>
+        </div>
+      );
+    }
+
+    if (!extractedTourData) {
+      return (
+        <div className="text-center p-40">
+          <div className="size-80 rounded-full bg-light-2 d-flex items-center justify-center mx-auto mb-20">
+            <i className="icon-location-2 text-light-1" style={{ fontSize: '24px' }}></i>
+          </div>
+          <h4 className="text-18 fw-500 text-dark-1 mb-10">No Tour Data</h4>
+          <p className="text-14 text-light-1 mb-20">
+            Extract tour information from an Instagram post to see the details here
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="row y-gap-20">
+        {/* Title Section */}
+        <div className="col-12">
+          <h5 className="text-16 fw-500 mb-15">Title</h5>
+          <div className="row y-gap-10">
+            <div className="col-12">
+              <div className="form-input">
+                <input
+                  type="text"
+                  value={extractedTourData.title?.en || ""}
+                  onChange={(e) => handleInputChange('title', e.target.value, 'en')}
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">English</label>
+              </div>
+            </div>
+            <div className="col-12">
+              <div className="form-input">
+                <input
+                  type="text"
+                  value={extractedTourData.title?.ru || ""}
+                  onChange={(e) => handleInputChange('title', e.target.value, 'ru')}
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Russian</label>
+              </div>
+            </div>
+            <div className="col-12">
+              <div className="form-input">
+                <input
+                  type="text"
+                  value={extractedTourData.title?.uz || ""}
+                  onChange={(e) => handleInputChange('title', e.target.value, 'uz')}
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Uzbek</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Description Section */}
+        <div className="col-12">
+          <h5 className="text-16 fw-500 mb-15">Description</h5>
+          <div className="row y-gap-10">
+            <div className="col-12">
+              <div className="form-input">
+                <textarea
+                  value={extractedTourData.description?.en || ""}
+                  onChange={(e) => handleInputChange('description', e.target.value, 'en')}
+                  rows="4"
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">English</label>
+              </div>
+            </div>
+            <div className="col-12">
+              <div className="form-input">
+                <textarea
+                  value={extractedTourData.description?.ru || ""}
+                  onChange={(e) => handleInputChange('description', e.target.value, 'ru')}
+                  rows="4"
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Russian</label>
+              </div>
+            </div>
+            <div className="col-12">
+              <div className="form-input">
+                <textarea
+                  value={extractedTourData.description?.uz || ""}
+                  onChange={(e) => handleInputChange('description', e.target.value, 'uz')}
+                  rows="4"
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Uzbek</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Pricing & Details Tab Content
+  const renderPricingDetailsTab = () => {
+    if (isProcessingAI) {
+      return (
+        <div className="text-center p-40">
+          <div className="size-80 rounded-full bg-blue-1-light d-flex items-center justify-center mx-auto mb-20">
+            <div className="spinner-border text-blue-1" role="status" style={{ width: '40px', height: '40px' }}>
+            </div>
+          </div>
+          <h4 className="text-18 fw-500 text-dark-1 mb-10">Extracting Tour Details</h4>
+          <p className="text-14 text-light-1 mb-20">
+            AI is analyzing pricing and tour details from the Instagram post...
+          </p>
+          <div className="d-flex items-center justify-center">
+            <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse"></div>
+            <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+            <div className="size-6 rounded-full bg-blue-1 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+          </div>
+        </div>
+      );
+    }
+
+    if (!extractedTourData) return null;
+
+    return (
+      <div className="row y-gap-20">
+        {/* Pricing Section */}
+        <div className="col-12">
+          <h5 className="text-16 fw-500 mb-15">Pricing</h5>
+          <div className="row y-gap-20">
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input
+                  type="number"
+                  value={extractedTourData.price || ""}
+                  onChange={(e) => handleInputChange('price', String(e.target.value))}
+                  required
+                  min={1}
+                />
+                <label className="lh-1 text-14 text-light-1">Price <span className="text-red-1">*</span></label>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input
+                  type="number"
+                  value={extractedTourData.sale_price || ""}
+                  onChange={(e) => handleInputChange('sale_price', e.target.value === 0 ? null : String(e.target.value))}
+                  min={0}
+                />
+                <label className="lh-1 text-14 text-light-1">Sale Price</label>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <label className="lh-1 text-14 text-light-1 mb-10 d-block">Currency <span className="text-red-1">*</span></label>
+              <div className="dropdown js-dropdown js-amenities-active h-full">
+                <div
+                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="true"
+                  aria-expanded="false"
+                  data-bs-offset="0,10"
+                >
+                  <span className="js-dropdown-title fw-500">{extractedTourData.currency || "Select Currency"}</span>
+                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
+                </div>
+                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+                  <div className="text-15 y-gap-15 js-dropdown-list">
+                    {Object.values(CurrencyType).map((currency) => (
+                      <div key={currency}>
+                        <button
+                          className={`${currency === (extractedTourData.currency || CurrencyType.USD) ? "text-blue-1 " : ""
+                            }d-block js-dropdown-link`}
+                          onClick={() => handleInputChange("currency", currency)}
+                        >
+                          {currency}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tour Details Section */}
+        <div className="col-12">
+          <h5 className="text-16 fw-500 mb-15">Tour Details</h5>
+          <div className="row y-gap-20">
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input
+                  type="text"
+                  value={extractedTourData.duration || ""}
+                  onChange={(e) => handleInputChange('duration', e.target.value)}
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Duration</label>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input
+                  type="date"
+                  value={extractedTourData.start_date || ""}
+                  onChange={(e) => handleInputChange('start_date', e.target.value)}
+                  required
+                  min={new Date().toISOString().split('T')[0]} // Set minimum date to today
+                />
+                <label className="lh-1 text-14 text-light-1">Start Date <span className="text-red-1">*</span></label>
+                {extractedTourData.start_date && (() => {
+                  const selectedDate = new Date(extractedTourData.start_date);
+                  const currentDate = new Date();
+                  const currentYear = currentDate.getFullYear();
+                  const selectedYear = selectedDate.getFullYear();
+                  
+                  if (selectedYear === currentYear && selectedDate < currentDate) {
+                    return (
+                      <div className="text-12 text-blue-1 mt-5 d-flex items-center">
+                        <i className="icon-info mr-5"></i>
+                        Date automatically updated to current year
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input
+                  type="number"
+                  value={extractedTourData.seats || ""}
+                  onChange={(e) => handleInputChange('seats', parseInt(e.target.value))}
+                  required
+                />
+                <label className="lh-1 text-14 text-light-1">Available Seats</label>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="form-input">
+                <input
+                  type="text"
+                  value={extractedTourData.details?.start_location || ""}
+                  onChange={(e) => handleInputChange('details', { ...extractedTourData.details, start_location: e.target.value })}
+                />
+                <label className="lh-1 text-14 text-light-1">Start Location (Optional)</label>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="dropdown js-dropdown js-amenities-active h-full">
+                <div
+                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="true"
+                  aria-expanded="false"
+                  data-bs-offset="0,10"
+                >
+                  <span className="js-dropdown-title fw-500">{extractedTourData.details?.tour_type || "Select Tour Type"}</span>
+                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
+                </div>
+                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+                  <div className="text-15 y-gap-15 js-dropdown-list">
+                    {Object.entries(TourType).map(([key, value]) => (
+                      <div key={value}>
+                        <button
+                          className={`${value === extractedTourData.details?.tour_type ? "text-blue-1 " : ""
+                            }d-block js-dropdown-link`}
+                          onClick={() => handleInputChange("details", { ...extractedTourData.details, tour_type: value })}
+                        >
+                          {key}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-6">
+              <div className="dropdown js-dropdown js-amenities-active h-full">
+                <div
+                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="true"
+                  aria-expanded="false"
+                  data-bs-offset="0,10"
+                >
+                  <span className="js-dropdown-title fw-500">{extractedTourData.details?.difficulty || "Select Difficulty"}</span>
+                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
+                </div>
+                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
+                  <div className="text-15 y-gap-15 js-dropdown-list">
+                    {Object.entries(TourDifficulty).map(([key, value]) => (
+                      <div key={value}>
+                        <button
+                          className={`${value === extractedTourData.details?.difficulty ? "text-blue-1 " : ""
+                            }d-block js-dropdown-link`}
+                          onClick={() => handleInputChange("details", { ...extractedTourData.details, difficulty: value })}
+                        >
+                          {key}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Contact Information Tab Content
+  const renderContactTab = () => {
+    if (isProcessingAI) {
+      return (
+        <div className="text-center p-40">
+          <div className="size-80 rounded-full bg-blue-1-light d-flex items-center justify-center mx-auto mb-20">
+            <div className="spinner-border text-blue-1" role="status" style={{ width: '40px', height: '40px' }}>
+            </div>
+          </div>
+          <h4 className="text-18 fw-500 text-dark-1 mb-10">Extracting Contact Info</h4>
+          <p className="text-14 text-light-1 mb-20">
+            AI is analyzing contact information from the Instagram post...
+          </p>
+          <div className="d-flex items-center justify-center">
+            <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse"></div>
+            <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+            <div className="size-6 rounded-full bg-blue-1 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+          </div>
+        </div>
+      );
+    }
+
+    if (!extractedTourData) return null;
+
+    return (
+      <div className="row y-gap-20">
+        <div className="col-12">
+          <h5 className="text-16 fw-500 mb-15">Contact Information</h5>
+          <div className="row y-gap-20 align-items-center">
+            {extractedTourData.contact_phone && extractedTourData.contact_phone?.map((phone, index) => (
+              <div key={index} className="col-md-6">
+                <div className="form-input bg-white position-relative">
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => handlePhoneChange(index, e.target.value)}
+                    placeholder="+998 90 123 45 67"
+                    required
+                    style={{ paddingRight: extractedTourData.contact_phone?.length > 1 ? '45px' : '20px' }}
+                  />
+                  {extractedTourData.contact_phone?.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removePhone(index)}
+                      className="position-absolute d-flex items-center justify-center"
+                      style={{
+                        right: '8px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        background: 'transparent',
+                        border: 'none',
+                        color: '#dc3545',
+                        cursor: 'pointer',
+                        padding: '6px',
+                        borderRadius: '50%',
+                        width: '28px',
+                        height: '28px',
+                        transition: 'all 0.2s ease',
+                        zIndex: 10
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = '#f8d7da';
+                        e.target.style.color = '#721c24';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = 'transparent';
+                        e.target.style.color = '#dc3545';
+                      }}
+                      title="Remove"
+                    >
+                      <i className="icon-close text-10"></i>
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+            <div className="col-md-6">
+              <button
+                type="button"
+                onClick={addPhone}
+                className="button -md -outline-blue-1 text-blue-1"
+              >
+                <i className="icon-plus mr-10"></i>
+                Add Phone Number
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Images Tab Content
+  const renderImagesTab = () => {
+    if (isProcessingAI) {
+      return (
+        <div className="text-center p-40">
+          <div className="size-80 rounded-full bg-blue-1-light d-flex items-center justify-center mx-auto mb-20">
+            <div className="spinner-border text-blue-1" role="status" style={{ width: '40px', height: '40px' }}>
+            </div>
+          </div>
+          <h4 className="text-18 fw-500 text-dark-1 mb-10">Processing Images</h4>
+          <p className="text-14 text-light-1 mb-20">
+            AI is analyzing and processing images from the Instagram post...
+          </p>
+          <div className="d-flex items-center justify-center">
+            <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse"></div>
+            <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+            <div className="size-6 rounded-full bg-blue-1 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+          </div>
+        </div>
+      );
+    }
+
+    if (!extractedTourData || !extractedTourData.files || extractedTourData.files.length === 0) {
+      return (
+        <div className="text-center p-40">
+          <div className="size-80 rounded-full bg-light-2 d-flex items-center justify-center mx-auto mb-20">
+            <i className="icon-image text-light-1" style={{ fontSize: '24px' }}></i>
+          </div>
+          <h4 className="text-18 fw-500 text-dark-1 mb-10">No Images Available</h4>
+          <p className="text-14 text-light-1">
+            Images will appear here once you extract tour data from an Instagram post
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="row y-gap-20">
+        <div className="col-12">
+          <h5 className="text-16 fw-500 mb-15">Select Images for Upload</h5>
+          <p className="text-14 text-light-1 mb-20">
+            Choose which images to upload and set one as the main image
+          </p>
+          
+          {/* Upload Progress */}
+          {isUploadingImages && (
+            <div className="mb-20">
+              <div className="d-flex items-center p-15 rounded-8 bg-blue-1-light">
+                <div className="size-40 rounded-full bg-blue-1 d-flex items-center justify-center mr-15">
+                  <i className="icon-upload text-18 text-white"></i>
+                </div>
+                <div className="text-14 text-dark-1">
+                  Uploading {Math.round(uploadProgress)}% complete...
+                </div>
+              </div>
+              <div className="mt-10">
+                <div className="d-flex items-center justify-between mb-10">
+                  <span className="text-14 text-dark-1">Uploading images to server...</span>
+                  <span className="text-14 text-blue-1 fw-500">{Math.round(uploadProgress)}%</span>
+                </div>
+                <div className="progress-bar bg-light-2 rounded-4" style={{ height: '8px' }}>
+                  <div
+                    className="progress-bar-fill bg-blue-1 rounded-4"
+                    style={{
+                      width: `${uploadProgress}%`,
+                      height: '100%',
+                      transition: 'width 0.3s ease'
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="row x-gap-10 y-gap-10">
+            {extractedTourData.files.map((file, i) => (
+              <div key={i} className="col-lg-4 col-md-6">
+                <div className="cardImage ratio ratio-1:1 relative">
+                  <div className="cardImage__content">
+                    <img
+                      src={getProxiedImageUrl(file.url)}
+                      alt={`Tour image ${i + 1}`}
+                      className="rounded-4"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+
+                  {/* Set Main Button */}
+                  <div className="ml-10 mt-10">
+                    <button
+                      onClick={() => setSelectedMainImage(i)}
+                      className={`button -sm p-10 rounded-4 ${selectedMainImage === i
+                        ? 'bg-blue-1 text-white'
+                        : 'bg-white text-dark-1 hover:bg-light-2 border-light-1'
+                        }`}
+                    >
+                      {selectedMainImage === i ? 'Main' : 'Set Main'}
+                    </button>
+                  </div>
+
+                  {/* Selection Checkbox */}
+                  <div className="ml-10 mt-40">
+                    <button
+                      onClick={() => handleImageSelection(i)}
+                      className={`button -sm rounded-4 ${selectedImages.includes(i)
+                        ? 'bg-blue-1 text-white'
+                        : 'bg-white text-dark-1 hover:bg-light-2 border-light-1'
+                        }`}
+                    >
+                      <i className={`icon-check text-20 ${selectedImages.includes(i) ? 'text-white' : 'text-blue-1'}`}></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Selection Summary */}
+          {selectedImages.length > 0 && (
+            <div className="mt-20 p-15 rounded-8 bg-light-2">
+              <div className="d-flex items-center justify-between">
+                <span className="text-14 text-dark-1">
+                  {selectedImages.length} image{selectedImages.length !== 1 ? 's' : ''} selected for upload
+                </span>
+                {selectedMainImage !== null && selectedImages.includes(selectedMainImage) && (
+                  <span className="text-14 text-blue-1 fw-500">
+                    Image {selectedMainImage + 1} set as main
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Main extracted tour component with tabs
   const renderExtractedTour = () => {
+    if (isProcessingAI) {
+      return (
+        <div className="extractedTourCard d-block w-100 rounded-4 bg-white shadow-3">
+          <div className="extractedTourCard__content p-40">
+            <div className="text-center">
+              <div className="size-80 rounded-full bg-blue-1-light d-flex items-center justify-center mx-auto mb-20">
+                <div className="spinner-border text-blue-1" role="status" style={{ width: '50px', height: '50px' }}>
+                </div>
+              </div>
+              <h4 className="text-18 fw-500 text-dark-1 mb-10">AI is Processing...</h4>
+              <p className="text-14 text-light-1 mb-20">
+                Extracting tour information from Instagram post using AI
+              </p>
+              <div className="d-flex items-center justify-center">
+                <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse"></div>
+                <div className="size-6 rounded-full bg-blue-1 mr-10 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+                <div className="size-6 rounded-full bg-blue-1 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     if (!extractedTourData) {
       return (
         <div className="extractedTourCard d-block w-100 rounded-4 bg-white shadow-3">
@@ -516,416 +1148,63 @@ const ImportInstagramForm = () => {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="extractedTourCard__content p-20">
-          {/* Title Section */}
-          <div className="mb-20">
-
-            {isUploadingImages && (
-              <div className="col-12">
-                <div className="d-flex items-center p-15 rounded-8 bg-blue-1-light">
-                  <div className="size-40 rounded-full bg-blue-1 d-flex items-center justify-center mr-15">
-                    <i className="icon-upload text-18 text-white"></i>
-                  </div>
-                  <div className="text-14 text-dark-1">
-                    Uploading {Math.round(uploadProgress)}% complete...
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Upload Progress */}
-            {isUploadingImages && (
-              <div className="mb-15">
-                <div className="d-flex items-center justify-between mb-10">
-                  <span className="text-14 text-dark-1">Uploading images to server...</span>
-                  <span className="text-14 text-blue-1 fw-500">{Math.round(uploadProgress)}%</span>
-                </div>
-                <div className="progress-bar bg-light-2 rounded-4" style={{ height: '8px' }}>
-                  <div
-                    className="progress-bar-fill bg-blue-1 rounded-4"
-                    style={{
-                      width: `${uploadProgress}%`,
-                      height: '100%',
-                      transition: 'width 0.3s ease'
-                    }}
-                  ></div>
-                </div>
-              </div>
-            )}
-
-            <h5 className="text-16 fw-500 mb-15">Title</h5>
-            <div className="row y-gap-10">
-              <div className="col-12">
-                <div className="form-input">
-                  <input
-                    type="text"
-                    value={extractedTourData.title?.en || ""}
-                    onChange={(e) => handleInputChange('title', e.target.value, 'en')}
-                    required
-                  />
-                  <label className="lh-1 text-14 text-light-1">English</label>
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="form-input">
-                  <input
-                    type="text"
-                    value={extractedTourData.title?.ru || ""}
-                    onChange={(e) => handleInputChange('title', e.target.value, 'ru')}
-                    required
-                  />
-                  <label className="lh-1 text-14 text-light-1">Russian</label>
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="form-input">
-                  <input
-                    type="text"
-                    value={extractedTourData.title?.uz || ""}
-                    onChange={(e) => handleInputChange('title', e.target.value, 'uz')}
-                    required
-                  />
-                  <label className="lh-1 text-14 text-light-1">Uzbek</label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Description Section */}
-          <div className="mb-20">
-            <h5 className="text-16 fw-500 mb-15">Description</h5>
-            <div className="row y-gap-10">
-              <div className="col-12">
-                <div className="form-input">
-                  <textarea
-                    value={extractedTourData.description?.en || ""}
-                    onChange={(e) => handleInputChange('description', e.target.value, 'en')}
-                    rows="4"
-                    required
-                  />
-                  <label className="lh-1 text-14 text-light-1">English</label>
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="form-input">
-                  <textarea
-                    value={extractedTourData.description?.ru || ""}
-                    onChange={(e) => handleInputChange('description', e.target.value, 'ru')}
-                    rows="4"
-                    required
-                  />
-                  <label className="lh-1 text-14 text-light-1">Russian</label>
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="form-input">
-                  <textarea
-                    value={extractedTourData.description?.uz || ""}
-                    onChange={(e) => handleInputChange('description', e.target.value, 'uz')}
-                    rows="4"
-                    required
-                  />
-                  <label className="lh-1 text-14 text-light-1">Uzbek</label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tour Details */}
-          <div className="row y-gap-20">
-            <div className="col-lg-6">
-              <div className="form-input">
-                <input
-                  type="number"
-                  value={extractedTourData.price || ""}
-                  onChange={(e) => handleInputChange('price', String(e.target.value))}
-                  required
-                  min={1}
-                />
-                <label className="lh-1 text-14 text-light-1">Price <span className="text-red-1">*</span></label>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="form-input">
-                <input
-                  type="number"
-                  value={extractedTourData.sale_price || ""}
-                  onChange={(e) => handleInputChange('sale_price', e.target.value === 0 ? null : String(e.target.value))}
-                  min={0}
-                />
-                <label className="lh-1 text-14 text-light-1">Sale Price</label>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <label className="lh-1 text-14 text-light-1 mb-10 d-block">Currency <span className="text-red-1">*</span></label>
-              <div className="dropdown js-dropdown js-amenities-active h-full">
-                <div
-                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
-                  data-bs-toggle="dropdown"
-                  data-bs-auto-close="true"
-                  aria-expanded="false"
-                  data-bs-offset="0,10"
+        {/* Tabbed Content */}
+        <div className="extractedTourCard__content">
+          <Tabs 
+            className="tabs -underline-2 js-tabs" 
+            selectedIndex={currentTab}
+            onSelect={(index) => setCurrentTab(index)}
+          >
+            <TabList className="tabs__controls row x-gap-40 y-gap-10 lg:x-gap-20 px-20">
+              <Tab className="col-auto">
+                <button 
+                  type="button" 
+                  className="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button"
                 >
-                  <span className="js-dropdown-title fw-500">{extractedTourData.currency || "Select Currency"}</span>
-                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
-                </div>
-                {/* End dropdown__button */}
-
-                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
-                  <div className="text-15 y-gap-15 js-dropdown-list">
-                    {Object.values(CurrencyType).map((currency) => (
-                      <div key={currency}>
-                        <button
-                          className={`${currency === (extractedTourData.currency || CurrencyType.USD) ? "text-blue-1 " : ""
-                            }d-block js-dropdown-link`}
-                          onClick={() => handleInputChange("currency", currency)}
-                        >
-                          {currency}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* End dropdown-menu */}
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="form-input">
-                <input
-                  type="text"
-                  value={extractedTourData.duration || ""}
-                  onChange={(e) => handleInputChange('duration', e.target.value)}
-                  required
-                />
-                <label className="lh-1 text-14 text-light-1">Duration</label>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="form-input">
-                <input
-                  type="date"
-                  value={extractedTourData.start_date || ""}
-                  onChange={(e) => handleInputChange('start_date', e.target.value)}
-                  required
-                />
-                <label className="lh-1 text-14 text-light-1">Start Date <span className="text-red-1">*</span></label>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="form-input">
-                <input
-                  type="number"
-                  value={extractedTourData.seats || ""}
-                  onChange={(e) => handleInputChange('seats', parseInt(e.target.value))}
-                  required
-                />
-                <label className="lh-1 text-14 text-light-1">Available Seats</label>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="form-input">
-                <input
-                  type="text"
-                  value={extractedTourData.details?.start_location || ""}
-                  onChange={(e) => handleInputChange('details', { ...extractedTourData.details, start_location: e.target.value })}
-                />
-                <label className="lh-1 text-14 text-light-1">Start Location (Optional)</label>
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div className="dropdown js-dropdown js-amenities-active h-full">
-                <div
-                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
-                  data-bs-toggle="dropdown"
-                  data-bs-auto-close="true"
-                  aria-expanded="false"
-                  data-bs-offset="0,10"
-                >
-                  <span className="js-dropdown-title fw-500">{extractedTourData.details?.tour_type || "Select Tour Type"}</span>
-                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
-                </div>
-                {/* End dropdown__button */}
-
-                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
-                  <div className="text-15 y-gap-15 js-dropdown-list">
-                    {Object.entries(TourType).map(([key, value]) => (
-                      <div key={value}>
-                        <button
-                          className={`${value === extractedTourData.details?.tour_type ? "text-blue-1 " : ""
-                            }d-block js-dropdown-link`}
-                          onClick={() => handleInputChange("details", { ...extractedTourData.details, tour_type: value })}
-                        >
-                          {key}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* End dropdown-menu */}
-              </div>
-            </div>
-            <div className="col-lg-6 mb-20">
-              <div className="dropdown js-dropdown js-amenities-active h-full">
-                <div
-                  className="dropdown__button d-flex items-center text-14 border-light px-20 bg-white h-full rounded-4"
-                  data-bs-toggle="dropdown"
-                  data-bs-auto-close="true"
-                  aria-expanded="false"
-                  data-bs-offset="0,10"
-                >
-                  <span className="js-dropdown-title fw-500">{extractedTourData.details?.difficulty || "Select Difficulty"}</span>
-                  <i className="icon icon-chevron-sm-down text-7 ml-10" />
-                </div>
-                {/* End dropdown__button */}
-
-                <div className="toggle-element -dropdown js-click-dropdown dropdown-menu">
-                  <div className="text-15 y-gap-15 js-dropdown-list">
-                    {Object.entries(TourDifficulty).map(([key, value]) => (
-                      <div key={value}>
-                        <button
-                          className={`${value === extractedTourData.details?.difficulty ? "text-blue-1 " : ""
-                            }d-block js-dropdown-link`}
-                          onClick={() => handleInputChange("details", { ...extractedTourData.details, difficulty: value })}
-                        >
-                          {key}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* End dropdown-menu */}
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Phones */}
-          <div className="col-12 mb-20">
-            <h5 className="text-16 fw-500 mb-15">Contact Phones</h5>
-            <div className="row y-gap-20 align-items-center">
-              {extractedTourData.contact_phone && extractedTourData.contact_phone?.map((phone, index) => (
-                <div key={index} className="col-md-6">
-                  <div className="form-input bg-white position-relative">
-                    <input
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => handlePhoneChange(index, e.target.value)}
-                      placeholder="+998 90 123 45 67"
-                      required
-                      style={{ paddingRight: extractedTourData.contact_phone?.length > 1 ? '45px' : '20px' }}
-                    />
-                    {extractedTourData.contact_phone?.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removePhone(index)}
-                        className="position-absolute d-flex items-center justify-center"
-                        style={{
-                          right: '8px',
-                          top: '50%',
-                          transform: 'translateY(-50%)',
-                          background: 'transparent',
-                          border: 'none',
-                          color: '#dc3545',
-                          cursor: 'pointer',
-                          padding: '6px',
-                          borderRadius: '50%',
-                          width: '28px',
-                          height: '28px',
-                          transition: 'all 0.2s ease',
-                          zIndex: 10
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = '#f8d7da';
-                          e.target.style.color = '#721c24';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = 'transparent';
-                          e.target.style.color = '#dc3545';
-                        }}
-                        title="Remove"
-                      >
-                        <i className="icon-close text-10"></i>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-              <div className="col-md-6">
-                <button
-                  type="button"
-                  onClick={addPhone}
-                  className="button -md -outline-blue-1 text-blue-1"
-                >
-                  <i className="icon-plus mr-10"></i>
-                  Add Phone Number
+                  1. Basic Info
                 </button>
-              </div>
+              </Tab>
+              <Tab className="col-auto">
+                <button 
+                  type="button" 
+                  className="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button"
+                >
+                  2. Pricing & Details
+                </button>
+              </Tab>
+              <Tab className="col-auto">
+                <button 
+                  type="button" 
+                  className="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button"
+                >
+                  3. Contact
+                </button>
+              </Tab>
+              <Tab className="col-auto">
+                <button 
+                  type="button" 
+                  className="tabs__button text-18 lg:text-16 text-light-1 fw-500 pb-5 lg:pb-0 js-tabs-button"
+                >
+                  4. Images
+                </button>
+              </Tab>
+            </TabList>
+            
+            <div className="tabs__content pt-30 js-tabs-content px-20 pb-20">
+              <TabPanel>
+                {renderBasicInfoTab()}
+              </TabPanel>
+              <TabPanel>
+                {renderPricingDetailsTab()}
+              </TabPanel>
+              <TabPanel>
+                {renderContactTab()}
+              </TabPanel>
+              <TabPanel>
+                {renderImagesTab()}
+              </TabPanel>
             </div>
-          </div>
-
-          {/* Files Section */}
-          {extractedTourData.files && extractedTourData.files.length > 0 && (
-            <div className="mt-20">
-              <div className="row x-gap-10 y-gap-10">
-                {extractedTourData.files.map((file, i) => (
-                  <div key={i} className="col-lg-4 col-md-6">
-                    <div className="cardImage ratio ratio-1:1 relative">
-                      <div className="cardImage__content">
-                        <img
-                          src={getProxiedImageUrl(file.url)}
-                          alt={`Tour image ${i + 1}`}
-                          className="rounded-4"
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                        />
-                      </div>
-
-                      {/* Set Main Button */}
-                      <div className="ml-10 mt-10">
-                        <button
-                          onClick={() => setSelectedMainImage(i)}
-                          className={`button -sm p-10 rounded-4 ${selectedMainImage === i
-                            ? 'bg-blue-1 text-white'
-                            : 'bg-white text-dark-1 hover:bg-light-2 border-light-1'
-                            }`}
-                        >
-                          {selectedMainImage === i ? 'Main' : 'Set Main'}
-                        </button>
-                      </div>
-
-                      {/* Selection Checkbox */}
-                      <div className="ml-10 mt-40">
-                        <button
-                          onClick={() => handleImageSelection(i)}
-                          className={`button -sm rounded-4 ${selectedImages.includes(i)
-                            ? 'bg-blue-1 text-white'
-                            : 'bg-white text-dark-1 hover:bg-light-2 border-light-1'
-                            }`}
-                        >
-                          <i className={`icon-check text-20 ${selectedImages.includes(i) ? 'text-white' : 'text-blue-1'}`}></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Selection Summary */}
-              {selectedImages.length > 0 && (
-                <div className="mt-15 p-15 rounded-8 bg-light-2">
-                  <div className="d-flex items-center justify-between">
-                    <span className="text-14 text-dark-1">
-                      {selectedImages.length} image{selectedImages.length !== 1 ? 's' : ''} selected for upload
-                    </span>
-                    {selectedMainImage !== null && selectedImages.includes(selectedMainImage) && (
-                      <span className="text-14 text-blue-1 fw-500">
-                        Image {selectedMainImage + 1} set as main
-                      </span>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
+          </Tabs>
         </div>
       </div>
     );
@@ -959,6 +1238,11 @@ const ImportInstagramForm = () => {
       }
 
       const data = await response.json();
+
+      if(data.data?.start_date) {
+        data.data.start_date = validateAndUpdateDate(data.data.start_date);
+      }
+
       setExtractedTourData(data.data);
       setSuccess("Tour extracted successfully!");
     } catch (error) {
@@ -971,6 +1255,20 @@ const ImportInstagramForm = () => {
 
   return (
     <div className="row y-gap-20">
+      <style jsx>{`
+        .animate-pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.5;
+          }
+        }
+      `}</style>
       <div className="col-12 col-lg-4">
         <form onSubmit={handleSubmit}>
           <label className="text-16 fw-500 mb-10">Instagram Post URL</label>

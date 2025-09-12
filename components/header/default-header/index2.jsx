@@ -27,13 +27,16 @@ const DefaultHeader = () => {
   return (
     <>
       <header className={`header ${navbar ? "bg-white is-sticky" : ""}`}>
-      <div className="header__container container">
-      <div className="row justify-between items-center">
+        <div className="header__container container">
+          <div className="row justify-between items-center">
             <div className="col-auto">
               <div className="d-flex items-center">
                 <Link href="/" className="header-logo mr-20">
-                  <img src="/img/general/logo-dark.svg" alt="logo icon" />
-                  <img src="/img/general/logo-dark.svg" alt="logo icon" />
+                  <h1
+                    className={`text-30 lg:text-25 md:text-20 font-bold ${navbar ? "text-dark-1" : "text-white"}`}
+                  >
+                    WeTrippo
+                  </h1>
                 </Link>
                 {/* End logo */}
 
