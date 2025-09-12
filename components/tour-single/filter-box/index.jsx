@@ -62,7 +62,13 @@ const index = ({ tour }) => {
       {/* Book Now Button */}
       <div className="col-12">
         <button
-          onClick={() => setShowContactPhones(!showContactPhones)}
+          onClick={() => {
+            if(activity.contact_phone.length > 1){
+              setShowContactPhones(!showContactPhones);
+            }else{
+              window.location.href = `tel:${activity.contact_phone[0]}`;
+            }
+          }}
           className="button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
         >
           {t("common.book")}

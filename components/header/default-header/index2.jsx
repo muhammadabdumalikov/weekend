@@ -51,13 +51,13 @@ const DefaultHeader = () => {
             <div className="col-auto">
               <div className="d-flex items-center">
                 <div className="row x-gap-20 items-center xxl:d-none">
-                  <CurrenctyMegaMenu textClass={`${navbar ? "text-dark-1" : "text-white"}`} />
+                  {/* <CurrenctyMegaMenu textClass={`${navbar ? "text-dark-1" : "text-white"}`} /> */}
                   {/* End Megamenu for Currencty */}
 
                   {/* Start vertical devider*/}
-                  <div className="col-auto">
+                  {/* <div className="col-auto">
                     <div className="w-1 h-20 bg-white-20" />
-                  </div>
+                  </div> */}
                   {/* End vertical devider*/}
 
                   <LanguageMegaMenu textClass={`${navbar ? "text-dark-1" : "text-white"}`} />

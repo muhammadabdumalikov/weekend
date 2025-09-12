@@ -9,14 +9,14 @@ const index = ({ rental }) => {
 
   // Function to detect mobile devices
   const isMobileDevice = () => {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-           window.innerWidth <= 768;
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+      window.innerWidth <= 768;
   };
 
   // Enhanced phone click handler
   const handlePhoneClick = (phone, e) => {
     e.preventDefault();
-    
+
     if (isMobileDevice()) {
       // For mobile devices, show choice dialog
       const choice = window.confirm(
@@ -25,7 +25,7 @@ const index = ({ rental }) => {
         `✅ OK = Open Telegram\n` +
         `❌ Cancel = Make phone call`
       );
-      
+
       if (choice) {
         // Open Telegram with the phone number
         const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
@@ -62,8 +62,13 @@ const index = ({ rental }) => {
       {/* Book Now Button */}
       <div className="col-12">
         <button
-          onClick={() => setShowContactPhones(!showContactPhones)}
-          className="button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
+          onClick={() => {
+            if (rental.contact_phone.length > 1) {
+              setShowContactPhones(!showContactPhones);
+            } else {
+              window.location.href = `tel:${rental.contact_phone[0]}`;
+            }
+          }} className="button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
         >
           {t("common.book")}
         </button>
@@ -84,11 +89,10 @@ const index = ({ rental }) => {
                     </div>
                     <div className="flex-grow-1">
                       <div className="text-12 text-light-1">{t("contact.phoneNumber")} {index + 1}</div>
-                      <a 
+                      <a
                         href={`tel:${phone}`}
-                        className={`text-14 fw-500 text-dark-1 hover:text-blue-1 transition-colors cursor-pointer ${
-                          isMobileDevice() ? 'underline' : ''
-                        }`}
+                        className={`text-14 fw-500 text-dark-1 hover:text-blue-1 transition-colors cursor-pointer ${isMobileDevice() ? 'underline' : ''
+                          }`}
                         onClick={(e) => handlePhoneClick(phone, e)}
                         title={isMobileDevice() ? "Tap to open Telegram or call" : "Click to open Telegram"}
                       >
