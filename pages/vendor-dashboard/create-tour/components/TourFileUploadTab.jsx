@@ -10,9 +10,6 @@ const TourFileUploadTab = ({ files, setFiles }) => {
     const maxFiles = 10;
     const currentFileCount = files.length;
 
-    console.log("File upload triggered:", fileList.length, "files");
-    console.log("Current files count:", currentFileCount);
-
     // Check if adding these files would exceed the limit
     if (currentFileCount + fileList.length > maxFiles) {
       alert(t("vendor.maxImagesExceeded", { maxFiles, currentFileCount }));
@@ -24,7 +21,6 @@ const TourFileUploadTab = ({ files, setFiles }) => {
     
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
-      console.log("Processing file:", file.name, file.type, file.size);
       
       // Validate file type
       if (!["image/png", "image/jpeg", "image/webp"].includes(file.type.toLowerCase())) {
@@ -41,7 +37,6 @@ const TourFileUploadTab = ({ files, setFiles }) => {
       };
       
       newFiles.push(fileObj);
-      console.log("File object created:", fileObj);
     }
 
     // Update state with new files

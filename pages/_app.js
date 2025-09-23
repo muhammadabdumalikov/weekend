@@ -13,6 +13,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "../app/store";
 import ReactQueryProvider from "../providers/ReactQueryProvider";
 import { appWithTranslation } from "next-i18next";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 if (typeof window !== "undefined") {
   require("bootstrap/dist/js/bootstrap");
@@ -28,6 +29,7 @@ function App({ Component, pageProps }) {
 
   return (
     <main>
+      <GoogleAnalytics gaId="G-1B2SK2XNCZ" />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ReactQueryProvider>
