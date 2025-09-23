@@ -25,6 +25,7 @@ import Link from "next/link";
 import Itinerary from "../../../components/tour-single/itinerary";
 import ImportantInfo from "../../../components/tour-single/ImportantInfo";
 import Image from "next/image";
+import { generateTourBookingStructuredData, generateBreadcrumbStructuredData } from "../../../utils/tourGuideStructuredData";
 
 const TourSingleV1Dynamic = () => {
   const [isOpen, setOpen] = useState(false);
@@ -57,6 +58,17 @@ const TourSingleV1Dynamic = () => {
     return () => {};
   }, [id]);
 
+  // Generate structured data for tour guide booking
+  const tourStructuredData = tour ? generateTourBookingStructuredData(tour) : null;
+  
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Tour Guides", url: "/tours" },
+    { name: tour?.title || "Tour Guide", url: `/tour/tour-single/${tour?.id}` }
+  ];
+  
+  const breadcrumbStructuredData = generateBreadcrumbStructuredData(breadcrumbs);
+
   return (
     <>
       <ModalVideo
@@ -67,7 +79,15 @@ const TourSingleV1Dynamic = () => {
         onClose={() => setOpen(false)}
       />
 
-      <Seo pageTitle="Tour Single" />
+      <Seo 
+        pageTitle={tour?.title || "Professional Tour Guide"}
+        pageDescription={tour?.description || `Book professional tour guide for ${tour?.location}. Expert local guide with ${tour?.duration} experience. Instant booking, verified guide, competitive prices.`}
+        pageKeywords={`${tour?.location} tour guide, Central Asia guide, professional tour guide, local guide booking, ${tour?.title}, certified guide, expert guide`}
+        pageImage={tour?.slideImg?.[0]}
+        structuredData={[tourStructuredData, breadcrumbStructuredData]}
+        canonicalUrl={`${process.env.NEXT_PUBLIC_BASE_URL}/tour/tour-single/${tour?.id}`}
+        tourLocation={tour?.location}
+      />
       {/* End Page Title */}
 
       <div className="header-margin"></div>

@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://wetrippo.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /vendor-dashboard/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow important tour guide pages
+Allow: /tours/
+Allow: /tour/
+Allow: /guide/
+Allow: /guides/
+Allow: /destinations/
+Allow: /blog/
+Allow: /about/
+Allow: /contact/
+
+# Allow search engines to crawl tour guide profiles
+Allow: /tour/tour-single/
+Allow: /guide/profile/
+
+# Disallow duplicate content
+Disallow: /*?*
+Disallow: /*#*
