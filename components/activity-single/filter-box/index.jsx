@@ -21,19 +21,40 @@ const index = ({ activity }) => {
     const activityTitle = activity?.title[i18n.language] || '';
     const greetingMessage = `${t("contact.greeting")} ${activityTitle}`;
     
-    // Try different Telegram URL schemes for phone numbers
-    // Method 1: tg:// scheme (works better for phone numbers)
-    const tgUrl = `tg://resolve?domain=${cleanPhone}&text=${encodeURIComponent(greetingMessage)}`;
-    
-    // Method 2: Standard t.me with phone (may not support text parameter)
-    const telegramUrl = `https://t.me/+${cleanPhone}?text=${encodeURIComponent(greetingMessage)}`;
-    
-    // Try the tg:// scheme first, fallback to t.me
-    try {
-      window.open(tgUrl, '_blank');
-    } catch (error) {
-      console.log('tg:// scheme failed, trying t.me:', error);
-      window.open(telegramUrl, '_blank');
+    // Use different approaches for desktop vs mobile
+    if (isMobileDevice()) {
+      // For mobile devices, try multiple URL schemes
+      const telegramUrl = `https://t.me/+${cleanPhone}?text=${encodeURIComponent(greetingMessage)}`;
+      const tgUrl = `tg://resolve?domain=${cleanPhone}&text=${encodeURIComponent(greetingMessage)}`;
+      
+      // Try t.me first for mobile
+      const link = document.createElement('a');
+      link.href = telegramUrl;
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // If that doesn't work, try tg:// after a short delay
+      setTimeout(() => {
+        try {
+          window.location.href = tgUrl;
+        } catch (error) {
+          console.log('Both mobile methods failed');
+        }
+      }, 1000);
+    } else {
+      // For desktop, use the tg:// scheme which works better
+      const tgUrl = `tg://resolve?domain=${cleanPhone}&text=${encodeURIComponent(greetingMessage)}`;
+      
+      // Try tg:// first, fallback to t.me if it fails
+      try {
+        window.open(tgUrl, '_blank');
+      } catch (error) {
+        console.log('tg:// scheme failed, trying t.me:', error);
+        const telegramUrl = `https://t.me/+${cleanPhone}?text=${encodeURIComponent(greetingMessage)}`;
+        window.open(telegramUrl, '_blank');
+      }
     }
   };
 
