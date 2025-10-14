@@ -17,6 +17,10 @@ const index = ({ tour }) => {
   const handlePhoneClick = (phone, e) => {
     e.preventDefault();
     
+    const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
+    const greetingMessage = encodeURIComponent(`${t("contact.greeting")} ${tour?.title || ''}`);
+    const telegramUrl = `https://t.me/+${cleanPhone}?text=${greetingMessage}`;
+    
     if (isMobileDevice()) {
       // For mobile devices, show choice dialog
       const choice = window.confirm(
@@ -27,17 +31,15 @@ const index = ({ tour }) => {
       );
       
       if (choice) {
-        // Open Telegram with the phone number
-        const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
-        window.open(`https://t.me/+${cleanPhone}`, '_blank');
+        // Open Telegram with the phone number and greeting
+        window.open(telegramUrl, '_blank');
       } else {
         // Make phone call
         window.location.href = `tel:${phone}`;
       }
     } else {
-      // For desktop, directly open Telegram
-      const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
-      window.open(`https://t.me/+${cleanPhone}`, '_blank');
+      // For desktop, directly open Telegram with greeting
+      window.open(telegramUrl, '_blank');
     }
   };
   return (

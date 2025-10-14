@@ -92,7 +92,8 @@
     "customerCare": "Toll Free Customer Care",
     "liveSupport": "Need live support?",
     "callConfirm": "Call",
-    "phoneNumber": "Phone Number"
+    "phoneNumber": "Phone Number",
+    "greeting": "Hello! I would like to inquire about the following tour:"
   },
   "reviews": {
     "guestReviews": "Guest reviews",

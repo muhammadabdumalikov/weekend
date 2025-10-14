@@ -1,10 +1,8 @@
-import GuestSearch from "./GuestSearch";
-import DateSearch from "./DateSearch";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 
 const index = ({ activity }) => {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
   const [showContactPhones, setShowContactPhones] = useState(false);
 
   // Function to detect mobile devices
@@ -17,13 +15,25 @@ const index = ({ activity }) => {
   const handlePhoneClick = (phone, e) => {
     e.preventDefault();
 
-    if (isMobileDevice()) {
-      const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
-      window.open(`https://t.me/+${cleanPhone}`, '_blank');
-    } else {
-      // For desktop, directly open Telegram
-      const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
-      window.open(`https://t.me/+${cleanPhone}`, '_blank');
+    const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
+    
+    // Try different ways to get the title
+    const activityTitle = activity?.title[i18n.language] || '';
+    const greetingMessage = `${t("contact.greeting")} ${activityTitle}`;
+    
+    // Try different Telegram URL schemes for phone numbers
+    // Method 1: tg:// scheme (works better for phone numbers)
+    const tgUrl = `tg://resolve?domain=${cleanPhone}&text=${encodeURIComponent(greetingMessage)}`;
+    
+    // Method 2: Standard t.me with phone (may not support text parameter)
+    const telegramUrl = `https://t.me/+${cleanPhone}?text=${encodeURIComponent(greetingMessage)}`;
+    
+    // Try the tg:// scheme first, fallback to t.me
+    try {
+      window.open(tgUrl, '_blank');
+    } catch (error) {
+      console.log('tg:// scheme failed, trying t.me:', error);
+      window.open(telegramUrl, '_blank');
     }
   };
 

@@ -92,7 +92,8 @@
     "customerCare": "Bepul mijozlarga xizmat ko'rsatish",
     "liveSupport": "Jonli yordam kerakmi?",
     "callConfirm": "Qo'ng'iroq qilish",
-    "phoneNumber": "Telefon raqami"
+    "phoneNumber": "Telefon raqami",
+    "greeting": "Salom! Men quyidagi tur haqida ma'lumot olmoqchiman:"
   },
   "reviews": {
     "guestReviews": "Mehmonlar sharhlari",
