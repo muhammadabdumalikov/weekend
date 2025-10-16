@@ -13,7 +13,7 @@ const Activity = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
-  const [limit] = useState(4);
+  const [limit] = useState(8);
 
   // Tour Order Types enum
   const TourOrderTypes = {
@@ -112,6 +112,8 @@ const Activity = () => {
   // Filter handlers
   const handlePriceValueChange = (value) => {
     setPriceValue(value);
+    setPage(1); // Reset to first page when filter changes
+    setActivityData({ data: [], total: 0 }); // Clear existing data
 
     switch (value) {
       case t("tours.lessThan500"):
@@ -137,11 +139,15 @@ const Activity = () => {
 
   const handleTourTypeValueChange = (value) => {
     setTourTypeValue(value);
+    setPage(1); // Reset to first page when filter changes
+    setActivityData({ data: [], total: 0 }); // Clear existing data
   };
 
   // Sort handler
   const handleSortValueChange = (value) => {
     setSortValue(value);
+    setPage(1); // Reset to first page when sort changes
+    setActivityData({ data: [], total: 0 }); // Clear existing data
   };
 
   // Clear all filters
@@ -151,6 +157,8 @@ const Activity = () => {
     setLanguageValue(t("common.language"));
     setTourTypeValue(t("tours.tourType"));
     setSortValue(t("common.sort"));
+    setPage(1); // Reset to first page when clearing filters
+    setActivityData({ data: [], total: 0 }); // Clear existing data
   };
 
   // Re-create dropdowns with current translations
@@ -301,7 +309,7 @@ const Activity = () => {
                       width={300}
                       height={300}
                       className="col-12 js-lazy"
-                      src={item?.files?.[0]?.url || "/img/placeholder.jpg"}
+                      src={item?.files?.find(file => file.type === "main")?.url || item?.files?.[0]?.url || "/img/placeholder.jpg"}
                       alt={item?.title || "Activity image"}
                       unoptimized
                     />
@@ -334,15 +342,24 @@ const Activity = () => {
               {/* End .tourCard__image */}
 
               <div className="activityCard__content mt-10">
-                <div className="text-14 lh-14 text-light-1 mb-5">
-                  {item?.duration}
+                <div className="text-14 lh-14 text-light-1 mb-5 d-flex justify-between items-center">
+                  <span>{item?.duration || ""}</span>
+                  {item?.start_date && (
+                    <span>
+                      {new Date(item.start_date).toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                      }).replace(/\//g, '.')}
+                    </span>
+                  )}
                 </div>
                 <h4 className="activityCard__title lh-16 fw-500 text-dark-1 text-18">
                   <span>{item?.title}</span>
                 </h4>
-                <p className="text-light-1 text-14 lh-14 mt-5">
+                {/* <p className="text-light-1 text-14 lh-14 mt-5">
                   {item?.location}
-                </p>
+                </p> */}
 
                 <div className="row justify-between items-center pt-10">
                   <div className="col-auto">
@@ -361,14 +378,33 @@ const Activity = () => {
 
                   <div className="col-auto">
                     <div className="text-14 text-light-1">
-                      {t("tours.from")}{" "}
-                      <span className="text-16 fw-500 text-dark-1">
-                        {item.price
-                          ? item.price.slice(0, -3)
-                            .toString()
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-                          : ""} {item.currency || "USD"}
-                      </span>
+                      {/* {t("tours.from")}{" "} */}
+                      {item?.sale_price && item?.sale_price !== item?.price ? (
+                        <div className="d-flex items-center x-gap-5">
+                          <span className="text-16 fw-500 text-dark-1">
+                            {item.sale_price
+                              ? item.sale_price.slice(0, -3)
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                              : ""} {item.currency || "USD"}
+                          </span>
+                          <span className="text-14 text-light-1 line-through">
+                            {item.price
+                              ? item.price.slice(0, -3)
+                                .toString()
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                              : ""}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-16 fw-500 text-dark-1">
+                          {item.price
+                            ? item.price.slice(0, -3)
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                            : ""} {item.currency || "USD"}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -420,6 +456,7 @@ const Activity = () => {
           grid-template-columns: repeat(4, 1fr);
           gap: 20px;
           width: 100%;
+          min-height: 400px;
         }
         
         .activity-card-item {
