@@ -35,7 +35,7 @@ const DefaultHeader = () => {
                   <h1
                     className={`text-30 lg:text-25 md:text-20 font-bold ${navbar ? "text-dark-1" : "text-white"}`}
                   >
-                    WeTrippo
+                    inMakon
                   </h1>
                 </Link>
                 {/* End logo */}

@@ -13,16 +13,16 @@ const Seo = ({
   tourLocation = null
 }) => {
   const router = useRouter();
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://wetrippo.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://inmakon.com';
   const currentUrl = canonicalUrl || `${baseUrl}${router.asPath}`;
   
   // Default values for Central Asia tour guide booking
-  const defaultTitle = "WeTrippo - Central Asia Tour Guide Booking Platform";
+  const defaultTitle = "inMakon - Central Asia Tour Guide Booking Platform";
   const defaultDescription = "Book professional tour guides in Central Asia. Expert local guides for Uzbekistan, Kazakhstan, Kyrgyzstan, and Tajikistan. Discover the Silk Road with certified tour guides. Instant booking, verified guides, competitive prices.";
   const defaultKeywords = "Central Asia tour guide, Uzbekistan tour guide, Kazakhstan tour guide, Kyrgyzstan tour guide, Tajikistan tour guide, Silk Road guide, local tour guide booking, professional tour guide, certified guide, Tashkent guide, Samarkand guide, Bukhara guide, Almaty guide, Bishkek guide";
   const defaultImage = `${baseUrl}/img/general/logo-dark.svg`;
 
-  const title = pageTitle ? `${pageTitle} | WeTrippo - Central Asia Tour Guides` : defaultTitle;
+  const title = pageTitle ? `${pageTitle} | inMakon - Central Asia Tour Guides` : defaultTitle;
   const description = pageDescription || defaultDescription;
   const keywords = pageKeywords || defaultKeywords;
   const image = pageImage || defaultImage;
@@ -45,7 +45,7 @@ const Seo = ({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
       <meta property="og:url" content={currentUrl} />
-      <meta property="og:site_name" content="WeTrippo - Central Asia Tour Guides" />
+      <meta property="og:site_name" content="inMakon - Central Asia Tour Guides" />
       <meta property="og:locale" content={router.locale || 'en'} />
       
       {/* Twitter Card Tags */}
@@ -55,7 +55,7 @@ const Seo = ({
       <meta name="twitter:image" content={image} />
       
       {/* Additional Meta Tags */}
-      <meta name="author" content="WeTrippo" />
+      <meta name="author" content="inMakon" />
       <meta name="theme-color" content="#2563eb" />
       <meta name="msapplication-TileColor" content="#2563eb" />
       
@@ -95,7 +95,7 @@ const Seo = ({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "TravelAgency",
-              "name": "WeTrippo",
+              "name": "inMakon",
               "description": "Central Asia's premier tour guide booking platform",
               "url": baseUrl,
               "logo": `${baseUrl}/img/general/logo-dark.svg`,
@@ -130,9 +130,9 @@ const Seo = ({
               ],
               "serviceType": "Tour Guide Booking",
               "sameAs": [
-                "https://www.facebook.com/wetrippo",
-                "https://www.instagram.com/wetrippo",
-                "https://www.twitter.com/wetrippo"
+                "https://www.facebook.com/inmakon",
+                "https://www.instagram.com/inmakon",
+                "https://www.twitter.com/inmakon"
               ]
             })
           }}

@@ -9,7 +9,7 @@ export const generateTourGuideStructuredData = (tourGuide) => {
     "jobTitle": "Professional Tour Guide",
     "worksFor": {
       "@type": "TravelAgency",
-      "name": "WeTrippo"
+      "name": "inMakon"
     },
     "address": {
       "@type": "PostalAddress",
@@ -51,12 +51,12 @@ export const generateTourBookingStructuredData = (tour) => {
       "validFrom": new Date().toISOString().split('T')[0],
       "seller": {
         "@type": "TravelAgency",
-        "name": "WeTrippo"
+        "name": "inMakon"
       }
     },
     "provider": {
       "@type": "TravelAgency",
-      "name": "WeTrippo",
+      "name": "inMakon",
       "url": process.env.NEXT_PUBLIC_BASE_URL
     },
     "touristType": "Leisure",
@@ -85,13 +85,13 @@ export const generateLocalBusinessStructuredData = () => {
   return {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
-    "name": "WeTrippo",
+    "name": "inMakon",
     "description": "Central Asia's premier tour guide booking platform",
     "url": process.env.NEXT_PUBLIC_BASE_URL,
     "logo": `${process.env.NEXT_PUBLIC_BASE_URL}/img/general/logo-dark.svg`,
     "image": `${process.env.NEXT_PUBLIC_BASE_URL}/img/general/logo-dark.svg`,
     "telephone": "+998-XX-XXX-XXXX",
-    "email": "info@wetrippo.com",
+    "email": "info@inmakon.com",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Your Street Address",

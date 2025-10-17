@@ -44,7 +44,7 @@ const HeaderDashBoard = () => {
               <h1
                 className={`text-30 lg:text-25 md:text-20 font-bold text-dark-1`}
               >
-                WeTrippo
+                inMakon
               </h1>            
             </Link>
             {/* End logo */}

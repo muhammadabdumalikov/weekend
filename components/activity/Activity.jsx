@@ -53,6 +53,7 @@ const Activity = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-lang": i18n.language || "ru",
         },
         body: JSON.stringify({
           offset: offset,

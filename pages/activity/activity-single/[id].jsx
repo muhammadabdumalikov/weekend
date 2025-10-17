@@ -47,7 +47,7 @@ const TourSingleV1Dynamic = () => {
       `💰 From $${activity.price || 'Contact for price'}\n\n` +
       `✨ ${activity.description ? activity?.description?.[language]?.substring(0, 150) + '...' : 'Discover this amazing experience!'}\n\n` +
       `🔗 Check it out: ${currentUrl}\n\n` +
-      `#Travel #Adventure #Experience #Wetrippo`;
+      `#Travel #Adventure #Experience #inMakon`;
     
     const encodedText = encodeURIComponent(shareText);
     const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodedText}`;

@@ -7,7 +7,7 @@ export default function Document() {
         {/* Default Meta Tags for Tour Guide Platform */}
         <meta
           name="description"
-          content="WeTrippo - Central Asia's premier tour guide booking platform. Book professional local guides in Uzbekistan, Kazakhstan, Kyrgyzstan, and Tajikistan. Expert guides, instant booking, competitive prices."
+          content="inMakon - Central Asia's premier tour guide booking platform. Book professional local guides in Uzbekistan, Kazakhstan, Kyrgyzstan, and Tajikistan. Expert guides, instant booking, competitive prices."
         />
         
         {/* Keywords for Tour Guide Booking */}
