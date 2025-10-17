@@ -10,13 +10,32 @@ const SidebarRight = ({ activity }) => {
         <div className="px-30 py-30 rounded-4 border-light bg-white shadow-4">
           <div className="text-14 text-light-1">
             {t("common.from")}{" "}
-            <span className="text-20 fw-500 text-dark-1 ml-5">
-              {activity?.price
-                ? activity.price.slice(0, -3)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
-                : ""} {activity?.currency}
-            </span>
+            {activity?.sale_price ? (
+              <div className="d-flex items-center x-gap-5">
+                <span className="text-20 fw-500 text-dark-1 ml-5">
+                  {activity.sale_price
+                    ? activity.sale_price.slice(0, -3)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                    : ""} {activity?.currency || "USD"}
+                </span>
+                <span className="text-16 text-light-1 line-through">
+                  {activity.price
+                    ? activity.price.slice(0, -3)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                    : ""}
+                </span>
+              </div>
+            ) : (
+              <span className="text-20 fw-500 text-dark-1 ml-5">
+                {activity?.price
+                  ? activity.price.slice(0, -3)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+                  : ""} {activity?.currency || "USD"}
+              </span>
+            )}
           </div>
           {/* End div */}
 

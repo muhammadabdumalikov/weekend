@@ -342,18 +342,6 @@ const Activity = () => {
               {/* End .tourCard__image */}
 
               <div className="activityCard__content mt-10">
-                <div className="text-14 lh-14 text-light-1 mb-5 d-flex justify-between items-center">
-                  <span>{item?.duration || ""}</span>
-                  {item?.start_date && (
-                    <span>
-                      {new Date(item.start_date).toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric'
-                      }).replace(/\//g, '.')}
-                    </span>
-                  )}
-                </div>
                 <h4 className="activityCard__title lh-16 fw-500 text-dark-1 text-18">
                   <span>{item?.title}</span>
                 </h4>
@@ -407,6 +395,18 @@ const Activity = () => {
                       )}
                     </div>
                   </div>
+                </div>
+                <div className="text-14 lh-14 text-light-1 mb-5 d-flex justify-between items-center">
+                  <span>{item?.duration || ""}</span>
+                  {item?.start_date && (
+                    <span>
+                      {new Date(item.start_date).toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                      }).replace(/\//g, '.')}
+                    </span>
+                  )}
                 </div>
               </div>
             </Link>

@@ -45,37 +45,39 @@ const Overview = ({ data, language, t }) => {
         </div> */}
       </div>
 
-      <div className="mt-40 border-top-light">
-        <div className="row x-gap-40 y-gap-40 pt-40">
-          <div className="col-12">
-            <h3 className="text-22 fw-500">{t("tours.whatsIncluded")}</h3>
+      {data?.includes?.length > 0 && (
+        <div className="mt-40 border-top-light">
+          <div className="row x-gap-40 y-gap-40 pt-40">
+            <div className="col-12">
+              <h3 className="text-22 fw-500">{t("tours.whatsIncluded")}</h3>
 
-            <div className="row x-gap-40 y-gap-40 pt-20">
-              <div className="col-md-6">
-                {data?.includes?.map((item, index) => (
-                  item?.included && (
-                    <div key={index} className="text-dark-1 text-15">
-                      <i className="icon-check text-green-2 text-10 mr-10"></i>
-                      {item?.title}
-                    </div>
-                  )
-                ))}
-              </div>
+              <div className="row x-gap-40 y-gap-40 pt-20">
+                <div className="col-md-6">
+                  {data?.includes?.map((item, index) => (
+                    item?.included && (
+                      <div key={index} className="text-dark-1 text-15">
+                        <i className="icon-check text-green-2 text-10 mr-10"></i>
+                        {item?.title}
+                      </div>
+                    )
+                  ))}
+                </div>
 
-              <div className="col-md-6">
-                {data?.includes?.map((item, index) => (
-                  !item?.included && (
-                    <div key={index} className="text-dark-1 text-15">
-                      <i className="icon-close text-red-2 text-10 mr-10"></i>
-                      {item?.title}
-                    </div>
-                  )
-                ))}
+                <div className="col-md-6">
+                  {data?.includes?.map((item, index) => (
+                    !item?.included && (
+                      <div key={index} className="text-dark-1 text-15">
+                        <i className="icon-close text-red-2 text-10 mr-10"></i>
+                        {item?.title}
+                      </div>
+                    )
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

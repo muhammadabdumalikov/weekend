@@ -16,17 +16,17 @@ const index = ({ activity }) => {
     e.preventDefault();
 
     const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
-    
+
     // Try different ways to get the title
     const activityTitle = activity?.title[i18n.language] || '';
     const greetingMessage = `${t("contact.greeting")} ${activityTitle}`;
-    
+
     // Use different approaches for desktop vs mobile
     if (isMobileDevice()) {
       // For mobile devices, try multiple URL schemes
       const telegramUrl = `https://t.me/+${cleanPhone}?text=${encodeURIComponent(greetingMessage)}`;
       const tgUrl = `tg://resolve?domain=${cleanPhone}&text=${encodeURIComponent(greetingMessage)}`;
-      
+
       // Try t.me first for mobile
       const link = document.createElement('a');
       link.href = telegramUrl;
@@ -34,7 +34,7 @@ const index = ({ activity }) => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       // If that doesn't work, try tg:// after a short delay
       setTimeout(() => {
         try {
@@ -46,7 +46,7 @@ const index = ({ activity }) => {
     } else {
       // For desktop, use the tg:// scheme which works better
       const tgUrl = `tg://resolve?domain=${cleanPhone}&text=${encodeURIComponent(greetingMessage)}`;
-      
+
       // Try tg:// first, fallback to t.me if it fails
       try {
         window.open(tgUrl, '_blank');
@@ -76,19 +76,21 @@ const index = ({ activity }) => {
       {/* End .col-12 */}
 
       {/* Book Now Button */}
-      <div className="col-12">
-        <button
-          onClick={(e) => {
-            if (activity.contact_phone.length > 1) {
-              setShowContactPhones(!showContactPhones);
-            } else {
-              handlePhoneClick(activity.contact_phone[0], e);
-            }
-          }} className="button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
-        >
-          {t("common.book")}
-        </button>
-      </div>
+      {activity?.contact_phone && activity.contact_phone.length > 0 && (
+        <div className="col-12">
+          <button
+            onClick={(e) => {
+              if (activity.contact_phone.length > 1) {
+                setShowContactPhones(!showContactPhones);
+              } else {
+                handlePhoneClick(activity.contact_phone[0], e);
+              }
+            }} className="button -dark-1 py-15 px-35 h-60 col-12 rounded-4 bg-blue-1 text-white"
+          >
+            {t("common.book")}
+          </button>
+        </div>
+      )}
       {/* End .col-12 */}
 
       {/* Contact Phone Section - Show when Book Now is clicked */}
