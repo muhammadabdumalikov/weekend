@@ -7,7 +7,7 @@ const Overview = ({ data, language, t }) => {
         <div className="col-12">
           <h3 className="text-22 fw-500">{t("tours.overview")}</h3>
 
-          <p className="text-dark-1 text-15 mt-20">{data?.description?.[language]}</p>
+          <p className="text-dark-1 text-15 mt-20">{data?.description}</p>
 
           {/* <a
             href="#"

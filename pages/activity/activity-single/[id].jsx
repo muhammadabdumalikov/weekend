@@ -45,7 +45,7 @@ const TourSingleV1Dynamic = () => {
     const shareText = `🌟 ${activity.title?.[language]} 🌟\n\n` +
       `📍 ${activity.location || 'Amazing destination'}\n` +
       `💰 From $${activity.price || 'Contact for price'}\n\n` +
-      `✨ ${activity.description ? activity?.description?.[language]?.substring(0, 150) + '...' : 'Discover this amazing experience!'}\n\n` +
+      `✨ ${activity.description ? activity?.description?.substring(0, 150) + '...' : 'Discover this amazing experience!'}\n\n` +
       `🔗 Check it out: ${currentUrl}\n\n` +
       `#Travel #Adventure #Experience #inMakon`;
     
@@ -116,7 +116,7 @@ const TourSingleV1Dynamic = () => {
             <div className="col-xl-8">
               <div className="row y-gap-20 justify-between items-end">
                 <div className="col-auto">
-                  <h1 className="text-26 fw-600">{activity?.title?.en}</h1>
+                  <h1 className="text-26 fw-600">{activity?.title}</h1>
                   <div className="row x-gap-10 y-gap-20 items-center pt-10">
                     <div className="col-auto">
                       <div className="d-flex items-center">
