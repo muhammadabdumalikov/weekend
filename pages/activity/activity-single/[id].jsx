@@ -66,6 +66,7 @@ const TourSingleV1Dynamic = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "x-lang": language || "ru",
             },
             body: JSON.stringify({ id: id }),
           }
