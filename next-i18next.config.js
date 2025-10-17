@@ -1,6 +1,6 @@
 module.exports = {
   i18n: {
-    defaultLocale: "uz",
+    defaultLocale: "ru",
     locales: ["en", "ru", "uz"],
     localeDetection: false, // Disable automatic locale detection
   },

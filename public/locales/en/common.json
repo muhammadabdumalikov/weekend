@@ -73,7 +73,35 @@
     "showOnMap": "Show on map",
     "share": "Share",
     "more": "More",
-    "from": "From"
+    "from": "From",
+    "selectLanguage": "Which language would you like to continue in?",
+    "chooseYourPreferredLanguage": "Choose your preferred language to continue"
+  },
+  "cookies": {
+    "title": "We use cookies",
+    "description": "We use cookies to improve your experience and analyze our traffic. Click 'Accept All' to consent.",
+    "acceptAll": "Accept",
+    "rejectAll": "Reject",
+    "customize": "Customize",
+    "settings": "Cookie Settings",
+    "settingsDescription": "Choose which cookies you want to accept. You can change these settings at any time.",
+    "savePreferences": "Save Preferences",
+    "necessary": {
+      "title": "Necessary Cookies",
+      "description": "These cookies are essential for the website to function properly. They cannot be disabled."
+    },
+    "analytics": {
+      "title": "Analytics Cookies",
+      "description": "These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously."
+    },
+    "marketing": {
+      "title": "Marketing Cookies",
+      "description": "These cookies are used to track visitors across websites to display relevant and engaging advertisements."
+    },
+    "functional": {
+      "title": "Functional Cookies",
+      "description": "These cookies enable enhanced functionality and personalization, such as remembering your preferences."
+    }
   },
   "footer": {
     "aboutUs": "About Us",

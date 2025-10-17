@@ -13,6 +13,9 @@ import AppBanner from "../../components/home/home-6/AppBanner";
 import Testimonials from "../../components/home/home-6/Testimonials";
 import Tour from "../../components/home/home-6/Tour";
 import DefaultHeader from "../../components/header/default-header/index2";
+import LanguageSelectionModal from "../../components/common/LanguageSelectionModal";
+import LanguageSelectionMobile from "../../components/common/LanguageSelectionMobile";
+import CookieNotice from "../../components/common/CookieNotice";
 
 const home_6 = () => {
   const { t, i18n } = useTranslation("common");
@@ -204,6 +207,39 @@ const home_6 = () => {
 
       <Footer5 />
       {/* End Footer Section */}
+
+      {/* Desktop Language Selection */}
+      <div className="desktop-only">
+        <LanguageSelectionModal />
+      </div>
+      
+      {/* Mobile Language Selection - Bottom Position */}
+      <div className="mobile-only">
+        <LanguageSelectionMobile />
+      </div>
+
+      {/* Cookie Notice - Disabled for now */}
+      {/* <CookieNotice /> */}
+
+      <style jsx global>{`
+        .desktop-only {
+          display: block;
+        }
+        
+        .mobile-only {
+          display: none;
+        }
+        
+        @media (max-width: 768px) {
+          .desktop-only {
+            display: none;
+          }
+          
+          .mobile-only {
+            display: block;
+          }
+        }
+      `}</style>
     </>
   );
 };

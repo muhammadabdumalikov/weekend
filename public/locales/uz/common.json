@@ -73,7 +73,35 @@
     "showOnMap": "Xaritada ko'rsatish",
     "share": "Ulashish",
     "more": "Ko'proq",
-    "from": "Dan"
+    "from": "Dan",
+    "selectLanguage": "Qaysi tilda davom etishni xohlaysiz?",
+    "chooseYourPreferredLanguage": "Davom etish uchun o'z tilingizni tanlang"
+  },
+  "cookies": {
+    "title": "Biz cookie fayllaridan foydalanamiz",
+    "description": "Biz tajribangizni yaxshilash va trafikni tahlil qilish uchun cookie fayllaridan foydalanamiz. 'Barchasini qabul qilish' tugmasini bosing.",
+    "acceptAll": "Qabul qilish",
+    "rejectAll": "Rad etish",
+    "customize": "Sozlash",
+    "settings": "Cookie sozlamalari",
+    "settingsDescription": "Qaysi cookie fayllarini qabul qilishni xohlayotganingizni tanlang. Siz bu sozlamalarni istalgan vaqtda o'zgartirishingiz mumkin.",
+    "savePreferences": "Sozlamalarni saqlash",
+    "necessary": {
+      "title": "Zarur cookie fayllar",
+      "description": "Bu cookie fayllar veb-saytning to'g'ri ishlashi uchun zarur. Ularni o'chirib bo'lmaydi."
+    },
+    "analytics": {
+      "title": "Analitik cookie fayllar",
+      "description": "Bu cookie fayllar tashrif buyuruvchilar bizning veb-saytimiz bilan qanday o'zaro ta'sir qilishini tushunishga yordam beradi, ma'lumotlarni anonim ravishda to'playdi va hisobot beradi."
+    },
+    "marketing": {
+      "title": "Marketing cookie fayllar",
+      "description": "Bu cookie fayllar mos va jozibali reklamalarni ko'rsatish uchun veb-saytlar bo'ylab tashrif buyuruvchilarni kuzatish uchun ishlatiladi."
+    },
+    "functional": {
+      "title": "Funksional cookie fayllar",
+      "description": "Bu cookie fayllar kengaytirilgan funksionallik va shaxsiylashtirishni ta'minlaydi, masalan, sizning afzalliklaringizni eslab qolish."
+    }
   },
   "footer": {
     "aboutUs": "Biz haqida",
