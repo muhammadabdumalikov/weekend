@@ -79,7 +79,7 @@ const TourSingleV1Dynamic = () => {
     }
 
     return () => { };
-  }, [id, dispatch]);
+  }, [id, dispatch, language]);
 
   return (
     <>
