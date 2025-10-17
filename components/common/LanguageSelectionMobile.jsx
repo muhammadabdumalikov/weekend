@@ -66,7 +66,7 @@ const LanguageSelectionMobile = () => {
       {/* Mobile Language Popup - Icons Only */}
       <div className="language-mobile-overlay" onClick={handleClosePopup}>
         <div className="language-mobile-container" onClick={(e) => e.stopPropagation()}>
-          <div className="language-mobile-content">
+          <div className="language-mobile-content" onClick={(e) => e.stopPropagation()}>
             {/* Header */}
             <div className="language-mobile-header">
               <div className="language-mobile-title">
@@ -104,7 +104,7 @@ const LanguageSelectionMobile = () => {
           bottom: 0;
           background-color: transparent;
           z-index: 9999;
-          pointer-events: none;
+          pointer-events: auto;
         }
 
         .language-mobile-container {
